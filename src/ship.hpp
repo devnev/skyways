@@ -28,7 +28,8 @@ private:
 	double _maxSpeed;
 	double _speed;
 	double _xpos, _ypos, _zpos;
-	double _jumptimed, _jumpstrength;
+	// store ypos and time of apex of jumps/falls
+	double _yapex, _tapex, _fallrate;
 
 };
 

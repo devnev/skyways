@@ -4,7 +4,8 @@
 #include <cmath>
 
 Ship::Ship(double maxSpeed)
-	: _maxSpeed( maxSpeed ), _speed( 0 ), _xpos( 0 ), _zpos( 0 )
+	: _maxSpeed( maxSpeed ), _speed( 0 ), _xpos( 0 ), _ypos( 0 )
+	, _zpos( 0 ), _yapex( 0 ), _tapex( 0 ), _fallrate( 1.5 )
 {
 }
 
@@ -34,19 +35,22 @@ void Ship::moveRight(double amount)
 
 void Ship::jump(double strength)
 {
-	_jumpstrength = strength;
-	_jumptimed = -sqrt(strength);
+	_yapex = _ypos + strength;
+	_tapex = 1.0;
 }
 
 void Ship::update(double multiplier)
 {
 	_zpos += multiplier * _speed;
-	_jumptimed += multiplier*1.5;
-	_ypos = _jumpstrength - _jumptimed*_jumptimed;
-	if (_ypos < 0)
+	if ( _yapex > 0 )
+	{
+		_tapex -= multiplier;
+		_ypos = _yapex - _fallrate * ( _tapex*_tapex );
+	}
+	if ( _ypos < 0 )
 	{
 		_ypos = 0;
-		_jumpstrength = 0;
+		_yapex = 0;
 	}
 }
 
