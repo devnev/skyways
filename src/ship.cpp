@@ -5,7 +5,7 @@
 
 Ship::Ship(double maxSpeed)
 	: _maxSpeed( maxSpeed ), _speed( 0 ), _xpos( 0 ), _ypos( 0 )
-	, _zpos( 0 ), _yapex( 0 ), _tapex( 0 ), _fallrate( 1.5 )
+	, _zpos( 0 ), _yapex( 0 ), _tapex( 0 ), _gravity( 10 )
 {
 }
 
@@ -36,7 +36,7 @@ void Ship::moveRight(double amount)
 void Ship::jump(double strength)
 {
 	_yapex = _ypos + strength;
-	_tapex = 1.0;
+	_tapex = sqrt( strength / _gravity );
 }
 
 void Ship::update(double multiplier)
@@ -45,7 +45,7 @@ void Ship::update(double multiplier)
 	if ( _yapex > 0 )
 	{
 		_tapex -= multiplier;
-		_ypos = _yapex - _fallrate * ( _tapex*_tapex );
+		_ypos = _yapex - _gravity * ( _tapex*_tapex );
 	}
 	if ( _ypos < 0 )
 	{
