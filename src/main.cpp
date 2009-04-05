@@ -19,11 +19,9 @@ int main ( int argc, char** argv )
 		// load c::b image
 		SDL::Surface::pointer bmp( SDL::LoadBmp( "cb.bmp" ) );
 
-		// centre the bitmap on screen
+		// position the bitmap on screen
 		SDL::Rect dstrect(
-			( screen->p()->w - bmp->p()->w ) / 2,
-			( screen->p()->h - bmp->p()->h ) / 2,
-			0, 0
+			( screen->p()->w - bmp->p()->w ) / 2, 0, 0, 0
 		);
 
 		Ship ship( 100 );
@@ -62,11 +60,15 @@ int main ( int argc, char** argv )
 
 			std::cout << ship.xpos() << ", " << ship.zpos() << ", " << ship.speed() << std::endl;
 
+			SDL_Rect tmprect = dstrect;
+			tmprect.x += (int)(ship.xpos()*5);
+			tmprect.y += (int)(ship.zpos()*2);
+
 			// clear screen
 			SDL_FillRect(screen->p(), 0, SDL_MapRGB(screen->p()->format, 0, 0, 0));
 
 			// draw bitmap
-			SDL_BlitSurface(bmp->p(), 0, screen->p(), &dstrect);
+			SDL_BlitSurface(bmp->p(), 0, screen->p(), &tmprect);
 
 			// DRAWING ENDS HERE
 
