@@ -6,4 +6,4 @@ QT          += opengl
 
 # Input
 HEADERS += src/controller.hpp src/ship.hpp src/window.hpp
-SOURCES += src/main.cpp
+SOURCES += src/controller.cpp src/main.cpp src/window.cpp
