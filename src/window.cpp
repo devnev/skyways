@@ -76,7 +76,7 @@ void Window::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
-	glTranslated( ship.xpos(), ship.zpos(), -40 );
+	glTranslated( ship.xpos(), -2, -ship.zpos() );
 	ship.glDraw();
 	glLoadIdentity();
 	glTranslatef( 0, -2, 0 );
