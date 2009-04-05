@@ -9,6 +9,7 @@
 Window::Window( QWidget * parent )
 	: QGLWidget( parent )
 	, ship( 100 )
+	, world()
 	, controller( &ship, 1.2, 1.2 )
 {
 	timer = new QTimer( this );
@@ -56,6 +57,7 @@ void Window::initializeGL()
 {
 	glClearColor( 0, 0, 0, 0 );
 	glClearDepth( 1.0 );
+	world.add(Element(1, 0, -10));
 }
 
 void Window::resizeGL( int width, int height )
@@ -76,5 +78,8 @@ void Window::paintGL()
 	glLoadIdentity();
 	glTranslated( ship.xpos(), ship.zpos(), -40 );
 	ship.glDraw();
+	glLoadIdentity();
+	glTranslatef( 0, -2, 0 );
+	world.glDraw();
 	std::cout << ship.xpos() << ", " << ship.zpos() << ", " << ship.speed() << std::endl;
 }
