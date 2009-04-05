@@ -18,6 +18,10 @@ void Controller::keydown( int key )
 	case Qt::Key_Right: vx = 1; break;
 	case Qt::Key_Up: az = 1; break;
 	case Qt::Key_Down: az = -1; break;
+	case Qt::Key_Space:
+		if (_ship->ypos() < 0.2)
+			_ship->jump(1.5);
+		break;
 	}
 }
 
@@ -40,10 +44,6 @@ void Controller::keyup( int key )
 	case Qt::Key_Down:
 		if (az < 0)
 			az = 0;
-		break;
-	case Qt::Key_Space:
-		if (_ship->ypos() < 0.2)
-			_ship->jump(1.5);
 		break;
 	}
 }
