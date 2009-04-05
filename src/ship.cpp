@@ -1,6 +1,7 @@
 #include "ship.hpp"
 
 #include <QtOpenGL>
+#include <cmath>
 
 Ship::Ship(double maxSpeed)
 	: _maxSpeed( maxSpeed ), _speed( 0 ), _xpos( 0 ), _zpos( 0 )
@@ -31,9 +32,22 @@ void Ship::moveRight(double amount)
 	_xpos += amount;
 }
 
+void Ship::jump(double strength)
+{
+	_jumpstrength = strength;
+	_jumptimed = -sqrt(strength);
+}
+
 void Ship::update(double multiplier)
 {
 	_zpos += multiplier * _speed;
+	_jumptimed += multiplier*1.5;
+	_ypos = _jumpstrength - _jumptimed*_jumptimed;
+	if (_ypos < 0)
+	{
+		_ypos = 0;
+		_jumpstrength = 0;
+	}
 }
 
 void Ship::glDraw()

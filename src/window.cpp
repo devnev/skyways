@@ -80,12 +80,12 @@ void Window::paintGL()
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glLoadIdentity();
-	glTranslated( ship.xpos(), -2, -4 );
+	glTranslated( ship.xpos(), ship.ypos() - 2, -4 );
 	glColor3f( 1, 0, 0 );
 	ship.glDraw();
 	glLoadIdentity();
 	glColor3f( 0.8f, 1, 1 );
-	glTranslatef( 0, -2, ship.zpos() );
+	glTranslatef( 0, -2, ship.zpos() - 4 );
 	world.glDraw();
 	std::cout << ship.xpos() << ", " << ship.zpos() << ", " << ship.speed() << std::endl;
 }

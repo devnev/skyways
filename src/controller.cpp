@@ -41,6 +41,9 @@ void Controller::keyup( int key )
 		if (az < 0)
 			az = 0;
 		break;
+	case Qt::Key_Space:
+		_ship->jump(1.5);
+		break;
 	}
 }
 

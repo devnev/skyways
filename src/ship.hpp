@@ -14,7 +14,10 @@ public:
 	void moveLeft(double amount);
 	void moveRight(double amount);
 	double xpos() const throw() { return _xpos; }
+	double ypos() const throw() { return _ypos; }
 	double zpos() const throw() { return _zpos; }
+
+	void jump(double strength);
 
 	void update(double multiplier);
 
@@ -24,7 +27,8 @@ private:
 
 	double _maxSpeed;
 	double _speed;
-	double _xpos, _zpos;
+	double _xpos, _ypos, _zpos;
+	double _jumptimed, _jumpstrength;
 
 };
 
