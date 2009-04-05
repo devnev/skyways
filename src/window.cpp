@@ -58,7 +58,10 @@ void Window::initializeGL()
 	glClearColor( 0, 0, 0, 0 );
 	glClearDepth( 1.0 );
 	glEnable( GL_DEPTH_TEST );
-	world.add(Element(1, 0, -10));
+	for (size_t i = 0; i < 200; ++i)
+	{
+		world.add(Element(rand() % 8 - 4, ((double)(rand() % 3))/2, -(rand() % 300)));
+	}
 }
 
 void Window::resizeGL( int width, int height )
