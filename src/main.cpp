@@ -60,7 +60,7 @@ int main ( int argc, char** argv )
 
 			// DRAWING STARTS HERE
 
-			std::cout << ship.xpos() << ", " << ship.speed() << std::endl;
+			std::cout << ship.xpos() << ", " << ship.zpos() << ", " << ship.speed() << std::endl;
 
 			// clear screen
 			SDL_FillRect(screen->p(), 0, SDL_MapRGB(screen->p()->format, 0, 0, 0));

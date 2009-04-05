@@ -6,7 +6,7 @@ class Ship
 public:
 
 	Ship(double maxSpeed)
-		: _maxSpeed( maxSpeed ), _speed( 0 ), _xpos( 0 )
+		: _maxSpeed( maxSpeed ), _speed( 0 ), _xpos( 0 ), _zpos( 0 )
 	{
 	}
 
@@ -33,10 +33,16 @@ public:
 		_xpos += amount;
 	}
 	double xpos() const throw() { return _xpos; }
+	double zpos() const throw() { return _zpos; }
+
+	void update(double multiplier)
+	{
+		_zpos += multiplier * _speed;
+	}
 
 private:
 
-	double _xpos;
+	double _xpos, _zpos;
 	double _maxSpeed;
 	double _speed;
 

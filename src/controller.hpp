@@ -67,6 +67,8 @@ public:
 			_ship->moveLeft( _xspeed*multiplier );
 		if (vx > 0)
 			_ship->moveRight( _xspeed*multiplier );
+
+		_ship->update(multiplier);
 	}
 
 private:
