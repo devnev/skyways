@@ -57,6 +57,7 @@ void Window::initializeGL()
 {
 	glClearColor( 0, 0, 0, 0 );
 	glClearDepth( 1.0 );
+	glEnable( GL_DEPTH_TEST );
 	world.add(Element(1, 0, -10));
 }
 
@@ -74,7 +75,7 @@ void Window::resizeGL( int width, int height )
 
 void Window::paintGL()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glLoadIdentity();
 	glTranslated( ship.xpos(), -2, -4 );
 	glColor3f( 1, 0, 0 );
