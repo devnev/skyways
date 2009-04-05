@@ -58,6 +58,10 @@ public:
 			_ship->decreaseSpeed(0.2);
 		else if (az > 0)
 			_ship->increaseSpeed(0.2);
+		if (vx < 0)
+			_ship->moveLeft(0.2);
+		if (vx > 0)
+			_ship->moveRight(0.2);
 	}
 
 private:
