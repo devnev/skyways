@@ -3,6 +3,7 @@
 #include <QTimer>
 #include <QTime>
 #include <iostream>
+#include <cmath>
 #include "window.hpp"
 
 Window::Window( QWidget * parent )
@@ -59,12 +60,13 @@ void Window::initializeGL()
 
 void Window::resizeGL( int width, int height )
 {
-     int side = qMin( width, height );
-     glViewport( ( width - side ) / 2, ( height - side ) / 2, side, side );
+     glViewport( 0, 0, width, height );
 
      glMatrixMode( GL_PROJECTION );
      glLoadIdentity();
-     glFrustum( -1.0, +1.0, -1.0, 1.0, 5.0, 60.0 );
+	 double fH = tan( 30.0 / 180.0 * 3.14159265358979323846 );
+	 double fW = ( (double)width ) / ( (double)height ) * fH;
+     glFrustum( -fW, fW, -fH, fH, 1.0, 100.0 );
      glMatrixMode( GL_MODELVIEW );
 }
 
