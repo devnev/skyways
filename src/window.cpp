@@ -75,11 +75,6 @@ void Window::paintGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
 	glTranslated( ship.xpos(), ship.zpos(), -40 );
-	glBegin( GL_QUADS );
-		glVertex3d( 0, 0, 0 );
-		glVertex3d( 1, 0, 0 );
-		glVertex3d( 1, -1, 0 );
-		glVertex3d( 0, -1, 0 );
-	glEnd();
+	ship.glDraw();
 	std::cout << ship.xpos() << ", " << ship.zpos() << ", " << ship.speed() << std::endl;
 }

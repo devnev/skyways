@@ -1,6 +1,8 @@
 #ifndef _SHIP_HPP_
 #define _SHIP_HPP_
 
+#include <QtOpenGL>
+
 class Ship
 {
 public:
@@ -38,6 +40,33 @@ public:
 	void update(double multiplier)
 	{
 		_zpos += multiplier * _speed;
+	}
+
+	void glDraw()
+	{
+		glBegin( GL_QUAD_STRIP );
+			glVertex3d( 0, 1, 0 );
+			glVertex3d( 0, 0, 0 );
+			glVertex3d( 1, 1, 0 );
+			glVertex3d( 1, 0, 0 );
+			glVertex3d( 1, 1, -1 );
+			glVertex3d( 1, 0, -1 );
+			glVertex3d( 0, 1, -1 );
+			glVertex3d( 0, 0, -1 );
+			glVertex3d( 0, 1, 0 );
+			glVertex3d( 0, 0, 0 );
+		glEnd();
+		glBegin( GL_QUADS );
+			glVertex3d( 0, 0, 0 );
+			glVertex3d( 1, 0, 0 );
+			glVertex3d( 1, 0, -1 );
+			glVertex3d( 0, 0, -1 );
+
+			glVertex3d( 0, 1, 0 );
+			glVertex3d( 1, 1, 0 );
+			glVertex3d( 1, 1, -1 );
+			glVertex3d( 0, 1, -1 );
+		glEnd();
 	}
 
 private:
