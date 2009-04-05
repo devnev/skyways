@@ -58,9 +58,14 @@ void Window::initializeGL()
 	glClearColor( 0, 0, 0, 0 );
 	glClearDepth( 1.0 );
 	glEnable( GL_DEPTH_TEST );
-	for (size_t i = 0; i < 200; ++i)
+	for (size_t i = 0; i < 100; ++i)
 	{
-		world.add(Element(rand() % 8 - 4, ((double)(rand() % 5))/4 - 0.5, -(rand() % 300)));
+		world.add(Element(
+			rand() % 8 - 4,
+			((double)(rand() % 5))/4 - 0.5,
+			-(rand() % 400),
+			rand() % 20 + 2
+		));
 	}
 }
 

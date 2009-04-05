@@ -5,21 +5,23 @@ class Element
 {
 public:
 
-	Element(double x, double y, double z)
-		: xoff(x), yoff(y), zoff(z)
+	Element(double x, double y, double z, double l)
+		: xoff(x), yoff(y), zoff(z), length(l)
 	{
 	}
 
 	void glDraw()
 	{
+		glPushMatrix();
 		glTranslated(xoff, yoff, zoff);
+		glScaled(1, 1, length);
 		block.glDraw();
-		glTranslated(-xoff, -yoff, -zoff);
+		glPopMatrix();
 	}
 
 private:
 
 	Block block;
-	double xoff, yoff, zoff;
+	double xoff, yoff, zoff, length;
 
 };
