@@ -60,7 +60,7 @@ void Window::initializeGL()
 	glEnable( GL_DEPTH_TEST );
 	for (size_t i = 0; i < 200; ++i)
 	{
-		world.add(Element(rand() % 8 - 4, ((double)(rand() % 3))/2, -(rand() % 300)));
+		world.add(Element(rand() % 8 - 4, ((double)(rand() % 5))/4 - 0.5, -(rand() % 300)));
 	}
 }
 
