@@ -7,8 +7,9 @@
 class Controller
 {
 public:
-	Controller( Ship * ship )
+	Controller( Ship * ship, double acceleration, double strafespeed )
 		: _ship( ship ), vx( 0 ), az( 0 )
+		, _zacc( acceleration ), _xspeed( strafespeed )
 	{
 	}
 
@@ -59,19 +60,20 @@ public:
 		updateTick = newTick;
 
 		if (az < 0)
-			_ship->decreaseSpeed( 1.2*multiplier );
+			_ship->decreaseSpeed( _zacc*multiplier );
 		else if (az > 0)
-			_ship->increaseSpeed( 1.2*multiplier );
+			_ship->increaseSpeed( _zacc*multiplier );
 		if (vx < 0)
-			_ship->moveLeft( 1.2*multiplier );
+			_ship->moveLeft( _xspeed*multiplier );
 		if (vx > 0)
-			_ship->moveRight( 1.2*multiplier );
+			_ship->moveRight( _xspeed*multiplier );
 	}
 
 private:
 	int vx, az;
 	Ship * _ship;
 	Uint32 updateTick;
+	double _zacc, _xspeed;
 };
 
 #endif // _CONTROLLER_HPP_

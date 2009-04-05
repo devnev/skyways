@@ -27,7 +27,7 @@ int main ( int argc, char** argv )
 		);
 
 		Ship ship( 100 );
-		Controller controller( &ship );
+		Controller controller( &ship, 1.2, 1.2 );
 
 		// program main loop
 		bool done = false;
