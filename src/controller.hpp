@@ -54,19 +54,24 @@ public:
 
 	void update()
 	{
+		Uint32 newTick = SDL_GetTicks();
+		double multiplier = ((double)( newTick - updateTick )) / 1000;
+		updateTick = newTick;
+
 		if (az < 0)
-			_ship->decreaseSpeed(0.2);
+			_ship->decreaseSpeed( 1.2*multiplier );
 		else if (az > 0)
-			_ship->increaseSpeed(0.2);
+			_ship->increaseSpeed( 1.2*multiplier );
 		if (vx < 0)
-			_ship->moveLeft(0.2);
+			_ship->moveLeft( 1.2*multiplier );
 		if (vx > 0)
-			_ship->moveRight(0.2);
+			_ship->moveRight( 1.2*multiplier );
 	}
 
 private:
 	int vx, az;
 	Ship * _ship;
+	Uint32 updateTick;
 };
 
 #endif // _CONTROLLER_HPP_
