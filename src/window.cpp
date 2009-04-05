@@ -76,10 +76,10 @@ void Window::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
-	glTranslated( ship.xpos(), -2, -ship.zpos() );
+	glTranslated( ship.xpos(), -2, -4 );
 	ship.glDraw();
 	glLoadIdentity();
-	glTranslatef( 0, -2, 0 );
+	glTranslatef( 0, -2, ship.zpos() );
 	world.glDraw();
 	std::cout << ship.xpos() << ", " << ship.zpos() << ", " << ship.speed() << std::endl;
 }
