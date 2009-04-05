@@ -51,6 +51,23 @@ void Window::keyReleaseEvent( QKeyEvent * event )
 	}
 }
 
+void Window::initializeGL()
+{
+	glClearColor( 0, 0, 0, 0 );
+	glClearDepth( 1.0 );
+}
+
+void Window::resizeGL( int width, int height )
+{
+     int side = qMin( width, height );
+     glViewport( ( width - side ) / 2, ( height - side ) / 2, side, side );
+
+     glMatrixMode( GL_PROJECTION );
+     glLoadIdentity();
+     glFrustum( -1.0, +1.0, -1.0, 1.0, 5.0, 60.0 );
+     glMatrixMode( GL_MODELVIEW );
+}
+
 void Window::paintGL()
 {
 	std::cout << ship.xpos() << ", " << ship.zpos() << ", " << ship.speed() << std::endl;
