@@ -56,6 +56,7 @@ void Ship::update(double multiplier)
 
 void Ship::glDraw()
 {
+	glScaled( 0.8, 0.5, 1.0 );
 	glBegin( GL_QUAD_STRIP );
 		glVertex3d( 0, 1, 0 );
 		glVertex3d( 0, 0, 0 );
