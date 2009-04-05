@@ -1,8 +1,8 @@
 #ifndef _CONTROLLER_HPP_
 #define _CONTROLLER_HPP_
 
-#include "sdl/sdl.hpp"
 #include "ship.hpp"
+#include <QCoreApplication>
 
 class Controller
 {
@@ -13,51 +13,46 @@ public:
 	{
 	}
 
-	void keydown( SDL_KeyboardEvent * event )
+	void keydown( int key )
 	{
-		switch (event->keysym.sym)
+		switch ( key )
 		{
-		case SDLK_ESCAPE:
-			{
-				SDL_Event qev = { SDL_QUIT };
-				SDL_PushEvent(&qev);
-				break;
-			}
-		case SDLK_LEFT: vx = -1; break;
-		case SDLK_RIGHT: vx = 1; break;
-		case SDLK_UP: az = 1; break;
-		case SDLK_DOWN: az = -1; break;
+		case Qt::Key_Escape:
+			QCoreApplication::instance()->quit();
+			break;
+		case Qt::Key_Left: vx = -1; break;
+		case Qt::Key_Right: vx = 1; break;
+		case Qt::Key_Up: az = 1; break;
+		case Qt::Key_Down: az = -1; break;
 		}
 	}
 
-	void keyup( SDL_KeyboardEvent * event )
+	void keyup( int key )
 	{
-		switch (event->keysym.sym)
+		switch ( key )
 		{
-		case SDLK_LEFT: 
+		case Qt::Key_Left: 
 			if (vx < 0)
 				vx = 0;
 			break;
-		case SDLK_RIGHT:
+		case Qt::Key_Right:
 			if (vx > 0)
 				vx = 0;
 			break;
-		case SDLK_UP:
+		case Qt::Key_Up:
 			if (az > 0)
 				az = 0;
 			break;
-		case SDLK_DOWN:
+		case Qt::Key_Down:
 			if (az < 0)
 				az = 0;
 			break;
 		}
 	}
 
-	void update()
+	void update(int difference)
 	{
-		Uint32 newTick = SDL_GetTicks();
-		double multiplier = ((double)( newTick - updateTick )) / 1000;
-		updateTick = newTick;
+		double multiplier = ((double)( difference )) / 1000;
 
 		if (az < 0)
 			_ship->decreaseSpeed( _zacc*multiplier );
@@ -72,9 +67,8 @@ public:
 	}
 
 private:
-	int vx, az;
 	Ship * _ship;
-	Uint32 updateTick;
+	int vx, az;
 	double _zacc, _xspeed;
 };
 

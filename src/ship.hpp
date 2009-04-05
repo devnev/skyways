@@ -42,9 +42,9 @@ public:
 
 private:
 
-	double _xpos, _zpos;
 	double _maxSpeed;
 	double _speed;
+	double _xpos, _zpos;
 
 };
 
