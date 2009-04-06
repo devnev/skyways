@@ -1,5 +1,5 @@
-#include "window.hpp"
 #include <QApplication>
+#include "window.hpp"
 
 int main ( int argc, char** argv )
 {

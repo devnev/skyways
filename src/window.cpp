@@ -1,4 +1,3 @@
-
 #include <QKeyEvent>
 #include <QTimer>
 #include <QTime>

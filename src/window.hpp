@@ -1,3 +1,5 @@
+#ifndef _WINDOW_HPP_
+#define _WINDOW_HPP_
 
 #include <QGLWidget>
 #include "controller.hpp"
@@ -33,3 +35,5 @@ private:
 	QTimer * timer;
 	QTime * time;
 };
+
+#endif // _WINDOW_HPP_

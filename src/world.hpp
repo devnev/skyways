@@ -1,3 +1,5 @@
+#ifndef _WORLD_HPP_
+#define _WORLD_HPP_
 
 #include <vector>
 #include "element.hpp"
@@ -8,20 +10,22 @@ public:
 
 	void glDraw()
 	{
-		for (ElementList::iterator elem = elements.begin();
-				elem != elements.end(); ++elem)
+		for ( ElementList::iterator elem = elements.begin();
+				elem != elements.end(); ++elem )
 		{
 			elem->glDraw();
 		}
 	}
 
-	void add(const Element& e)
+	void add( const Element& e )
 	{
-		elements.push_back(e);
+		elements.push_back( e );
 	}
 
 private:
 
-	typedef std::vector<Element> ElementList;
+	typedef std::vector< Element > ElementList;
 	ElementList elements;
 };
+
+#endif // _WORLD_HPP_

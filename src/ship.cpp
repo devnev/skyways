@@ -1,45 +1,44 @@
-#include "ship.hpp"
-
 #include <QtOpenGL>
 #include <cmath>
+#include "ship.hpp"
 
-Ship::Ship(double maxSpeed)
+Ship::Ship( double maxSpeed )
 	: _maxSpeed( maxSpeed ), _speed( 0 ), _xpos( 0 ), _ypos( 0 )
 	, _zpos( 0 ), _yapex( 0 ), _tapex( 0 ), _gravity( 10 )
 {
 }
 
-void Ship::decreaseSpeed(double amount)
+void Ship::decreaseSpeed( double amount )
 {
 	_speed -= amount;
-	if (_speed < 0)
+	if ( _speed < 0 )
 		_speed = 0;
 }
 
-void Ship::increaseSpeed(double amount)
+void Ship::increaseSpeed( double amount )
 {
 	_speed += amount;
-	if (_speed > _maxSpeed)
+	if ( _speed > _maxSpeed )
 		_speed = _maxSpeed;
 }
 
-void Ship::moveLeft(double amount)
+void Ship::moveLeft( double amount )
 {
 	_xpos -= amount;
 }
 
-void Ship::moveRight(double amount)
+void Ship::moveRight( double amount )
 {
 	_xpos += amount;
 }
 
-void Ship::jump(double strength)
+void Ship::jump( double strength )
 {
 	_yapex = _ypos + strength;
 	_tapex = sqrt( strength / _gravity );
 }
 
-void Ship::update(double multiplier)
+void Ship::update( double multiplier )
 {
 	_zpos += multiplier * _speed;
 	if ( _yapex > 0 )

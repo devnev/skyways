@@ -5,21 +5,21 @@ class Ship
 {
 public:
 
-	Ship(double maxSpeed);
+	Ship( double maxSpeed );
 
-	void decreaseSpeed(double amount);
-	void increaseSpeed(double amount);
+	void decreaseSpeed( double amount );
+	void increaseSpeed( double amount );
 	double speed() const throw() { return _speed; }
 
-	void moveLeft(double amount);
-	void moveRight(double amount);
+	void moveLeft( double amount );
+	void moveRight( double amount );
 	double xpos() const throw() { return _xpos; }
 	double ypos() const throw() { return _ypos; }
 	double zpos() const throw() { return _zpos; }
 
-	void jump(double strength);
+	void jump( double strength );
 
-	void update(double multiplier);
+	void update( double multiplier );
 
 	void glDraw();
 

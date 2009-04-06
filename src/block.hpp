@@ -1,3 +1,5 @@
+#ifndef _BLOCK_HPP_
+#define _BLOCK_HPP_
 
 class Block
 {
@@ -31,3 +33,5 @@ public:
 	}
 
 };
+
+#endif // _BLOCK_HPP_

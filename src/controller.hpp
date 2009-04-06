@@ -10,7 +10,7 @@ public:
 
 	void keydown( int key );
 	void keyup( int key );
-	void update(int difference);
+	void update( int difference );
 
 private:
 	Ship * _ship;

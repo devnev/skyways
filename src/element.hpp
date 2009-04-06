@@ -1,3 +1,5 @@
+#ifndef _ELEMENT_HPP_
+#define _ELEMENT_HPP_
 
 #include "block.hpp"
 
@@ -5,16 +7,16 @@ class Element
 {
 public:
 
-	Element(double x, double y, double z, double l)
-		: xoff(x), yoff(y), zoff(z), length(l)
+	Element( double x, double y, double z, double l )
+		: xoff( x ), yoff( y ), zoff( z ), length( l )
 	{
 	}
 
 	void glDraw()
 	{
 		glPushMatrix();
-		glTranslated(xoff, yoff, zoff);
-		glScaled(1, 1, length);
+		glTranslated( xoff, yoff, zoff );
+		glScaled( 1, 1, length );
 		block.glDraw();
 		glPopMatrix();
 	}
@@ -25,3 +27,5 @@ private:
 	double xoff, yoff, zoff, length;
 
 };
+
+#endif // _ELEMENT_HPP_
