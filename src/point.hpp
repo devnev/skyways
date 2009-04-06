@@ -12,6 +12,12 @@ struct Point
 		return p;
 	}
 
+	static Point make(double x, double y, double z)
+	{
+		Point p = { x, y, z };
+		return p;
+	}
+
 };
 
 #endif // _POINT_HPP_
