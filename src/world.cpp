@@ -9,6 +9,8 @@
 World::World( size_t sectionSize )
 	: sectionSize( sectionSize )
 {
+	std::string empty;
+	blocks.insert( empty, new Block() );
 }
 
 void World::glDraw( double zmin )

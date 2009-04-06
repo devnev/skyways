@@ -19,6 +19,8 @@ public:
 
 	void optimize();
 
+	Block * block( const char * name ) { return &blocks.at( name ); }
+
 	// statistic functions
 
 	size_t elementsDrawn() const throw() { return _elementsDrawn; }

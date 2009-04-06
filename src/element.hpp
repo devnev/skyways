@@ -7,8 +7,8 @@ class Element
 {
 public:
 
-	Element( double x, double y, double z, double l )
-		: _xoff( x ), _yoff( y ), _zoff( z ), _length( l )
+	Element( double x, double y, double z, double l, Block * b )
+		: _xoff( x ), _yoff( y ), _zoff( z ), _length( l ), _block( b )
 	{
 	}
 
@@ -17,7 +17,7 @@ public:
 		glPushMatrix();
 		glTranslated( _xoff, _yoff, -_zoff );
 		glScaled( 1, 1, _length );
-		block.glDraw();
+		_block->glDraw();
 		glPopMatrix();
 	}
 
@@ -28,8 +28,8 @@ public:
 
 private:
 
-	Block block;
 	double _xoff, _yoff, _zoff, _length;
+	Block * _block;
 
 };
 
