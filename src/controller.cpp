@@ -22,7 +22,11 @@ void Controller::keydown( int key )
 	case ACCEL_KEY: az = 1; break;
 	case DECEL_KEY: az = -1; break;
 	case JUMP_KEY:
-		if ( _grounded )
+		if ( _grounded ||
+			_world.collide(
+				_ship.pos().offset(0, -0.2, 0),
+				_ship.pos().offset(_ship.size()).offset(0, -0.2, 0)
+			) )
 		{
 			_yapex = _ship.ypos() + 1.5;
 			_tapex = sqrt( 1.5 / _gravity );
