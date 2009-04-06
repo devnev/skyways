@@ -66,6 +66,7 @@ void Window::initializeGL()
 			rand() % 20 + 2
 		));
 	}
+	world.optimize();
 }
 
 void Window::resizeGL( int width, int height )
@@ -90,6 +91,6 @@ void Window::paintGL()
 	glLoadIdentity();
 	glColor3f( 0.8f, 1, 1 );
 	glTranslatef( 0, -2, ship.zpos() - 4 );
-	world.glDraw();
+	world.glDraw( ship.zpos() - 4 );
 	std::cout << ship.xpos() << ", " << ship.zpos() << ", " << ship.speed() << std::endl;
 }

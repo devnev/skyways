@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "element.hpp"
+#include <algorithm>
+#include <functional>
 
 class World
 {
@@ -13,12 +15,43 @@ public:
 	{
 	}
 
-	void glDraw()
+	void glDraw( double zmin = 0 )
 	{
-		for ( ElementList::iterator elem = elements.begin();
-				elem != elements.end(); ++elem )
+		if (sections.size() == 0)
 		{
-			elem->glDraw();
+			for ( ElementList::iterator elem = elements.begin() ;
+					elem != elements.end(); ++elem )
+			{
+				elem->glDraw();
+			}
+		}
+		else
+		{
+			size_t z;
+			if ( zmin < 0 )
+				z = 0;
+			else
+				z = ( (size_t)zmin ) / sectionSize;
+			if ( z >= sections.size() )
+				return;
+			std::for_each(
+				sections[ z ].running.begin(),
+				sections[ z ].running.end(),
+				std::mem_fun( &Element::glDraw )
+			);
+			std::for_each(
+				sections[ z ].ending.begin(),
+				sections[ z ].ending.end(),
+				std::mem_fun( &Element::glDraw )
+			);
+			for ( ; z < sections.size() ; ++z )
+			{
+				std::for_each(
+					sections[ z ].beginning.begin(),
+					sections[ z ].beginning.end(),
+					std::mem_fun( &Element::glDraw )
+				);
+			}
 		}
 	}
 
@@ -28,7 +61,22 @@ public:
 			return;
 
 		elements.push_back( e );
-		Element * pe = &elements.back();
+	}
+
+	void optimize()
+	{
+		for ( ElementList::iterator elem = elements.begin() ;
+				elem != elements.end(); ++elem )
+		{
+			processElement( *elem );
+		}
+	}
+
+private:
+
+	void processElement( Element& e )
+	{
+		Element * pe = &e;
 
 		size_t beginIndex = (size_t)pe->zoff();
 		size_t beginSection = beginIndex / sectionSize;
@@ -54,8 +102,6 @@ public:
 
 		sections[ beginSection ].ending.push_back( pe );
 	}
-
-private:
 
 	typedef std::vector< Element > ElementList;
 	ElementList elements;
