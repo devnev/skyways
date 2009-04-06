@@ -135,8 +135,7 @@ void Controller::update( int difference )
 	}
 
 	newPos.z += multiplier * _zspeed;
-	Point altPos = { newPos.x + 0.8, newPos.y + 0.5, newPos.z + 1.0 };
-	if ( _world.collide(newPos, altPos) )
+	if ( _world.collide( newPos, newPos.offset(0.8, 0.5, 1.0) ) )
 	{
 		newPos.z = _ship.pos().z;
 		_zspeed = 0;
