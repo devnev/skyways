@@ -28,6 +28,14 @@ public:
 
 private:
 
+	std::auto_ptr< Element > readElement( std::istream& is )
+	{
+		double x, y, z, l;
+		std::string block;
+		is >> x >> y >> z >> l >> block;
+		return std::auto_ptr< Element >( new Element( x, y, z, l, &blocks.at( block ) ) );
+	}
+
 	void processElement( Element& e );
 
 	typedef std::vector< Element > ElementList;
