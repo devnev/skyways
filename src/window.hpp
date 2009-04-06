@@ -29,6 +29,8 @@ protected:
 	virtual void paintGL();
 
 private:
+	int mapKey( int key );
+
 	Ship ship;
 	World world;
 	Controller controller;

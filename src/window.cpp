@@ -36,11 +36,31 @@ void Window::update()
 	( (QWidget*)this )->update();
 }
 
+int Window::mapKey( int key )
+{
+	switch ( key )
+	{
+	case Qt::Key_Left: return Controller::STRAFE_L_KEY;
+	case Qt::Key_Right: return Controller::STRAFE_R_KEY;
+	case Qt::Key_Up: return Controller::ACCEL_KEY;
+	case Qt::Key_Down: return Controller::DECEL_KEY;
+	case Qt::Key_Space: return Controller::JUMP_KEY;
+	default: return 0;
+	}
+}
+
 void Window::keyPressEvent( QKeyEvent * event )
 {
 	if ( !event->isAutoRepeat() )
 	{
-		controller.keydown( event->key() );
+		if ( event->key() == Qt::Key_Escape )
+			QCoreApplication::instance()->quit();
+		else
+		{
+			int key = mapKey( event->key() );
+			if ( key > 0 )
+				controller.keydown( key );
+		}
 	}
 }
 
@@ -48,7 +68,9 @@ void Window::keyReleaseEvent( QKeyEvent * event )
 {
 	if ( !event->isAutoRepeat() )
 	{
-		controller.keyup( event->key() );
+		int key = mapKey( event->key() );
+		if ( key > 0 )
+			controller.keyup( key );
 	}
 }
 
