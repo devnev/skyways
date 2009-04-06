@@ -9,7 +9,7 @@ Window::Window( QWidget * parent )
 	: QGLWidget( parent )
 	, ship( 100 )
 	, world( 10 )
-	, controller( &ship, 5, 3 )
+	, controller( &ship, 8, 3 )
 {
 	timer = new QTimer( this );
 	connect( timer, SIGNAL(timeout()), this, SLOT(update()) );
