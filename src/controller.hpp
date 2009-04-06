@@ -2,11 +2,12 @@
 #define _CONTROLLER_HPP_
 
 #include "ship.hpp"
+#include "world.hpp"
 
 class Controller
 {
 public:
-	Controller( Ship * ship, double acceleration, double strafespeed );
+	Controller();
 
 	enum {
 		JUMP_KEY = 1,
@@ -18,10 +19,14 @@ public:
 
 	void keydown( int key );
 	void keyup( int key );
+	void initialize();
+	void resize( int width, int height );
+	void draw();
 	void update( int difference );
 
 private:
-	Ship * _ship;
+	Ship _ship;
+	World _world;
 	int vx, az;
 	double _zacc, _xspeed;
 };

@@ -3,8 +3,6 @@
 
 #include <QGLWidget>
 #include "controller.hpp"
-#include "ship.hpp"
-#include "world.hpp"
 
 class QKeyEvent;
 class QTimer;
@@ -31,8 +29,6 @@ protected:
 private:
 	int mapKey( int key );
 
-	Ship ship;
-	World world;
 	Controller controller;
 	QTimer * timer;
 	QTime * time;
