@@ -65,6 +65,7 @@ public:
 		if ( e.zoff() < 0 )
 			return;
 
+		sections.clear();
 		elements.push_back( e );
 	}
 
