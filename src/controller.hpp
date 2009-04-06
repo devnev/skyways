@@ -29,6 +29,8 @@ private:
 	World _world;
 	int vx, az;
 	double _zacc, _xspeed;
+	double _maxSpeed, _zspeed;
+	double _yapex, _tapex, _gravity;
 };
 
 #endif // _CONTROLLER_HPP_

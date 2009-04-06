@@ -3,9 +3,11 @@
 #include "controller.hpp"
 
 Controller::Controller()
-	: _ship( 100 ), _world( 10 )
+	: _ship(), _world( 10 )
 	, vx( 0 ), az( 0 )
 	, _zacc( 8 ), _xspeed( 3 )
+	, _maxSpeed( 100 ), _zspeed( 0 )
+	, _yapex( 0 ), _tapex( 0 ), _gravity( 10 )
 {
 }
 
@@ -19,7 +21,10 @@ void Controller::keydown( int key )
 	case DECEL_KEY: az = -1; break;
 	case JUMP_KEY:
 		if ( _ship.ypos() < 0.2 )
-			_ship.jump( 1.5 );
+		{
+			_yapex = _ship.ypos() + 1.5;
+			_tapex = sqrt( 1.5 / _gravity );
+		}
 		break;
 	}
 }
@@ -107,7 +112,7 @@ void Controller::draw()
 	glColor3f( 0.8f, 1, 1 );
 	glTranslatef( 0, -2, _ship.zpos() - 4 );
 	_world.glDraw( _ship.zpos() - 4 );
-	std::cout << _ship.xpos() << ", " << _ship.zpos() << ", " << _ship.speed() << ", " << _world.elementsDrawn() << std::endl;
+	std::cout << _ship.xpos() << ", " << _ship.zpos() << ", " << _zspeed << ", " << _world.elementsDrawn() << std::endl;
 }
 
 void Controller::update( int difference )
@@ -115,13 +120,31 @@ void Controller::update( int difference )
 	double multiplier = ( (double)difference ) / 1000;
 
 	if ( az < 0 )
-		_ship.decreaseSpeed( _zacc*multiplier );
+	{
+		_zspeed -= _zacc*multiplier;
+		if ( _zspeed < 0 )
+			_zspeed = 0;
+	}
 	else if ( az > 0 )
-		_ship.increaseSpeed( _zacc*multiplier );
+	{
+		_zspeed += _zacc*multiplier;
+		if ( _zspeed > _maxSpeed )
+			_zspeed = _maxSpeed;
+	}
 	if ( vx < 0 )
-		_ship.moveLeft( _xspeed*multiplier );
+		_ship.pos().x -= _xspeed*multiplier;
 	if ( vx > 0 )
-		_ship.moveRight( _xspeed*multiplier );
+		_ship.pos().x += _xspeed*multiplier;
 
-	_ship.update( multiplier );
+	_ship.pos().z += multiplier * _zspeed;
+	if ( _yapex > 0 )
+	{
+		_tapex -= multiplier;
+		_ship.pos().y = _yapex - _gravity * ( _tapex*_tapex );
+	}
+	if ( _ship.pos().y < 0 )
+	{
+		_ship.pos().y = 0;
+		_yapex = 0;
+	}
 }
