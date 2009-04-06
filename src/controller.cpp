@@ -86,8 +86,6 @@ void Controller::initialize()
 		));
 	}
 	_world.optimize();
-
-	std::cout << "Loaded " << _world.blocksLoaded() << " blocks.\n";
 }
 
 void Controller::resize( int width, int height )
@@ -113,7 +111,6 @@ void Controller::draw()
 	glColor3f( 0.8f, 1, 1 );
 	glTranslatef( 0, -2, _ship.zpos() - 4 );
 	_world.glDraw( _ship.zpos() - 4 );
-	std::cout << _ship.xpos() << ", " << _ship.zpos() << ", " << _zspeed << ", " << _world.elementsDrawn() << std::endl;
 }
 
 void Controller::update( int difference )
