@@ -119,6 +119,8 @@ void Controller::update( int difference )
 {
 	double multiplier = ( (double)difference ) / 1000;
 
+	Point newPos = _ship.pos();
+
 	if ( az < 0 )
 	{
 		_zspeed -= _zacc*multiplier;
@@ -131,12 +133,22 @@ void Controller::update( int difference )
 		if ( _zspeed > _maxSpeed )
 			_zspeed = _maxSpeed;
 	}
+
+	newPos.z += multiplier * _zspeed;
+	Point altPos = { newPos.x + 0.8, newPos.y + 0.5, newPos.z + 1.0 };
+	if ( _world.collide(newPos, altPos) )
+	{
+		newPos.z = _ship.pos().z;
+		_zspeed = 0;
+	}
+	else
+		_ship.pos().z = newPos.z;
+
 	if ( vx < 0 )
 		_ship.pos().x -= _xspeed*multiplier;
 	if ( vx > 0 )
 		_ship.pos().x += _xspeed*multiplier;
 
-	_ship.pos().z += multiplier * _zspeed;
 	if ( _yapex > 0 )
 	{
 		_tapex -= multiplier;
