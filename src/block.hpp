@@ -1,6 +1,8 @@
 #ifndef _BLOCK_HPP_
 #define _BLOCK_HPP_
 
+#include <QtOpenGL>
+
 class Block
 {
 public:
