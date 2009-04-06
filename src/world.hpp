@@ -2,6 +2,7 @@
 #define _WORLD_HPP_
 
 #include <vector>
+#include <boost/ptr_container/ptr_map.hpp>
 #include "element.hpp"
 
 class World
@@ -12,11 +13,16 @@ public:
 
 	void glDraw( double zmin = 0 );
 
+	void loadBlocks();
+
 	void add( const Element& e );
 
 	void optimize();
 
+	// statistic functions
+
 	size_t elementsDrawn() const throw() { return _elementsDrawn; }
+	size_t blocksLoaded() const throw() { return blocks.size(); }
 
 private:
 
@@ -35,6 +41,8 @@ private:
 	SectionList sections;
 
 	size_t _elementsDrawn; // for statistics
+
+	boost::ptr_map< std::string, Block > blocks;
 
 };
 

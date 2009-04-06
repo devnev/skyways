@@ -72,6 +72,8 @@ void Window::initializeGL()
 	glLightfv( GL_LIGHT1, GL_POSITION, position );
 	glEnable( GL_LIGHT1 );
 
+	world.loadBlocks();
+
 	for (size_t i = 0; i < 100; ++i)
 	{
 		world.add(Element(
@@ -82,6 +84,8 @@ void Window::initializeGL()
 		));
 	}
 	world.optimize();
+
+	std::cout << "Loaded " << world.blocksLoaded() << " blocks.\n";
 }
 
 void Window::resizeGL( int width, int height )

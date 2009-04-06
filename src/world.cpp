@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <functional>
+#include "config.hpp"
 #include "world.hpp"
-
 
 World::World( size_t sectionSize )
 	: sectionSize( sectionSize )
@@ -51,6 +51,12 @@ void World::glDraw( double zmin )
 			_elementsDrawn += sections[ z ].beginning.size();
 		}
 	}
+}
+
+void World::loadBlocks()
+{
+	Config config;
+	config.readBlocks( blocks );
 }
 
 void World::add( const Element& e )
