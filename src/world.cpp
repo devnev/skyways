@@ -1,6 +1,9 @@
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include <algorithm>
 #include <functional>
-#include "config.hpp"
+#include <fstream>
+#include <string>
 #include "world.hpp"
 
 World::World( size_t sectionSize )
@@ -55,8 +58,23 @@ void World::glDraw( double zmin )
 
 void World::loadBlocks()
 {
-	Config config;
-	config.readBlocks( blocks );
+	using namespace boost::filesystem;
+	path block_dir( "blocks" );
+	if ( !exists( block_dir ) )
+		return;
+	for ( recursive_directory_iterator block_fs_entry( block_dir ) ;
+			block_fs_entry != recursive_directory_iterator() ;
+			++block_fs_entry )
+	{
+		if ( is_directory( block_fs_entry->status() ) )
+			continue;
+		std::string block_path;
+		path::iterator iter = block_fs_entry->path().begin();
+		for ( ++iter ; iter != block_fs_entry->path().end() ; ++iter )
+			block_path = block_path + "/" + *iter;
+		ifstream block_file( block_fs_entry->path() );
+		blocks.insert( block_path, Block::fromStream( block_file ) );
+	}
 }
 
 void World::add( const Element& e )
