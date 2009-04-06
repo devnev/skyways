@@ -17,6 +17,7 @@ public:
 
 	void glDraw( double zmin = 0 )
 	{
+		_elementsDrawn = 0;
 		if (sections.size() == 0)
 		{
 			for ( ElementList::iterator elem = elements.begin() ;
@@ -24,6 +25,7 @@ public:
 			{
 				elem->glDraw();
 			}
+			_elementsDrawn += elements.size();
 		}
 		else
 		{
@@ -39,11 +41,13 @@ public:
 				sections[ z ].running.end(),
 				std::mem_fun( &Element::glDraw )
 			);
+			_elementsDrawn += sections[ z ].running.size();
 			std::for_each(
 				sections[ z ].ending.begin(),
 				sections[ z ].ending.end(),
 				std::mem_fun( &Element::glDraw )
 			);
+			_elementsDrawn += sections[ z ].ending.size();
 			for ( ; z < sections.size() ; ++z )
 			{
 				std::for_each(
@@ -51,6 +55,7 @@ public:
 					sections[ z ].beginning.end(),
 					std::mem_fun( &Element::glDraw )
 				);
+				_elementsDrawn += sections[ z ].beginning.size();
 			}
 		}
 	}
@@ -71,6 +76,8 @@ public:
 			processElement( *elem );
 		}
 	}
+
+	size_t elementsDrawn() const throw() { return _elementsDrawn; }
 
 private:
 
@@ -115,6 +122,8 @@ private:
 	} WorldSection;
 	typedef std::vector< WorldSection > SectionList;
 	SectionList sections;
+
+	size_t _elementsDrawn; // for statistics
 
 };
 

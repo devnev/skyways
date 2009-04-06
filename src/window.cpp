@@ -92,5 +92,5 @@ void Window::paintGL()
 	glColor3f( 0.8f, 1, 1 );
 	glTranslatef( 0, -2, ship.zpos() - 4 );
 	world.glDraw( ship.zpos() - 4 );
-	std::cout << ship.xpos() << ", " << ship.zpos() << ", " << ship.speed() << std::endl;
+	std::cout << ship.xpos() << ", " << ship.zpos() << ", " << ship.speed() << ", " << world.elementsDrawn() << std::endl;
 }
