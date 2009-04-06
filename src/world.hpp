@@ -26,6 +26,10 @@ public:
 	size_t elementsDrawn() const throw() { return _elementsDrawn; }
 	size_t blocksLoaded() const throw() { return blocks.size(); }
 
+	// collide AABB with world.
+	// assumes p1.{x,y,z} < p2.{x,y,z} and p2.z-p1.z<sectionSize
+	bool collide( const Point& p1, const Point& p2 );
+
 private:
 
 	std::auto_ptr< Element > readElement( std::istream& is )
@@ -53,6 +57,9 @@ private:
 	size_t _elementsDrawn; // for statistics
 
 	boost::ptr_map< std::string, Block > blocks;
+
+	bool collide( const Point& p1, const Point& p2, WorldSection& section );
+	bool collide( const Point& p1, const Point& p2, std::vector< Element* >& elemreflist );
 
 };
 
