@@ -8,7 +8,7 @@
 Window::Window( QWidget * parent )
 	: QGLWidget( parent )
 	, ship( 100 )
-	, world()
+	, world( 10 )
 	, controller( &ship, 5, 3 )
 {
 	timer = new QTimer( this );
