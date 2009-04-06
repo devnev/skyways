@@ -157,10 +157,10 @@ bool World::collide(const Point& p1, const Point& p2, std::vector< Element* >& e
 		int c = 0;
 		c |= (p1.x > (*elemref)->xoff() && p1.x < (*elemref)->xoff()+1) ? 0x01 : 0;
 		c |= (p1.y > (*elemref)->yoff() && p1.y < (*elemref)->yoff()+1) ? 0x02 : 0;
-		c |= (p1.z > (*elemref)->zoff() && p1.z < (*elemref)->zoff()+1) ? 0x04 : 0;
+		c |= (p1.z > (*elemref)->zoff() && p1.z < (*elemref)->zoff()+(*elemref)->length()) ? 0x04 : 0;
 		c |= (p2.x > (*elemref)->xoff() && p2.x < (*elemref)->xoff()+1) ? 0x01 : 0;
 		c |= (p2.y > (*elemref)->yoff() && p2.y < (*elemref)->yoff()+1) ? 0x02 : 0;
-		c |= (p2.z > (*elemref)->zoff() && p2.z < (*elemref)->zoff()+1) ? 0x04 : 0;
+		c |= (p2.z > (*elemref)->zoff() && p2.z < (*elemref)->zoff()+(*elemref)->length()) ? 0x04 : 0;
 		if (c == 0x07)
 			return true;
 	}
