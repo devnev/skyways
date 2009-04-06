@@ -62,7 +62,7 @@ void Window::initializeGL()
 		world.add(Element(
 			rand() % 8 - 4,
 			((double)(rand() % 5))/4 - 0.5,
-			-(rand() % 400),
+			rand() % 400,
 			rand() % 20 + 2
 		));
 	}
