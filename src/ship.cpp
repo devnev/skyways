@@ -3,13 +3,14 @@
 #include "ship.hpp"
 
 Ship::Ship()
+	: _pos(Point::make(0, 0, 0))
+	, _size(Point::make(0.8, 0.5, 1.0))
 {
-	_pos.x = _pos.y = _pos.z = 0;
 }
 
 void Ship::glDraw()
 {
-	glScaled( 0.8, 0.5, 1.0 );
+	glScaled( _size.x, _size.y, _size.z );
 	glBegin( GL_QUAD_STRIP );
 		glVertex3d( 0, 1, 0 );
 		glVertex3d( 0, 0, 0 );

@@ -12,6 +12,12 @@ struct Point
 		return p;
 	}
 
+	Point offset(const Point& d)
+	{
+		Point p = { x + d.x, y + d.y, z + d.z };
+		return p;
+	}
+
 	static Point make(double x, double y, double z)
 	{
 		Point p = { x, y, z };
