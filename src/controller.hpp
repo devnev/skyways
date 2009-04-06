@@ -31,6 +31,7 @@ private:
 	double _zacc, _xspeed;
 	double _maxSpeed, _zspeed;
 	double _yapex, _tapex, _gravity;
+	bool _grounded;
 };
 
 #endif // _CONTROLLER_HPP_

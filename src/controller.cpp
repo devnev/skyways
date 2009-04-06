@@ -8,6 +8,7 @@ Controller::Controller()
 	, _zacc( 8 ), _xspeed( 3 )
 	, _maxSpeed( 100 ), _zspeed( 0 )
 	, _yapex( 0 ), _tapex( 0 ), _gravity( 10 )
+	, _grounded( true )
 {
 }
 
@@ -20,7 +21,7 @@ void Controller::keydown( int key )
 	case ACCEL_KEY: az = 1; break;
 	case DECEL_KEY: az = -1; break;
 	case JUMP_KEY:
-		if ( _ship.ypos() < 0.2 )
+		if ( _grounded )
 		{
 			_yapex = _ship.ypos() + 1.5;
 			_tapex = sqrt( 1.5 / _gravity );
@@ -155,14 +156,34 @@ void Controller::update( int difference )
 			_ship.pos().x = newPos.x;
 	}
 
-	if ( _yapex > 0 )
+	if ( _tapex <= 0 && _grounded )
 	{
-		_tapex -= multiplier;
-		_ship.pos().y = _yapex - _gravity * ( _tapex*_tapex );
+		_tapex = 0;
+		_yapex = _ship.pos().y;
 	}
+
+	_tapex -= multiplier;
+	newPos.y = _yapex - _gravity * ( _tapex*_tapex );
+	if ( _world.collide( newPos, newPos.offset(0.8, 0.5, 1.0) ) )
+	{
+		newPos.y = _ship.pos().y;
+		if (_tapex < 0)
+			_grounded = true;
+		_tapex = 0;
+		_yapex = _ship.pos().y;
+	}
+	else
+	{
+		_ship.pos().y = newPos.y;
+		_grounded = false;
+	}
+
 	if ( _ship.pos().y < 0 )
 	{
 		_ship.pos().y = 0;
 		_yapex = 0;
+		_tapex = 0;
+		_grounded = true;
 	}
+
 }
