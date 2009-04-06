@@ -56,7 +56,22 @@ void Window::initializeGL()
 {
 	glClearColor( 0, 0, 0, 0 );
 	glClearDepth( 1.0 );
+
 	glEnable( GL_DEPTH_TEST );
+	glDepthFunc( GL_LEQUAL );
+
+	glEnable( GL_LIGHTING );
+	glShadeModel( GL_SMOOTH );
+	glEnable( GL_COLOR_MATERIAL );
+
+	float ambient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+	float diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	float position[] = { 0.0f, 4.0f, -2.0f, 1.0f };
+	glLightfv( GL_LIGHT1, GL_AMBIENT, ambient );
+	glLightfv( GL_LIGHT1, GL_DIFFUSE, diffuse );
+	glLightfv( GL_LIGHT1, GL_POSITION, position );
+	glEnable( GL_LIGHT1 );
+
 	for (size_t i = 0; i < 100; ++i)
 	{
 		world.add(Element(
