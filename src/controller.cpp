@@ -9,6 +9,7 @@ Controller::Controller()
 	, _maxSpeed( 100 ), _zspeed( 0 )
 	, _yapex( 0 ), _tapex( 0 ), _gravity( 10 )
 	, _grounded( true )
+	, _camy( 3 ), _camz( 6 )
 {
 }
 
@@ -104,13 +105,13 @@ void Controller::draw()
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glLoadIdentity();
-	glTranslated( _ship.xpos(), _ship.ypos() - 2, -4 );
+	glTranslated( _ship.xpos(), _ship.ypos() - _camy, -_camz );
 	glColor3f( 1, 0, 0 );
 	_ship.glDraw();
 	glLoadIdentity();
 	glColor3f( 0.8f, 1, 1 );
-	glTranslatef( 0, -2, _ship.zpos() - 4 );
-	_world.glDraw( _ship.zpos() - 4 );
+	glTranslatef( 0, -_camy, _ship.zpos() - _camz );
+	_world.glDraw( _ship.zpos() -_camz );
 }
 
 void Controller::update( int difference )

@@ -32,6 +32,7 @@ private:
 	double _maxSpeed, _zspeed;
 	double _yapex, _tapex, _gravity;
 	bool _grounded;
+	double _camy, _camz;
 };
 
 #endif // _CONTROLLER_HPP_
