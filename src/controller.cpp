@@ -144,9 +144,16 @@ void Controller::update( int difference )
 		_ship.pos().z = newPos.z;
 
 	if ( vx < 0 )
-		_ship.pos().x -= _xspeed*multiplier;
+		newPos.x -= _xspeed*multiplier;
 	if ( vx > 0 )
-		_ship.pos().x += _xspeed*multiplier;
+		newPos.x += _xspeed*multiplier;
+	if ( vx != 0 )
+	{
+		if ( _world.collide( newPos, newPos.offset(0.8, 0.5, 1.0) ) )
+			newPos.x = _ship.pos().x;
+		else
+			_ship.pos().x = newPos.x;
+	}
 
 	if ( _yapex > 0 )
 	{
