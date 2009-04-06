@@ -97,7 +97,7 @@ void Controller::resize( int width, int height )
      glLoadIdentity();
 	 double fH = tan( 30.0 / 180.0 * 3.14159265358979323846 );
 	 double fW = ( (double)width ) / ( (double)height ) * fH;
-     glFrustum( -fW, fW, -fH, fH, 1.0, 100.0 );
+     glFrustum( -fW, fW, -fH, fH, 1.0, 1000.0 );
      glMatrixMode( GL_MODELVIEW );
 }
 
