@@ -34,10 +34,10 @@ private:
 
 	std::auto_ptr< Element > readElement( std::istream& is )
 	{
-		double x, y, z, l;
+		double x, y, z, l, r, g, b;
 		std::string block;
-		is >> x >> y >> z >> l >> block;
-		return std::auto_ptr< Element >( new Element( x, y, z, l, &blocks.at( block ) ) );
+		is >> x >> y >> z >> l >> r >> g >> b >> block;
+		return std::auto_ptr< Element >( new Element( x, y, z, l, &blocks.at( block ), Point::make(r, g, b) ) );
 	}
 
 	void processElement( Element& e );

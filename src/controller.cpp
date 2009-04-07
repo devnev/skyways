@@ -87,7 +87,12 @@ void Controller::initialize()
 			((double)(rand() % 5))/4 - 0.5,
 			rand() % 400,
 			rand() % 20 + 2,
-			_world.block( "" )
+			_world.block( "" ),
+			Point::make(
+				( (double)rand() ) / RAND_MAX,
+				( (double)rand() ) / RAND_MAX,
+				( (double)rand() ) / RAND_MAX
+			)
 		));
 	}
 	_world.optimize();

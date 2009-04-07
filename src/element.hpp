@@ -7,14 +7,15 @@ class Element
 {
 public:
 
-	Element( double x, double y, double z, double l, Block * b )
-		: _pos(Point::make( x,  y,  z)), _length( l ), _block( b )
+	Element( double x, double y, double z, double l, Block * b, const Point& color )
+		: _pos(Point::make( x,  y,  z)), _length( l ), _block( b ), _color( color )
 	{
 	}
 
 	void glDraw()
 	{
 		glPushMatrix();
+		glColor3d( _color.x, _color.y, _color.z );
 		glTranslated( _pos.x, _pos.y, -_pos.z );
 		glScaled( 1, 1, _length );
 		_block->glDraw();
@@ -32,6 +33,7 @@ private:
 	Point _pos;
 	double _length;
 	Block * _block;
+	Point _color;
 
 };
 
