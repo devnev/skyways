@@ -4,19 +4,19 @@
 struct AABB
 {
 	AABB()
-		: p1(Point::make(0, 0, 0))
-		, p2(Point::make(0, 0, 0))
+		: p1(Vector3::make(0, 0, 0))
+		, p2(Vector3::make(0, 0, 0))
 	{
 	}
 
-	AABB(const Point& p1_, const Point& p2_)
+	AABB(const Vector3& p1_, const Vector3& p2_)
 		: p1(p1_), p2(p2_)
 	{
 	}
 
-	Point size() const throw()
+	Vector3 size() const throw()
 	{
-		return Point::make(p2.x-p1.x, p2.y-p1.y, p2.z-p1.z);
+		return Vector3::make(p2.x-p1.x, p2.y-p1.y, p2.z-p1.z);
 	}
 
 	bool collide(const AABB& other) const throw()
@@ -31,7 +31,7 @@ struct AABB
 		return c == 0x07;
 	}
 
-	Point p1, p2;
+	Vector3 p1, p2;
 };
 
 #endif // _AABB_HPP_

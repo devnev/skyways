@@ -7,8 +7,8 @@ class Element
 {
 public:
 
-	Element( double x, double y, double z, double l, Block * b, const Point& color )
-		: _pos(Point::make( x,  y,  z)), _length( l ), _block( b ), _color( color )
+	Element( double x, double y, double z, double l, Block * b, const Vector3& color )
+		: _pos(Vector3::make( x,  y,  z)), _length( l ), _block( b ), _color( color )
 	{
 	}
 
@@ -22,7 +22,7 @@ public:
 		glPopMatrix();
 	}
 
-	const Point& pos() const throw() { return _pos; }
+	const Vector3& pos() const throw() { return _pos; }
 	double xoff() const throw() { return _pos.x; }
 	double yoff() const throw() { return _pos.y; }
 	double zoff() const throw() { return _pos.z; }
@@ -30,10 +30,10 @@ public:
 
 private:
 
-	Point _pos;
+	Vector3 _pos;
 	double _length;
 	Block * _block;
-	Point _color;
+	Vector3 _color;
 
 };
 

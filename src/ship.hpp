@@ -1,7 +1,7 @@
 #ifndef _SHIP_HPP_
 #define _SHIP_HPP_
 
-#include "point.hpp"
+#include "vector.hpp"
 
 class Ship
 {
@@ -12,16 +12,16 @@ public:
 	double xpos() const throw() { return _pos.x; }
 	double ypos() const throw() { return _pos.y; }
 	double zpos() const throw() { return _pos.z; }
-	const Point& pos() const throw() { return _pos; }
-	Point& pos() throw() { return _pos; }
-	const Point& size() const throw() { return _size; }
+	const Vector3& pos() const throw() { return _pos; }
+	Vector3& pos() throw() { return _pos; }
+	const Vector3& size() const throw() { return _size; }
 
 	void glDraw();
 
 private:
 
-	Point _pos;
-	Point _size;
+	Vector3 _pos;
+	Vector3 _size;
 
 };
 

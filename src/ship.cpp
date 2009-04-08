@@ -3,8 +3,8 @@
 #include "ship.hpp"
 
 Ship::Ship()
-	: _pos(Point::make(0, 0, 0))
-	, _size(Point::make(0.8, 0.5, 1.0))
+	: _pos(Vector3::make(0, 0, 0))
+	, _size(Vector3::make(0.8, 0.5, 1.0))
 {
 }
 

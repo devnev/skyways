@@ -91,7 +91,7 @@ void Controller::initialize()
 			rand() % 400,
 			rand() % 20 + 2,
 			_world.block( "" ),
-			Point::make(
+			Vector3::make(
 				( (double)rand() ) / RAND_MAX,
 				( (double)rand() ) / RAND_MAX,
 				( (double)rand() ) / RAND_MAX
@@ -130,7 +130,7 @@ void Controller::update( int difference )
 {
 	double multiplier = ( (double)difference ) / 1000;
 
-	Point newPos = _ship.pos();
+	Vector3 newPos = _ship.pos();
 
 	if ( az < 0 )
 	{

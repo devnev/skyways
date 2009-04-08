@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <istream>
 #include <sstream>
-#include "point.hpp"
+#include "vector.hpp"
 
 class Block
 {
@@ -96,7 +96,7 @@ private:
 			line.clear();
 	}
 
-	typedef struct { Point points[4]; Point& operator[](size_t index) { return points[index]; } } Face;
+	typedef struct { Vector3 points[4]; Vector3& operator[](size_t index) { return points[index]; } } Face;
 	typedef std::vector< Face > FaceList;
 	FaceList faces;
 
