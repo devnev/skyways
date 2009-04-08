@@ -4,6 +4,7 @@
 #include <vector>
 #include <boost/ptr_container/ptr_map.hpp>
 #include "element.hpp"
+#include "aabb.hpp"
 
 class World
 {
@@ -27,8 +28,8 @@ public:
 	size_t blocksLoaded() const throw() { return blocks.size(); }
 
 	// collide AABB with world.
-	// assumes p1.{x,y,z} < p2.{x,y,z} and p2.z-p1.z<sectionSize
-	bool collide( const Point& p1, const Point& p2 );
+	// assumes aabb.size().z<sectionSize
+	bool collide( const AABB& aabb );
 
 private:
 
@@ -58,8 +59,8 @@ private:
 
 	boost::ptr_map< std::string, Block > blocks;
 
-	bool collide( const Point& p1, const Point& p2, WorldSection& section );
-	bool collide( const Point& p1, const Point& p2, std::vector< Element* >& elemreflist );
+	bool collide( const AABB& aabb, WorldSection& section );
+	bool collide( const AABB& aabb, std::vector< Element* >& elemreflist );
 
 };
 

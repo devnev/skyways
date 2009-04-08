@@ -25,10 +25,10 @@ void Controller::keydown( int key )
 	case DECEL_KEY: az = -1; break;
 	case JUMP_KEY:
 		if ( _grounded ||
-			_world.collide(
+			_world.collide( AABB(
 				_ship.pos().offset(0, -0.2, 0),
-				_ship.pos().offset(_ship.size()).offset(0, -0.2, 0)
-			) )
+				_ship.pos().offset(0, -0.2, 0).offset(_ship.size())
+			) ) )
 		{
 			_yapex = _ship.ypos() + 1.5;
 			_tapex = sqrt( 1.5 / _gravity );
@@ -146,7 +146,7 @@ void Controller::update( int difference )
 	}
 
 	newPos.z += multiplier * _zspeed;
-	if ( _world.collide( newPos, newPos.offset(_ship.size()) ) )
+	if ( _world.collide( AABB( newPos, newPos.offset(_ship.size()) ) ) )
 	{
 		newPos.z = _ship.pos().z;
 		_zspeed = 0;
@@ -160,7 +160,7 @@ void Controller::update( int difference )
 		newPos.x += _xspeed*multiplier;
 	if ( vx != 0 )
 	{
-		if ( _world.collide( newPos, newPos.offset(_ship.size()) ) )
+		if ( _world.collide( AABB( newPos, newPos.offset(_ship.size()) ) ) )
 			newPos.x = _ship.pos().x;
 		else
 			_ship.pos().x = newPos.x;
@@ -174,7 +174,7 @@ void Controller::update( int difference )
 
 	_tapex -= multiplier;
 	newPos.y = _yapex - _gravity * ( _tapex*_tapex );
-	if ( _world.collide( newPos, newPos.offset(_ship.size()) ) )
+	if ( _world.collide( AABB( newPos, newPos.offset(_ship.size()) ) ) )
 	{
 		newPos.y = _ship.pos().y;
 		if (_tapex < 0)
