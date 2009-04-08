@@ -7,6 +7,7 @@ void Block::glDraw()
 {
 	if (faces.size() > 0)
 	{
+		glScalef( 1, 1, -1 );
 		glBegin( GL_QUADS );
 		for ( FaceList::iterator face = faces.begin();
 				face != faces.end(); ++face )
@@ -19,6 +20,7 @@ void Block::glDraw()
 				);
 		}
 		glEnd();
+		glScalef( 1, 1, -1 );
 	}
 	else
 	{
