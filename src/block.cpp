@@ -12,7 +12,11 @@ void Block::glDraw()
 				face != faces.end(); ++face )
 		{
 			for ( size_t i = 0 ; i < 4 ; ++i )
-				glVertex3d( (*face)[i].x, (*face)[i].y, (*face)[i].z );
+				glVertex3d(
+					vertices[face->indices[i]].x,
+					vertices[face->indices[i]].y,
+					vertices[face->indices[i]].z
+				);
 		}
 		glEnd();
 	}
@@ -49,36 +53,37 @@ std::auto_ptr< Block > Block::fromStream( std::istream& is )
 	std::auto_ptr< Block > block( new Block() );
 	std::string line;
 
-	getline( is, line );
-
-	size_t faces;
-	sscanf( line.c_str(), "%zd", &faces );
-
-	for ( size_t i = 0; i < faces; ++i )
+	while ( getline( is, line ) )
 	{
-		Face face;
-		for ( size_t f = 0; f < 4; ++f )
+		size_t commentStart = line.find( '#' );
+		if ( commentStart != std::string::npos )
+			line.resize( commentStart );
+		size_t start = line.find_first_not_of( " \t" );
+		if ( start == std::string::npos )
+			continue;
+		std::istringstream iss( line );
+		std::string type;
+		iss >> type;
+		if ( type == "v" )
 		{
-			getline( is, line );
-			if ( !is )
-				throw std::runtime_error( "unexpected eof in block description" );
-			std::istringstream iss( line );
-			iss >> face[f].x >> face[f].y >> face[f].z;
+			Vector3 v;
+			iss >> v.x >> v.y >> v.z;
+			block->vertices.push_back( v );
 		}
-		block->faces.push_back( face );
+		else if ( type == "f" )
+		{
+			Face f;
+			iss >> f.indices[0] >> f.indices[1] >> f.indices[2] >> f.indices[3];
+			block->faces.push_back( f );
+		}
+		else if ( type == "b" )
+		{
+			AABB aabb;
+			iss >> aabb.p1.x >> aabb.p1.y >> aabb.p1.z
+				>> aabb.p2.x >> aabb.p2.y >> aabb.p2.z;
+			block->bounds.push_back( aabb );
+		}
 	}
 
 	return block;
-}
-
-void Block::getline( std::istream& is, std::string& line )
-{
-	while ( std::getline( is, line ) )
-	{
-		size_t ns = line.find_first_not_of( " \t\n" );
-		if ( ns != std::string::npos && line[ ns ] != '#' )
-			break;
-	}
-	if ( !is )
-		line.clear();
 }

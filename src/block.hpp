@@ -5,6 +5,7 @@
 #include <vector>
 #include <istream>
 #include "vector.hpp"
+#include "aabb.hpp"
 
 class Block
 {
@@ -17,11 +18,12 @@ public:
 
 private:
 
-	static void getline( std::istream& is, std::string& line );
-
-	typedef struct { Vector3 points[4]; Vector3& operator[](size_t index) { return points[index]; } } Face;
+	std::vector< Vector3 > vertices;
+	typedef struct { size_t indices[4]; } Face;
 	typedef std::vector< Face > FaceList;
 	FaceList faces;
+	typedef std::vector< AABB > AabbList;
+	AabbList bounds;
 
 };
 
