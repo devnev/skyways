@@ -2,6 +2,7 @@
 #define _WORLD_HPP_
 
 #include <vector>
+#include <istream>
 #include <boost/ptr_container/ptr_map.hpp>
 #include "element.hpp"
 #include "aabb.hpp"
@@ -17,6 +18,7 @@ public:
 	void loadBlocks();
 
 	void generateWorld();
+	void loadWorld( std::istream& is );
 	void optimize();
 
 	Block * block( const char * name ) { return &blocks.at( name ); }

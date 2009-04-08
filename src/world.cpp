@@ -140,3 +140,115 @@ void World::generateWorld()
 		));
 	}
 }
+
+struct Column
+{
+	char key;
+	double start, length;
+};
+
+void World::loadWorld( std::istream& is )
+{
+	std::string line;
+	std::vector< std::pair< std::string, double > >
+		aliases(256, std::make_pair(std::string(), 0.0));
+	std::vector< Element > newElements;
+
+	while ( std::getline( is, line ) )
+	{
+		if ( line == "%%" )
+			break;
+		std::istringstream iss( line );
+		std::string block;
+		char key;
+		double ypos;
+		iss >> key >> block >> ypos;
+		if ( key < 0 )
+			throw std::runtime_error( std::string("Invalid alias name ") + key );
+		if ( blocks.find( block ) == blocks.end() )
+			throw std::runtime_error( "Unknown block " + block );
+		aliases[ key ] = std::make_pair( block, ypos );
+	}
+	if ( !is || !std::getline( is, line ) )
+		throw std::runtime_error( "Unexpected eof before map." );
+
+	size_t columns;
+	{
+		std::istringstream iss( line );
+		iss >> columns;
+	}
+
+	Column emptyColumn = { ' ', 0, 0 };
+
+	std::vector< Column > runningdata(columns, emptyColumn);
+
+	double rowlength, position = 0.0;
+
+	while ( std::getline( is, line ) )
+	{
+		size_t seperator = line.find(':');
+		if ( seperator == std::string::npos )
+			throw std::runtime_error( "Missing seperator in map row." );
+		if ( sscanf( line.substr(0, seperator).c_str(), " %lf ", &rowlength ) != 1 )
+			throw std::runtime_error( "Invalid row length in map row." );
+		std::string row = line.substr( seperator+1 );
+		if ( row.length() > columns )
+			throw std::runtime_error( "Bad row size." );
+		else if ( row.length() < columns )
+			row.resize( columns,  ' ' );
+		for (size_t i = 0; i < columns; ++i)
+		{
+			char key = row[i];
+			if ( key < 0 || ( key != ' ' && aliases[key].first.empty() ) )
+				throw std::runtime_error( std::string("Invalid alias name ") + key );
+			if ( key == runningdata[i].key )
+			{
+				runningdata[i].length += rowlength;
+			}
+			else
+			{
+				if ( runningdata[i].key != ' ' )
+				{
+					newElements.push_back(Element(
+						( (double)i ) - ( (double)columns ) / 2,
+						aliases[runningdata[i].key].second,
+						runningdata[i].start,
+						runningdata[i].length,
+						blocks.find( aliases[runningdata[i].key].first )->second,
+						Vector3(
+							( (double)rand() ) / RAND_MAX,
+							( (double)rand() ) / RAND_MAX,
+							( (double)rand() ) / RAND_MAX
+						)
+					));
+				}
+				runningdata[i].key = key;
+				runningdata[i].start = position;
+				runningdata[i].length = rowlength;
+			}
+		}
+		position += rowlength;
+	}
+	for (size_t i = 0; i < columns; ++i)
+	{
+		if ( runningdata[i].key != ' ' )
+		{
+			newElements.push_back(Element(
+				( (double)i ) - ( (double)columns ) / 2,
+				aliases[runningdata[i].key].second,
+				runningdata[i].start,
+				runningdata[i].length,
+				blocks.find( aliases[runningdata[i].key].first )->second,
+				Vector3(
+					( (double)rand() ) / RAND_MAX,
+					( (double)rand() ) / RAND_MAX,
+					( (double)rand() ) / RAND_MAX
+				)
+			));
+		}
+	}
+
+	sections.clear();
+	using std::swap;
+	swap( elements, newElements );
+}

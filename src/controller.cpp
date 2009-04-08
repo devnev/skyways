@@ -1,5 +1,6 @@
 #include <GL/gl.h>
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
@@ -84,7 +85,9 @@ void Controller::initialize()
 
 	_world.loadBlocks();
 	std::cout << _world.blocksLoaded() << std::endl;
-	_world.generateWorld();
+	//_world.generateWorld();
+	std::ifstream worldFile("world");
+	_world.loadWorld(worldFile);
 	_world.optimize();
 }
 
