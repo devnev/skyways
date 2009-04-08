@@ -8,7 +8,7 @@ class Element
 public:
 
 	Element( double x, double y, double z, double l, Block * b, const Vector3& color )
-		: _pos(Vector3::make( x,  y,  z)), _length( l ), _block( b ), _color( color )
+		: _pos(Vector3( x,  y,  z)), _length( l ), _block( b ), _color( color )
 	{
 	}
 

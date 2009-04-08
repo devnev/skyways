@@ -91,7 +91,7 @@ void Controller::initialize()
 			rand() % 400,
 			rand() % 20 + 2,
 			_world.block( "" ),
-			Vector3::make(
+			Vector3(
 				( (double)rand() ) / RAND_MAX,
 				( (double)rand() ) / RAND_MAX,
 				( (double)rand() ) / RAND_MAX

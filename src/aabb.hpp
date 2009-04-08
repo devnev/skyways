@@ -4,8 +4,8 @@
 struct AABB
 {
 	AABB()
-		: p1(Vector3::make(0, 0, 0))
-		, p2(Vector3::make(0, 0, 0))
+		: p1(Vector3(0, 0, 0))
+		, p2(Vector3(0, 0, 0))
 	{
 	}
 
@@ -16,7 +16,7 @@ struct AABB
 
 	Vector3 size() const throw()
 	{
-		return Vector3::make(p2.x-p1.x, p2.y-p1.y, p2.z-p1.z);
+		return Vector3(p2.x-p1.x, p2.y-p1.y, p2.z-p1.z);
 	}
 
 	bool collide(const AABB& other) const throw()
