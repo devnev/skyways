@@ -178,12 +178,4 @@ void Controller::update( int difference )
 		_grounded = false;
 	}
 
-	if ( _ship.pos().y < 0 )
-	{
-		_ship.pos().y = 0;
-		_yapex = 0;
-		_tapex = 0;
-		_grounded = true;
-	}
-
 }
