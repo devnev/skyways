@@ -1,5 +1,7 @@
 #include <GL/gl.h>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "controller.hpp"
 
 Controller::Controller()
@@ -60,6 +62,7 @@ void Controller::keyup( int key )
 
 void Controller::initialize()
 {
+	srand(time(0));
 	glClearColor( 0, 0, 0, 0 );
 	glClearDepth( 1.0 );
 
