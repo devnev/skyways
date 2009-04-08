@@ -14,49 +14,14 @@ World::World( size_t sectionSize )
 	blocks.insert( empty, new Block() );
 }
 
-void World::glDraw( double zmin )
+void World::glDraw( double )
 {
-	_elementsDrawn = 0;
-	if (sections.size() == 0)
+	for ( ElementList::iterator elem = elements.begin() ;
+			elem != elements.end(); ++elem )
 	{
-		for ( ElementList::iterator elem = elements.begin() ;
-				elem != elements.end(); ++elem )
-		{
-			elem->glDraw();
-		}
-		_elementsDrawn += elements.size();
+		elem->glDraw();
 	}
-	else
-	{
-		size_t z;
-		if ( zmin < 0 )
-			z = 0;
-		else
-			z = ( (size_t)zmin ) / sectionSize;
-		if ( z >= sections.size() )
-			return;
-		std::for_each(
-			sections[ z ].running.begin(),
-			sections[ z ].running.end(),
-			std::mem_fun( &Element::glDraw )
-		);
-		_elementsDrawn += sections[ z ].running.size();
-		std::for_each(
-			sections[ z ].ending.begin(),
-			sections[ z ].ending.end(),
-			std::mem_fun( &Element::glDraw )
-		);
-		_elementsDrawn += sections[ z ].ending.size();
-		for ( ; z < sections.size() ; ++z )
-		{
-			std::for_each(
-				sections[ z ].beginning.begin(),
-				sections[ z ].beginning.end(),
-				std::mem_fun( &Element::glDraw )
-			);
-			_elementsDrawn += sections[ z ].beginning.size();
-		}
-	}
+	_elementsDrawn = elements.size();
 }
 
 void World::loadBlocks()
