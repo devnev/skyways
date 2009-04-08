@@ -9,9 +9,9 @@
 Controller::Controller()
 	: _ship(), _world( 10 )
 	, vx( 0 ), az( 0 )
-	, _zacc( 8 ), _xspeed( 3 )
+	, _zacc( 10 ), _xspeed( 5 )
 	, _maxSpeed( 100 ), _zspeed( 0 )
-	, _yapex( 0 ), _tapex( 0 ), _gravity( 10 )
+	, _yapex( 0 ), _tapex( 0 ), _gravity( 20 )
 	, _jstrength( 1.5 ), _grounded( true )
 	, _camy( 3 ), _camz( 6 )
 {
