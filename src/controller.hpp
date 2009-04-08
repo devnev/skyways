@@ -31,6 +31,7 @@ private:
 	double _zacc, _xspeed;
 	double _maxSpeed, _zspeed;
 	double _yapex, _tapex, _gravity;
+	double _jstrength;
 	bool _grounded;
 	double _camy, _camz;
 };

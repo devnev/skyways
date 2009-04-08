@@ -12,7 +12,7 @@ Controller::Controller()
 	, _zacc( 8 ), _xspeed( 3 )
 	, _maxSpeed( 100 ), _zspeed( 0 )
 	, _yapex( 0 ), _tapex( 0 ), _gravity( 10 )
-	, _grounded( true )
+	, _jstrength( 1.5 ), _grounded( true )
 	, _camy( 3 ), _camz( 6 )
 {
 }
@@ -32,8 +32,8 @@ void Controller::keydown( int key )
 				_ship.pos().offset(0, -0.2, 0).offset(_ship.size())
 			) ) )
 		{
-			_yapex = _ship.ypos() + 1.5;
-			_tapex = sqrt( 1.5 / _gravity );
+			_yapex = _ship.ypos() + _jstrength;
+			_tapex = sqrt( _jstrength / _gravity );
 		}
 		break;
 	}
