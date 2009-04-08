@@ -38,6 +38,9 @@ void World::loadBlocks()
 			continue;
 		std::string block_path;
 		path::iterator iter = block_fs_entry->path().begin();
+		++iter;
+		if ( iter != block_fs_entry->path().end() )
+			block_path = *iter;
 		for ( ++iter ; iter != block_fs_entry->path().end() ; ++iter )
 			block_path = block_path + "/" + *iter;
 		ifstream block_file( block_fs_entry->path() );
