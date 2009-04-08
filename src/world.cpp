@@ -90,8 +90,10 @@ bool World::collide(const AABB& aabb)
 {
 	size_t section1 = ( (size_t)aabb.p1.z ) / sectionSize,
 		   section2 = ( (size_t)aabb.p2.z ) / sectionSize;
+	if ( section1 >= sections.size() )
+		return false;
 	bool result = collide(aabb, sections[ section1 ]);
-	if ( !result && section2 != section1 )
+	if ( !result && section2 != section1 && section2 < sections.size() )
 		result = collide(aabb, sections[ section2 ]);
 	return result;
 }
