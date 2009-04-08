@@ -83,22 +83,8 @@ void Controller::initialize()
 	glEnable( GL_LIGHT1 );
 
 	_world.loadBlocks();
-
-	for (size_t i = 0; i < 100; ++i)
-	{
-		_world.add(Element(
-			rand() % 8 - 4,
-			((double)(rand() % 5))/4 - 0.5,
-			rand() % 400,
-			rand() % 20 + 2,
-			_world.block( "" ),
-			Vector3(
-				( (double)rand() ) / RAND_MAX,
-				( (double)rand() ) / RAND_MAX,
-				( (double)rand() ) / RAND_MAX
-			)
-		));
-	}
+	std::cout << _world.blocksLoaded() << std::endl;
+	_world.generateWorld();
 	_world.optimize();
 }
 

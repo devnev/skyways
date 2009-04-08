@@ -16,8 +16,7 @@ public:
 
 	void loadBlocks();
 
-	void add( const Element& e );
-
+	void generateWorld();
 	void optimize();
 
 	Block * block( const char * name ) { return &blocks.at( name ); }

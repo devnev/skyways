@@ -45,15 +45,6 @@ void World::loadBlocks()
 	}
 }
 
-void World::add( const Element& e )
-{
-	if ( e.zoff() < 0 )
-		return;
-
-	sections.clear();
-	elements.push_back( e );
-}
-
 void World::optimize()
 {
 	for ( ElementList::iterator elem = elements.begin() ;
@@ -126,3 +117,23 @@ bool World::collide(const AABB& aabb, std::vector< Element* >& elemreflist)
 	return false;
 }
 
+void World::generateWorld()
+{
+	sections.clear();
+	elements.clear();
+	for (size_t i = 0; i < 100; ++i)
+	{
+		elements.push_back(Element(
+			rand() % 8 - 4,
+			((double)(rand() % 5))/4 - 0.5,
+			rand() % 400,
+			rand() % 20 + 2,
+			block( "" ),
+			Vector3(
+				( (double)rand() ) / RAND_MAX,
+				( (double)rand() ) / RAND_MAX,
+				( (double)rand() ) / RAND_MAX
+			)
+		));
+	}
+}
