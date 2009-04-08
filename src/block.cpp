@@ -76,6 +76,7 @@ std::auto_ptr< Block > Block::fromStream( std::istream& is )
 		{
 			Face f;
 			iss >> f.indices[0] >> f.indices[1] >> f.indices[2] >> f.indices[3];
+			--f.indices[0]; --f.indices[1]; --f.indices[2]; --f.indices[3];
 			block->faces.push_back( f );
 		}
 		else if ( type == "b" )
