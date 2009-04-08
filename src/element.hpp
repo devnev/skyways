@@ -29,6 +29,14 @@ public:
 	double zoff() const throw() { return _pos.z; }
 	double length() const throw() { return _length; }
 
+	bool collide( const AABB& aabb )
+	{
+		AABB _aabb( aabb.offset( -_pos.x, -_pos.y, -_pos.z ) );
+		_aabb.p1.z /= _length;
+		_aabb.p2.z /= _length;
+		return _block->collide( _aabb );
+	}
+
 private:
 
 	Vector3 _pos;

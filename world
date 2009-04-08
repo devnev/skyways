@@ -1,4 +1,4 @@
-. cube 0
+. flat 0
 _ cube -1
 - cube 0.25
 a cube 1.0

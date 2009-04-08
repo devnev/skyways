@@ -16,6 +16,8 @@ public:
 
 	static std::auto_ptr< Block > fromStream( std::istream& is );
 
+	bool collide( const AABB& aabb ) const throw();
+
 private:
 
 	std::vector< Vector3 > vertices;

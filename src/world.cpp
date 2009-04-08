@@ -116,7 +116,7 @@ bool World::collide(const AABB& aabb, std::vector< Element* >& elemreflist)
 	for ( ElemRefIter elemref = elemreflist.begin() ;
 			elemref != elemreflist.end(); ++elemref )
 	{
-		if (aabb.collide(AABB((*elemref)->pos(), (*elemref)->pos().offset(1, 1, (*elemref)->length()))))
+		if ( (*elemref)->collide( aabb ) )
 			return true;
 	}
 	return false;

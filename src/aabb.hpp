@@ -14,6 +14,16 @@ struct AABB
 	{
 	}
 
+	AABB offset( const Vector3& d ) const throw()
+	{
+		return AABB(p1.offset(d), p2.offset(d));
+	}
+
+	AABB offset( double x, double y, double z ) const throw()
+	{
+		return AABB(p1.offset( x, y, z ), p2.offset( x, y, z ));
+	}
+
 	Vector3 size() const throw()
 	{
 		return Vector3(p2.x-p1.x, p2.y-p1.y, p2.z-p1.z);
