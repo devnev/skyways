@@ -4,6 +4,7 @@
 #include <functional>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include "world.hpp"
 
 World::World( size_t sectionSize )

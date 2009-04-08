@@ -1,6 +1,7 @@
 #ifndef _ELEMENT_HPP_
 #define _ELEMENT_HPP_
 
+#include <QtOpenGL>
 #include "block.hpp"
 
 class Element
