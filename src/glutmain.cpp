@@ -19,11 +19,15 @@ Controller controller;
 static void resize( int width, int height )
 {
 	controller.resize(width, height);
+
+	glutPostRedisplay();
 }
 
 static void display()
 {
 	controller.draw();
+
+	glutSwapBuffers();
 }
 
 static void keyDown( unsigned char key, int x, int y )
@@ -33,6 +37,8 @@ static void keyDown( unsigned char key, int x, int y )
 	case ' ':
 		return controller.keydown( Controller::JUMP_KEY );
 	}
+
+	glutPostRedisplay();
 }
 
 static void specialKeyDown( int key, int x, int y )
@@ -50,6 +56,8 @@ static void specialKeyDown( int key, int x, int y )
 	case 27:
 		return glutLeaveMainLoop();
 	}
+
+	glutPostRedisplay();
 }
 
 static void keyUp( unsigned char key, int x, int y )
@@ -59,6 +67,8 @@ static void keyUp( unsigned char key, int x, int y )
 	case ' ':
 		return controller.keyup( Controller::JUMP_KEY );
 	}
+
+	glutPostRedisplay();
 }
 
 static void specialKeyUp( int key, int x, int y )
@@ -74,6 +84,8 @@ static void specialKeyUp( int key, int x, int y )
 	case GLUT_KEY_DOWN:
 		return controller.keyup( Controller::DECEL_KEY );
 	}
+
+	glutPostRedisplay();
 }
 
 static void idle()
