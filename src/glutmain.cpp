@@ -113,6 +113,11 @@ int main( int argc, char * argv[] )
 	glutSpecialUpFunc( specialKeyUp );
 	glutIdleFunc( idle );
 
+	if ( argc > 1 )
+		controller.loadWorld( argv[1] );
+	else
+		controller.generateWorld();
+
 	controller.initialize();
 
 	glutMainLoop();
