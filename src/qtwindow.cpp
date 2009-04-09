@@ -3,7 +3,7 @@
 #include <QTime>
 #include <iostream>
 #include <cmath>
-#include "window.hpp"
+#include "qtwindow.hpp"
 
 Window::Window( QWidget * parent )
 	: QGLWidget( parent )

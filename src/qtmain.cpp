@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "window.hpp"
+#include "qtwindow.hpp"
 
 int main ( int argc, char** argv )
 {
