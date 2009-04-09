@@ -2,6 +2,7 @@
 #define _SHIP_HPP_
 
 #include <vector>
+#include <GL/gl.h>
 #include "vector.hpp"
 
 class Ship
@@ -20,7 +21,8 @@ public:
 	Vector3& pos() throw() { return _pos; }
 	const Vector3& size() const throw() { return _size; }
 
-	void glDraw();
+	void draw();
+	void drawDl();
 
 private:
 
@@ -31,6 +33,8 @@ private:
 	Vector3 * _vertices;
 	size_t _faceCount;
 	Triangle * _faces;
+
+	GLuint _shipDl;
 
 };
 

@@ -119,7 +119,7 @@ void Controller::draw()
 	glLoadIdentity();
 	glTranslated( _ship.xpos() - 0.5, _ship.ypos() - _camy, -_camz );
 	glColor3f( 1, 0, 0 );
-	_ship.glDraw();
+	_ship.drawDl();
 	glLoadIdentity();
 	glColor3f( 0.8f, 1, 1 );
 	glTranslatef( -0.5, -_camy, _ship.zpos() - _camz );

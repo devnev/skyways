@@ -8,8 +8,8 @@
 Ship::Ship()
 	: _pos(Vector3(0, 0, 0))
 	, _size(Vector3(0.8, 0.5, 1.0))
-	, _vertices(0)
-	, _faces(0)
+	, _vertices(0), _faces(0)
+	, _shipDl(0)
 {
 }
 
@@ -49,7 +49,7 @@ void Ship::initialize()
 	}
 }
 
-void Ship::glDraw()
+void Ship::draw()
 {
 	if ( _vertices && _faces )
 	{
@@ -82,5 +82,20 @@ void Ship::glDraw()
 			glVertex3d( 1, 1, -1 );
 			glVertex3d( 0, 1, -1 );
 		glEnd();
+	}
+}
+
+void Ship::drawDl()
+{
+	if ( _shipDl == 0 )
+	{
+		_shipDl = glGenLists( 1 );
+		glNewList( _shipDl, GL_COMPILE_AND_EXECUTE );
+			draw();
+		glEndList();
+	}
+	else
+	{
+		glCallList( _shipDl );
 	}
 }
