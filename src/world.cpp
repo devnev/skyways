@@ -132,7 +132,7 @@ void World::generateWorld()
 	for (size_t i = 0; i < 100; ++i)
 	{
 		elements.push_back(Element(
-			rand() % 8 - 4,
+			rand() % 7 - 3,
 			((double)(rand() % 5))/4 - 0.5,
 			rand() % 400,
 			rand() % 20 + 2,

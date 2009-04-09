@@ -15,6 +15,7 @@ Controller::Controller()
 	, _jstrength( 1.5 ), _grounded( true )
 	, _camy( 3 ), _camz( 6 )
 {
+	_ship.pos().x += 0.5 - _ship.size().x / 2;
 }
 
 void Controller::keydown( int key )
@@ -115,12 +116,12 @@ void Controller::draw()
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glLoadIdentity();
-	glTranslated( _ship.xpos(), _ship.ypos() - _camy, -_camz );
+	glTranslated( _ship.xpos() - 0.5, _ship.ypos() - _camy, -_camz );
 	glColor3f( 1, 0, 0 );
 	_ship.glDraw();
 	glLoadIdentity();
 	glColor3f( 0.8f, 1, 1 );
-	glTranslatef( 0, -_camy, _ship.zpos() - _camz );
+	glTranslatef( -0.5, -_camy, _ship.zpos() - _camz );
 	_world.glDraw( _ship.zpos() -_camz );
 }
 
