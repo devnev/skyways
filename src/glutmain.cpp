@@ -120,6 +120,7 @@ int main( int argc, char * argv[] )
 
 	controller.initialize();
 
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 	glutMainLoop();
 
 	return 0;
