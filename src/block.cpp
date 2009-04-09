@@ -1,4 +1,4 @@
-#include <QtOpenGL>
+#include <GL/gl.h>
 #include <stdexcept>
 #include <sstream>
 #include "block.hpp"

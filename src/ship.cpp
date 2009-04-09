@@ -1,4 +1,4 @@
-#include <QtOpenGL>
+#include <GL/gl.h>
 #include <cmath>
 #include "ship.hpp"
 
