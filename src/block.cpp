@@ -95,7 +95,7 @@ bool Block::collide( const AABB& aabb ) const throw()
 {
 	if ( faces.size() == 0 )
 	{
-		return AABB( Vector3( 0, 0, 0 ), Vector3( 1, 1, 1 ) ).collide( aabb );
+		return aabb.collide( AABB( Vector3( 0, 0, 0 ), Vector3( 1, 1, 1 ) ) );
 	}
 	for ( AabbList::const_iterator iter = bounds.begin();
 			iter != bounds.end(); ++iter )
