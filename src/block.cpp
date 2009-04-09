@@ -9,7 +9,7 @@ void Block::glDraw()
 	{
 		glScalef( 1, 1, -1 );
 		glBegin( GL_QUADS );
-		for ( FaceList::iterator face = faces.begin();
+		for ( QuadList::iterator face = faces.begin();
 				face != faces.end(); ++face )
 		{
 			for ( size_t i = 0 ; i < 4 ; ++i )
@@ -74,7 +74,7 @@ std::auto_ptr< Block > Block::fromStream( std::istream& is )
 		}
 		else if ( type == "f" )
 		{
-			Face f;
+			Quad f;
 			iss >> f.indices[0] >> f.indices[1] >> f.indices[2] >> f.indices[3];
 			--f.indices[0]; --f.indices[1]; --f.indices[2]; --f.indices[3];
 			block->faces.push_back( f );

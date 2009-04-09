@@ -21,9 +21,8 @@ public:
 private:
 
 	std::vector< Vector3 > vertices;
-	typedef struct { size_t indices[4]; } Face;
-	typedef std::vector< Face > FaceList;
-	FaceList faces;
+	typedef std::vector< Quad > QuadList;
+	QuadList faces;
 	typedef std::vector< AABB > AabbList;
 	AabbList bounds;
 

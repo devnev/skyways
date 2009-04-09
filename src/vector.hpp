@@ -1,6 +1,8 @@
 #ifndef _POINT_HPP_
 #define _POINT_HPP_
 
+#include <cstddef>
+
 struct Vector3
 {
 
@@ -27,5 +29,9 @@ struct Vector3
 	double x, y, z;
 
 };
+
+typedef struct { size_t indices[3]; } Triangle;
+
+typedef struct { size_t indices[4]; } Quad;
 
 #endif // _POINT_HPP_
