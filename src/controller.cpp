@@ -131,6 +131,8 @@ void Controller::update( int difference )
 
 	Vector3 newPos = _ship.pos();
 
+	AABB shipAabb( Vector3(), _ship.size() );
+
 	if ( az < 0 )
 	{
 		_zspeed -= _zacc*multiplier;
@@ -145,7 +147,7 @@ void Controller::update( int difference )
 	}
 
 	newPos.z += multiplier * _zspeed;
-	if ( _world.collide( AABB( newPos, newPos.offset(_ship.size()) ) ) )
+	if ( _world.collide( shipAabb.offset( newPos ) ) )
 	{
 		newPos.z = _ship.pos().z;
 		_zspeed = 0;
@@ -159,7 +161,7 @@ void Controller::update( int difference )
 		newPos.x += _xspeed*multiplier;
 	if ( vx != 0 )
 	{
-		if ( _world.collide( AABB( newPos, newPos.offset(_ship.size()) ) ) )
+		if ( _world.collide( shipAabb.offset( newPos ) ) )
 			newPos.x = _ship.pos().x;
 		else
 			_ship.pos().x = newPos.x;
@@ -173,7 +175,7 @@ void Controller::update( int difference )
 
 	_tapex -= multiplier;
 	newPos.y = _yapex - _gravity * ( _tapex*_tapex );
-	if ( _world.collide( AABB( newPos, newPos.offset(_ship.size()) ) ) )
+	if ( _world.collide( shipAabb.offset( newPos ) ) )
 	{
 		newPos.y = _ship.pos().y;
 		if (_tapex < 0)
