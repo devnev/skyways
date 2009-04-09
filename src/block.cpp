@@ -3,7 +3,7 @@
 #include <sstream>
 #include "block.hpp"
 
-void Block::glDraw()
+void Block::draw()
 {
 	if (faces.size() > 0)
 	{
@@ -47,6 +47,21 @@ void Block::glDraw()
 			glVertex3d( 1, 1, -1 );
 			glVertex3d( 0, 1, -1 );
 		glEnd();
+	}
+}
+
+void Block::drawDl()
+{
+	if ( _blockDl == 0 )
+	{
+		_blockDl = glGenLists( 1 );
+		glNewList( _blockDl, GL_COMPILE_AND_EXECUTE );
+			draw();
+		glEndList();
+	}
+	else
+	{
+		glCallList( _blockDl );
 	}
 }
 

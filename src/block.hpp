@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <istream>
+#include <GL/gl.h>
 #include "vector.hpp"
 #include "aabb.hpp"
 
@@ -12,7 +13,10 @@ class Block
 
 public:
 
-	void glDraw();
+	Block() : _blockDl( 0 ) { }
+
+	void draw();
+	void drawDl();
 
 	static std::auto_ptr< Block > fromStream( std::istream& is );
 
@@ -25,6 +29,8 @@ private:
 	QuadList faces;
 	typedef std::vector< AABB > AabbList;
 	AabbList bounds;
+
+	GLuint _blockDl;
 
 };
 

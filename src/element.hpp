@@ -19,7 +19,7 @@ public:
 		glColor3d( _color.x, _color.y, _color.z );
 		glTranslated( _pos.x, _pos.y, -_pos.z );
 		glScaled( 1, 1, _length );
-		_block->glDraw();
+		_block->drawDl();
 		glPopMatrix();
 	}
 
