@@ -1,0 +1,5 @@
+*.o
+*.d
+skyways.glut
+skyways.qt
+src/moc_qtwindow.cpp
