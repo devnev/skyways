@@ -94,26 +94,28 @@ static void idle()
 	int newTick = glutGet( GLUT_ELAPSED_TIME );
 	controller.update( newTick - tick );
 	tick = newTick;
+
 	glutPostRedisplay();
 }
 
 int main( int argc, char * argv[] )
 {
 	glutInit( &argc, argv );
-    glutInitWindowSize( 800, 600 );
-    glutInitDisplayMode( GLUT_DOUBLE | GLUT_DEPTH );
+	glutInitDisplayMode( GLUT_DOUBLE | GLUT_DEPTH );
+	glutInitWindowSize( 800, 600 );
 	glutCreateWindow( "skyways" );
 
-    glutReshapeFunc( resize );
-    glutDisplayFunc( display );
-    glutKeyboardFunc( keyDown );
-    glutKeyboardUpFunc( keyUp );
-    glutSpecialFunc( specialKeyDown );
-    glutSpecialUpFunc( specialKeyUp );
-    glutIdleFunc( idle );
+	glutReshapeFunc( resize );
+	glutDisplayFunc( display );
+	glutKeyboardFunc( keyDown );
+	glutKeyboardUpFunc( keyUp );
+	glutSpecialFunc( specialKeyDown );
+	glutSpecialUpFunc( specialKeyUp );
+	glutIdleFunc( idle );
 
 	controller.initialize();
-	
+
 	glutMainLoop();
+
 	return 0;
 }
