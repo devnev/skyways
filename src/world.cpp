@@ -126,6 +126,9 @@ void World::generateWorld()
 {
 	sections.clear();
 	elements.clear();
+	elements.push_back(Element(
+		0, -1, 0, 20, block( "" ), Vector3( 1, 1, 1 )
+	));
 	for (size_t i = 0; i < 100; ++i)
 	{
 		elements.push_back(Element(
