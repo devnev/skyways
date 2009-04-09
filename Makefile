@@ -55,9 +55,9 @@ SkywaysGlut_CXXSOURCES= \
 SkywaysQt_CXXSOURCES= \
 	src/block.cpp \
 	src/controller.cpp \
+	src/moc_qtwindow.cpp \
 	src/qtmain.cpp \
 	src/qtwindow.cpp \
-	src/moc_qtwindow.cpp \
 	src/ship.cpp \
 	src/world.cpp
 
