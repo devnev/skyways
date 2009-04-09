@@ -98,6 +98,7 @@ void Controller::initialize()
 	glEnable( GL_LIGHT1 );
 
 	_world.optimize();
+	_ship.initialize();
 }
 
 void Controller::resize( int width, int height )

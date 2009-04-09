@@ -1,6 +1,7 @@
 #ifndef _SHIP_HPP_
 #define _SHIP_HPP_
 
+#include <vector>
 #include "vector.hpp"
 
 class Ship
@@ -8,6 +9,9 @@ class Ship
 public:
 
 	Ship();
+	~Ship();
+
+	void initialize();
 
 	double xpos() const throw() { return _pos.x; }
 	double ypos() const throw() { return _pos.y; }
@@ -22,6 +26,11 @@ private:
 
 	Vector3 _pos;
 	Vector3 _size;
+
+	size_t _vertexCount;
+	Vector3 * _vertices;
+	size_t _faceCount;
+	Triangle * _faces;
 
 };
 

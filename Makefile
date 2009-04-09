@@ -31,6 +31,7 @@ SkywasyGlut_HEADERS= \
 	src/block.hpp \
 	src/controller.hpp \
 	src/element.hpp \
+	src/objmodel.hpp \
 	src/ship.hpp \
 	src/vector.hpp \
 	src/world.hpp
@@ -40,6 +41,7 @@ SkywasyQt_HEADERS= \
 	src/block.hpp \
 	src/controller.hpp \
 	src/element.hpp \
+	src/objmodel.hpp \
 	src/qtwindow.hpp \
 	src/ship.hpp \
 	src/vector.hpp \
@@ -49,6 +51,7 @@ SkywaysGlut_CXXSOURCES= \
 	src/block.cpp \
 	src/controller.cpp \
 	src/glutmain.cpp \
+	src/objmodel.cpp \
 	src/ship.cpp \
 	src/world.cpp
 
@@ -56,6 +59,7 @@ SkywaysQt_CXXSOURCES= \
 	src/block.cpp \
 	src/controller.cpp \
 	src/moc_qtwindow.cpp \
+	src/objmodel.cpp \
 	src/qtmain.cpp \
 	src/qtwindow.cpp \
 	src/ship.cpp \
