@@ -13,6 +13,11 @@ Window::Window( QWidget * parent )
 	timer->start( 0 );
 	time = new QTime();
 	setFocusPolicy( Qt::StrongFocus );
+	QStringList argv = qApp->arguments();
+	if ( argv.size() > 1 )
+		controller.loadWorld( argv.at(1).toStdString() );
+	else
+		controller.generateWorld();
 }
 
 Window::~Window()

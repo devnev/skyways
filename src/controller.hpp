@@ -19,6 +19,8 @@ public:
 
 	void keydown( int key );
 	void keyup( int key );
+	void loadWorld( std::string filename );
+	void generateWorld();
 	void initialize();
 	void resize( int width, int height );
 	void draw();

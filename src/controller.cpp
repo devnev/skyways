@@ -62,9 +62,22 @@ void Controller::keyup( int key )
 	}
 }
 
+void Controller::loadWorld( std::string filename )
+{
+	_world.loadBlocks();
+	std::ifstream worldFile( filename.c_str() );
+	_world.loadWorld( worldFile );
+}
+
+void Controller::generateWorld()
+{
+	_world.loadBlocks();
+	srand(time(0));
+	_world.generateWorld();
+}
+
 void Controller::initialize()
 {
-	srand(time(0));
 	glClearColor( 0, 0, 0, 0 );
 	glClearDepth( 1.0 );
 
@@ -83,11 +96,6 @@ void Controller::initialize()
 	glLightfv( GL_LIGHT1, GL_POSITION, position );
 	glEnable( GL_LIGHT1 );
 
-	_world.loadBlocks();
-	std::cout << _world.blocksLoaded() << std::endl;
-	//_world.generateWorld();
-	std::ifstream worldFile("world");
-	_world.loadWorld(worldFile);
 	_world.optimize();
 }
 
