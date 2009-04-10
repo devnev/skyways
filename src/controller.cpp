@@ -93,6 +93,9 @@ void Controller::initialize()
 	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
+	glEnable( GL_LINE_SMOOTH );
+	glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
+
 	float ambient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 	float diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	float position[] = { 0.0f, 4.0f, -2.0f, 1.0f };
