@@ -101,6 +101,7 @@ void Controller::initialize()
 
 	glEnable( GL_DEPTH_TEST );
 	glDepthFunc( GL_LEQUAL );
+	glEnable( GL_CULL_FACE );
 
 	glEnable( GL_LIGHTING );
 	glShadeModel( GL_SMOOTH );
