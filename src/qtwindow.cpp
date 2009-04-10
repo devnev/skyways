@@ -53,6 +53,7 @@ int Window::mapKey( int key )
 	case Qt::Key_Up: return Controller::ACCEL_KEY;
 	case Qt::Key_Down: return Controller::DECEL_KEY;
 	case Qt::Key_Space: return Controller::JUMP_KEY;
+	case Qt::Key_Escape: return Controller::QUIT_KEY;
 	default: return 0;
 	}
 }
@@ -61,14 +62,9 @@ void Window::keyPressEvent( QKeyEvent * event )
 {
 	if ( !event->isAutoRepeat() )
 	{
-		if ( event->key() == Qt::Key_Escape )
-			QCoreApplication::instance()->quit();
-		else
-		{
-			int key = mapKey( event->key() );
-			if ( key > 0 )
-				controller.keydown( key );
-		}
+		int key = mapKey( event->key() );
+		if ( key > 0 )
+			controller.keydown( key );
 	}
 }
 

@@ -20,6 +20,7 @@ public:
 		STRAFE_R_KEY = 3,
 		ACCEL_KEY = 4,
 		DECEL_KEY = 5,
+		QUIT_KEY = 6,
 	};
 
 	void keydown( int key );

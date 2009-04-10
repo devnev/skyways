@@ -37,7 +37,7 @@ static void keyDown( unsigned char key, int x, int y )
 	case ' ':
 		return controller.keydown( Controller::JUMP_KEY );
 	case 27: // ESCAPE
-		return glutLeaveMainLoop();
+		return controller.keydown( Controller::QUIT_KEY );
 	}
 
 	glutPostRedisplay();

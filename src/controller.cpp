@@ -41,6 +41,7 @@ void Controller::keydown( int key )
 			_tapex = sqrt( _jstrength / _gravity );
 		}
 		break;
+	case QUIT_KEY: _quitcb(); break;
 	}
 }
 
