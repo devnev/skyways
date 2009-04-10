@@ -42,7 +42,7 @@ private:
 	double _jstrength;
 	bool _grounded;
 	double _camy, _camz;
-	size_t _deadTime;
+	bool _dead;
 	QuitCallback _quitcb;
 	TextPrinter _printer;
 	size_t _windowwidth, _windowheight;

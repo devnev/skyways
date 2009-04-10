@@ -15,7 +15,7 @@ Controller::Controller( Controller::QuitCallback cbQuit )
 	, _yapex( 0 ), _tapex( 0 ), _gravity( 20 )
 	, _jstrength( 1.5 ), _grounded( true )
 	, _camy( 3 ), _camz( 6 )
-	, _deadTime( 0 ), _quitcb( cbQuit )
+	, _dead( false ), _quitcb( cbQuit )
 	, _printer( "DejaVuSans.ttf" )
 	, _windowwidth( 1 ), _windowheight( 1 )
 {
@@ -137,7 +137,7 @@ void Controller::draw()
 	glColor3f( 0.8f, 1, 1 );
 	glTranslatef( -0.5, -_camy, _ship.zpos() - _camz );
 	_world.glDraw( _ship.zpos() -_camz );
-	if ( _deadTime > 0 )
+	if ( _dead )
 	{
 		_printer.print(
 			( boost::format( "Distance Traveled: %1%" ) % _ship.pos().z ).str(),
@@ -149,13 +149,8 @@ void Controller::draw()
 
 void Controller::update( int difference )
 {
-	if ( _deadTime > 2000 )
-		_quitcb();
-	if ( _deadTime > 0 )
-	{
-		_deadTime += difference;
+	if ( _dead )
 		return;
-	}
 
 	double multiplier = ( (double)difference ) / 1000;
 
@@ -227,7 +222,7 @@ void Controller::update( int difference )
 		std::cout <<
 			"You dropped into the void!\n"
 			"Distance traveled: " << _ship.pos().z << std::endl;
-		_deadTime = 1;
+		_dead = true;
 	}
 
 }
