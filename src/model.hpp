@@ -7,31 +7,39 @@
 
 typedef struct
 {
-	size_t ix[3];
 
-	bool valid()
-	{
-		return
-			ix[0] != ix[1] &&
-			ix[1] != ix[2] &&
-			ix[2] != ix[0];
-	}
+	size_t ix[3];
 
 } Triangle;
 
 typedef struct
 {
+
 	size_t ix[4];
+
 } Quad;
 
 typedef struct
 {
+
 	Triangle vertices;
+	Triangle normals;
+
+	bool valid()
+	{
+		return
+			vertices.ix[0] != vertices.ix[1] &&
+			vertices.ix[1] != vertices.ix[2] &&
+			vertices.ix[2] != vertices.ix[0];
+	}
+
 } Face;
 
 typedef struct
 {
+
 	std::vector< Vector3 > vertices;
+	std::vector< Vector3 > normals;
 	std::vector< Face > faces;
 
 	void draw()
@@ -41,6 +49,14 @@ typedef struct
 		{
 			for ( size_t j = 0; j < 3; ++j )
 			{
+				if ( normals.size() > 0 )
+				{
+					glNormal3d(
+						normals[faces[i].normals.ix[j]].x,
+						normals[faces[i].normals.ix[j]].y,
+						normals[faces[i].normals.ix[j]].z
+					);
+				}
 				glVertex3d(
 					vertices[faces[i].vertices.ix[j]].x,
 					vertices[faces[i].vertices.ix[j]].y,

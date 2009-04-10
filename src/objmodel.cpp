@@ -36,6 +36,7 @@ void loadObjModel(const char* filename, Model& model)
 	// ** Any other tag in the file is ignored.
 
 	std::vector< Vector3 >& vertices = model.vertices;
+	std::vector< Vector3 >& normals = model.normals;
 	std::vector< Face >& faces = model.faces;
 
 	// open file
@@ -48,10 +49,11 @@ void loadObjModel(const char* filename, Model& model)
 	Range<size_t> vertexRange = makeInvalidRange<size_t>()
 #if 0
 		, textureRange = makeInvalidRange<size_t>()
-		, normalRange = makeInvalidRange<size_t>()
 #endif
+		, normalRange = makeInvalidRange<size_t>()
 	;
 	std::vector< Vector3 > _vertices;
+	std::vector< Vector3 > _normals;
 	std::vector< Face > _faces;
 
 	Range<double> xrange, yrange, zrange;
@@ -65,12 +67,10 @@ void loadObjModel(const char* filename, Model& model)
 			continue;
 		else if (cmd == "vn")
 		{
-#if 0
 			double x, y, z;
 			if (!(iss >> x >> y >> z))
 				throw std::runtime_error("Invalid vertex normal: " + line);
-			m_normals.push_back(Vector3(x, y, z));
-#endif
+			_normals.push_back(Vector3(x, y, z));
 		}
 		else if (cmd == "vt")
 		{
@@ -94,33 +94,33 @@ void loadObjModel(const char* filename, Model& model)
 			std::string fp[3];
 			if (!(iss >> fp[0] >> fp[1] >> fp[2]))
 				throw std::runtime_error("Invalid face: " + line);
-			Face face; size_t it, in; // it, in: dummy
+			Face face; size_t it; // it: dummy
 			for (size_t i = 0; i < 3; ++i)
 			{
 				// parse indices from triplets
 				// note that even though indices are 1-based in the file, they
 				// are not decremented here. this is so the min/max ranges can
 				// be used for validation
-				if (!parseFacePoint(fp[i].c_str(), face.vertices.ix[i], it, in))
+				if (!parseFacePoint(fp[i].c_str(), face.vertices.ix[i], it, face.normals.ix[i]))
 					throw std::runtime_error("Invalid face: " + line);
 				vertexRange.include(face.vertices.ix[i]);
 #if 0
 				textureRange.include(face.it[i]);
-				normalRange.include(face.in[i]);
 #endif
+				normalRange.include(face.normals.ix[i]);
 			}
 			// some obj generators create "triangles" with more than one
 			// identical edge index (crashes normal calculation) - ingore those
-			if (face.vertices.valid())
+			if (face.valid())
 				_faces.push_back(face);
 			if (iss >> fp[0]) // theres a fourth corner -> it's a quad
 			{
 				// the second tri in the quad has corners (old 2, new, old 0)
 				using std::swap;
 				swap(face.vertices.ix[0], face.vertices.ix[2]);
-				if (!parseFacePoint(fp[0].c_str(), face.vertices.ix[1], it, in))
+				if (!parseFacePoint(fp[0].c_str(), face.vertices.ix[1], it, face.normals.ix[1]))
 					throw std::runtime_error("Invalid face: " + line);
-				if (face.vertices.valid())
+				if (face.valid())
 					_faces.push_back(face);
 			}
 		}
@@ -147,13 +147,16 @@ void loadObjModel(const char* filename, Model& model)
 #if 0
 	if (textureRange.max > m_texpoints.size())
 		throw std::runtime_error("Bad OBJ file: out-of-range texture indices");
-	if (normalRange.max > m_normals.size())
-		throw std::runtime_error("Bad OBJ file: out-of-range normal indices");
 	if (textureRange.min == 0 && textureRange.max != 0)
 		throw std::runtime_error("Bad OBJ file: mixed texture usage on faces");
+#endif
+	if (normalRange.max > _normals.size())
+		throw std::runtime_error("Bad OBJ file: out-of-range normal indices");
 	if (normalRange.min == 0 && normalRange.max != 0)
 		throw std::runtime_error("Bad OBJ file: mixed normal usage on faces");
-#endif
+
+	if (normalRange.max == 0)
+		_normals.clear();
 
 #if 0
 	// this is currently hardcoded, it may be parametrized later on
@@ -206,10 +209,12 @@ void loadObjModel(const char* filename, Model& model)
 		for ( size_t j = 0; j < 3; ++j )
 		{
 			_faces[i].vertices.ix[j] -= 1;
+			_faces[i].normals.ix[j] -= 1;
 		}
 	}
 
 	using std::swap;
 	swap( vertices, _vertices );
+	swap( normals, _normals );
 	swap( faces, _faces );
 }
