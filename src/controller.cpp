@@ -90,6 +90,9 @@ void Controller::initialize()
 	glShadeModel( GL_SMOOTH );
 	glEnable( GL_COLOR_MATERIAL );
 
+	glEnable( GL_BLEND );
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
 	float ambient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 	float diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	float position[] = { 0.0f, 4.0f, -2.0f, 1.0f };
