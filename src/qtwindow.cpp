@@ -6,8 +6,13 @@
 #include <cmath>
 #include "qtwindow.hpp"
 
+void quitFunc()
+{
+	qApp->quit();
+}
+
 Window::Window( QWidget * parent )
-	: QGLWidget( parent )
+	: QGLWidget( parent ), controller( &quitFunc )
 {
 	timer = new QTimer( this );
 	connect( timer, SIGNAL(timeout()), this, SLOT(update()) );

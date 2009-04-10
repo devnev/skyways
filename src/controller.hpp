@@ -6,8 +6,12 @@
 
 class Controller
 {
+
 public:
-	Controller();
+
+	typedef void (*QuitCallback)();
+
+	Controller( QuitCallback cbQuit );
 
 	enum {
 		JUMP_KEY = 1,
@@ -27,6 +31,7 @@ public:
 	void update( int difference );
 
 private:
+
 	Ship _ship;
 	World _world;
 	int vx, az;
@@ -36,7 +41,9 @@ private:
 	double _jstrength;
 	bool _grounded;
 	double _camy, _camz;
-	bool _dead;
+	size_t _deadTime;
+	QuitCallback _quitcb;
+
 };
 
 #endif // _CONTROLLER_HPP_

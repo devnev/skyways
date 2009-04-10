@@ -14,7 +14,7 @@
 
 #include "controller.hpp"
 
-Controller controller;
+Controller controller( &glutLeaveMainLoop );
 
 static void resize( int width, int height )
 {

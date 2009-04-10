@@ -6,7 +6,7 @@
 #include <cmath>
 #include "controller.hpp"
 
-Controller::Controller()
+Controller::Controller( Controller::QuitCallback cbQuit )
 	: _ship(), _world( 10 )
 	, vx( 0 ), az( 0 )
 	, _zacc( 10 ), _xspeed( 5 )
@@ -14,7 +14,7 @@ Controller::Controller()
 	, _yapex( 0 ), _tapex( 0 ), _gravity( 20 )
 	, _jstrength( 1.5 ), _grounded( true )
 	, _camy( 3 ), _camz( 6 )
-	, _dead( false )
+	, _deadTime( 0 ), _quitcb( cbQuit )
 {
 	_ship.pos().x = 0.5;
 }
@@ -135,8 +135,13 @@ void Controller::draw()
 
 void Controller::update( int difference )
 {
-	if ( _dead )
+	if ( _deadTime > 2000 )
+		_quitcb();
+	if ( _deadTime > 0 )
+	{
+		_deadTime += difference;
 		return;
+	}
 
 	double multiplier = ( (double)difference ) / 1000;
 
@@ -208,7 +213,7 @@ void Controller::update( int difference )
 		std::cout <<
 			"You dropped into the void!\n"
 			"Distance traveled: " << _ship.pos().z << std::endl;
-		_dead = true;
+		_deadTime = 1;
 	}
 
 }
