@@ -41,7 +41,7 @@ void Ship::draw()
 	glTranslated( 0, _size.y / 2, -_size.z / 2 );
 	if ( _model.vertices.size() && _model.faces.size() )
 	{
-		glScaled( _size.x, _size.y, _size.z );
+		glScaled( _size.x, _size.y, -_size.z );
 		_model.draw();
 	}
 	else
