@@ -29,10 +29,8 @@ private:
 	Vector3 _pos;
 	Vector3 _size;
 
-	size_t _vertexCount;
-	Vector3 * _vertices;
-	size_t _faceCount;
-	Triangle * _faces;
+	std::vector< Vector3 > _vertices;
+	std::vector< Triangle > _faces;
 
 	GLuint _shipDl;
 

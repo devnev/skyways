@@ -8,41 +8,24 @@
 Ship::Ship()
 	: _pos(Vector3(0, 0, 0))
 	, _size(Vector3(0.8, 0.5, 1.0))
-	, _vertices(0), _faces(0)
 	, _shipDl(0)
 {
 }
 
 Ship::~Ship()
 {
-	delete [] _vertices;
-	delete [] _faces;
 }
 
 void Ship::initialize()
 {
 	try
 	{
-		std::vector< Vector3 > vertices;
-		std::vector< Triangle > faces;
-		loadObjModel("ship.obj", vertices, faces);
-		_vertices = new Vector3[vertices.size()];
-		_faces = new Triangle[faces.size()];
-		_vertexCount = vertices.size();
-		_faceCount = faces.size();
-		std::copy(vertices.begin(), vertices.end(), _vertices);
-		std::copy(faces.begin(), faces.end(), _faces);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glVertexPointer(3, GL_DOUBLE,
-				sizeof(Vector3) - 3*sizeof(double),
-				_vertices);
-		std::cout << "loaded " << _vertexCount << " vertices and "
-			<< _faceCount << " faces for ship." << std::endl;
+		loadObjModel("ship.obj", _vertices, _faces);
+		std::cout << "loaded " << _vertices.size() << " vertices and "
+			<< _faces.size() << " faces for ship." << std::endl;
 	}
 	catch (std::runtime_error& e)
 	{
-		delete [] _vertices;
-		delete [] _faces;
 		std::cerr <<
 			"Warning: failed to load ship model, "
 			"falling back to box ship.\n";
@@ -51,10 +34,22 @@ void Ship::initialize()
 
 void Ship::draw()
 {
-	if ( _vertices && _faces )
+	if ( _vertices.size() && _faces.size() )
 	{
 		glScaled( _size.x, _size.y, _size.z );
-		glDrawElements(GL_TRIANGLES, _faceCount, GL_UNSIGNED_INT, _faces);
+		glBegin( GL_TRIANGLES );
+		for ( size_t i = 0; i < _faces.size(); ++i )
+		{
+			for ( size_t j = 0; j < 3; ++j )
+			{
+				glVertex3d(
+					_vertices[_faces[i].indices[j]].x,
+					_vertices[_faces[i].indices[j]].y,
+					_vertices[_faces[i].indices[j]].z
+				);
+			}
+		}
+		glEnd();
 	}
 	else
 	{
