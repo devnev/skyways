@@ -14,9 +14,9 @@ void Block::draw()
 		{
 			for ( size_t i = 0 ; i < 4 ; ++i )
 				glVertex3d(
-					vertices[face->indices[i]].x,
-					vertices[face->indices[i]].y,
-					vertices[face->indices[i]].z
+					vertices[face->ix[i]].x,
+					vertices[face->ix[i]].y,
+					vertices[face->ix[i]].z
 				);
 		}
 		glEnd();
@@ -104,8 +104,8 @@ std::auto_ptr< Block > Block::fromStream( std::istream& is )
 		else if ( type == "f" )
 		{
 			Quad f;
-			iss >> f.indices[0] >> f.indices[1] >> f.indices[2] >> f.indices[3];
-			--f.indices[0]; --f.indices[1]; --f.indices[2]; --f.indices[3];
+			iss >> f.ix[0] >> f.ix[1] >> f.ix[2] >> f.ix[3];
+			--f.ix[0]; --f.ix[1]; --f.ix[2]; --f.ix[3];
 			block->faces.push_back( f );
 		}
 		else if ( type == "b" )

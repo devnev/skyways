@@ -7,21 +7,21 @@
 
 typedef struct
 {
-	size_t indices[3];
+	size_t ix[3];
 
 	bool valid()
 	{
 		return
-			indices[0] != indices[1] &&
-			indices[1] != indices[2] &&
-			indices[2] != indices[0];
+			ix[0] != ix[1] &&
+			ix[1] != ix[2] &&
+			ix[2] != ix[0];
 	}
 
 } Triangle;
 
 typedef struct
 {
-	size_t indices[4];
+	size_t ix[4];
 } Quad;
 
 typedef struct
@@ -42,9 +42,9 @@ typedef struct
 			for ( size_t j = 0; j < 3; ++j )
 			{
 				glVertex3d(
-					vertices[faces[i].vertices.indices[j]].x,
-					vertices[faces[i].vertices.indices[j]].y,
-					vertices[faces[i].vertices.indices[j]].z
+					vertices[faces[i].vertices.ix[j]].x,
+					vertices[faces[i].vertices.ix[j]].y,
+					vertices[faces[i].vertices.ix[j]].z
 				);
 			}
 		}

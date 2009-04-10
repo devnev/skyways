@@ -101,9 +101,9 @@ void loadObjModel(const char* filename, Model& model)
 				// note that even though indices are 1-based in the file, they
 				// are not decremented here. this is so the min/max ranges can
 				// be used for validation
-				if (!parseFacePoint(fp[i].c_str(), face.vertices.indices[i], it, in))
+				if (!parseFacePoint(fp[i].c_str(), face.vertices.ix[i], it, in))
 					throw std::runtime_error("Invalid face: " + line);
-				vertexRange.include(face.vertices.indices[i]);
+				vertexRange.include(face.vertices.ix[i]);
 #if 0
 				textureRange.include(face.it[i]);
 				normalRange.include(face.in[i]);
@@ -117,8 +117,8 @@ void loadObjModel(const char* filename, Model& model)
 			{
 				// the second tri in the quad has corners (old 2, new, old 0)
 				using std::swap;
-				swap(face.vertices.indices[0], face.vertices.indices[2]);
-				if (!parseFacePoint(fp[0].c_str(), face.vertices.indices[1], it, in))
+				swap(face.vertices.ix[0], face.vertices.ix[2]);
+				if (!parseFacePoint(fp[0].c_str(), face.vertices.ix[1], it, in))
 					throw std::runtime_error("Invalid face: " + line);
 				if (face.vertices.valid())
 					_faces.push_back(face);
@@ -205,7 +205,7 @@ void loadObjModel(const char* filename, Model& model)
 	{
 		for ( size_t j = 0; j < 3; ++j )
 		{
-			_faces[i].vertices.indices[j] -= 1;
+			_faces[i].vertices.ix[j] -= 1;
 		}
 	}
 
