@@ -14,8 +14,16 @@ TextPrinter::~TextPrinter()
 	delete font;
 }
 
-void TextPrinter::print( const std::string& text, double x, double y )
+void TextPrinter::print( const std::string& text,
+	double x, double y,
+	TextPrinter::Alignment align
+)
 {
 	font->FaceSize( 28 );
+	if ( align == ALIGN_CENTER )
+	{
+		float w = font->Advance( text.c_str(), text.length() );
+		x -= w / 2;
+	}
 	font->Render( text.c_str(), text.length(), FTPoint( x, y ) );
 }

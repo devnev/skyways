@@ -13,7 +13,15 @@ public:
 	TextPrinter( const std::string& fontfilename );
 	~TextPrinter();
 
-	void print( const std::string& text, double x, double y );
+	enum Alignment {
+		ALIGN_LEFT,
+		ALIGN_CENTER,
+	};
+
+	void print( const std::string& text,
+		double x, double y,
+		Alignment align = ALIGN_LEFT
+	);
 
 private:
 
