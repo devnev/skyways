@@ -30,8 +30,4 @@ struct Vector3
 
 };
 
-typedef struct { size_t indices[3]; } Triangle;
-
-typedef struct { size_t indices[4]; } Quad;
-
 #endif // _POINT_HPP_

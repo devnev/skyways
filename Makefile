@@ -31,6 +31,7 @@ SkywasyGlut_HEADERS= \
 	src/block.hpp \
 	src/controller.hpp \
 	src/element.hpp \
+	src/model.hpp \
 	src/objmodel.hpp \
 	src/ship.hpp \
 	src/vector.hpp \
@@ -41,6 +42,7 @@ SkywasyQt_HEADERS= \
 	src/block.hpp \
 	src/controller.hpp \
 	src/element.hpp \
+	src/model.hpp \
 	src/objmodel.hpp \
 	src/qtwindow.hpp \
 	src/ship.hpp \

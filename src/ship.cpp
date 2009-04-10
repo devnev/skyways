@@ -20,9 +20,11 @@ void Ship::initialize()
 {
 	try
 	{
-		loadObjModel("ship.obj", _vertices, _faces);
-		std::cout << "loaded " << _vertices.size() << " vertices and "
-			<< _faces.size() << " faces for ship." << std::endl;
+		loadObjModel("ship.obj", _model);
+		std::cout << "loaded "
+			<< _model.vertices.size() << " vertices and "
+			<< _model.faces.size() << " faces for ship."
+			<< std::endl;
 	}
 	catch (std::runtime_error& e)
 	{
@@ -35,22 +37,10 @@ void Ship::initialize()
 void Ship::draw()
 {
 	glTranslated( 0, _size.y / 2, -_size.z / 2 );
-	if ( _vertices.size() && _faces.size() )
+	if ( _model.vertices.size() && _model.faces.size() )
 	{
 		glScaled( _size.x, _size.y, _size.z );
-		glBegin( GL_TRIANGLES );
-		for ( size_t i = 0; i < _faces.size(); ++i )
-		{
-			for ( size_t j = 0; j < 3; ++j )
-			{
-				glVertex3d(
-					_vertices[_faces[i].indices[j]].x,
-					_vertices[_faces[i].indices[j]].y,
-					_vertices[_faces[i].indices[j]].z
-				);
-			}
-		}
-		glEnd();
+		_model.draw();
 	}
 	else
 	{

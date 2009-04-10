@@ -6,6 +6,7 @@
 #include <istream>
 #include <GL/gl.h>
 #include "vector.hpp"
+#include "model.hpp"
 #include "aabb.hpp"
 
 class Block

@@ -4,6 +4,7 @@
 #include <vector>
 #include <GL/gl.h>
 #include "vector.hpp"
+#include "model.hpp"
 
 class Ship
 {
@@ -29,8 +30,7 @@ private:
 	Vector3 _pos;
 	Vector3 _size;
 
-	std::vector< Vector3 > _vertices;
-	std::vector< Triangle > _faces;
+	Model _model;
 
 	GLuint _shipDl;
 

@@ -3,7 +3,8 @@
 
 #include <vector>
 #include "vector.hpp"
+#include "model.hpp"
 
-void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::vector< Triangle >& faces);
+void loadObjModel(const char* filename, Model& model);
 
 #endif

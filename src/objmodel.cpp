@@ -25,7 +25,7 @@ static bool parseFacePoint(const char* str, size_t& v, size_t& vt, size_t& vn)
 	return true;
 }
 
-void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::vector< Triangle >& faces)
+void loadObjModel(const char* filename, Model& model)
 {
 	// Loading the mesh.
 	// Lines begin with either '#' to indicate a comment, 'v' to indicate a vertex
@@ -34,6 +34,9 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 	// ** Vertex indices (in 'f' lines) are one based, so they start with one and not zero.
 	// ** Faces may have three or four indices so they must be triangles or quads.
 	// ** Any other tag in the file is ignored.
+
+	std::vector< Vector3 >& vertices = model.vertices;
+	std::vector< Face >& faces = model.faces;
 
 	// open file
 	std::ifstream file(filename);
@@ -49,7 +52,7 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 #endif
 	;
 	std::vector< Vector3 > _vertices;
-	std::vector< Triangle > _faces;
+	std::vector< Face > _faces;
 
 	Range<double> xrange, yrange, zrange;
 
@@ -91,16 +94,16 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 			std::string fp[3];
 			if (!(iss >> fp[0] >> fp[1] >> fp[2]))
 				throw std::runtime_error("Invalid face: " + line);
-			Triangle face; size_t it, in; // it, in: dummy
+			Face face; size_t it, in; // it, in: dummy
 			for (size_t i = 0; i < 3; ++i)
 			{
 				// parse indices from triplets
 				// note that even though indices are 1-based in the file, they
 				// are not decremented here. this is so the min/max ranges can
 				// be used for validation
-				if (!parseFacePoint(fp[i].c_str(), face.indices[i], it, in))
+				if (!parseFacePoint(fp[i].c_str(), face.vertices.indices[i], it, in))
 					throw std::runtime_error("Invalid face: " + line);
-				vertexRange.include(face.indices[i]);
+				vertexRange.include(face.vertices.indices[i]);
 #if 0
 				textureRange.include(face.it[i]);
 				normalRange.include(face.in[i]);
@@ -108,20 +111,16 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 			}
 			// some obj generators create "triangles" with more than one
 			// identical edge index (crashes normal calculation) - ingore those
-			if (face.indices[0] != face.indices[1] &&
-					face.indices[1] != face.indices[2] &&
-					face.indices[2] != face.indices[0])
+			if (face.vertices.valid())
 				_faces.push_back(face);
 			if (iss >> fp[0]) // theres a fourth corner -> it's a quad
 			{
 				// the second tri in the quad has corners (old 2, new, old 0)
 				using std::swap;
-				swap(face.indices[0], face.indices[2]);
-				if (!parseFacePoint(fp[0].c_str(), face.indices[1], it, in))
+				swap(face.vertices.indices[0], face.vertices.indices[2]);
+				if (!parseFacePoint(fp[0].c_str(), face.vertices.indices[1], it, in))
 					throw std::runtime_error("Invalid face: " + line);
-				if (face.indices[0] != face.indices[1] &&
-						face.indices[1] != face.indices[2] &&
-						face.indices[2] != face.indices[0])
+				if (face.vertices.valid())
 					_faces.push_back(face);
 			}
 		}
