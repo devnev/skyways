@@ -112,14 +112,14 @@ void Controller::initialize()
 
 void Controller::resize( int width, int height )
 {
-     glViewport( 0, 0, width, height );
+	glViewport( 0, 0, width, height );
 
-     glMatrixMode( GL_PROJECTION );
-     glLoadIdentity();
-	 double fH = tan( 30.0 / 180.0 * 3.14159265358979323846 );
-	 double fW = ( (double)width ) / ( (double)height ) * fH;
-     glFrustum( -fW, fW, -fH, fH, 1.0, 1000.0 );
-     glMatrixMode( GL_MODELVIEW );
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	double fH = tan( 30.0 / 180.0 * 3.14159265358979323846 );
+	double fW = ( (double)width ) / ( (double)height ) * fH;
+	glFrustum( -fW, fW, -fH, fH, 1.0, 1000.0 );
+	glMatrixMode( GL_MODELVIEW );
 }
 
 void Controller::draw()
