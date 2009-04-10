@@ -7,10 +7,6 @@
 #include "range.hpp"
 #include "objmodel.hpp"
 
-#ifdef FULL_DATA
-#undef FULL_DATA
-#endif
-
 static bool parseFacePoint(const char* str, size_t& v, size_t& vt, size_t& vn)
 {
 	// parse 3 numbers from string, seperated by slashes.
@@ -47,10 +43,10 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 	std::string line;
 	bool unknownWarning = false;
 	Range<size_t> vertexRange = makeInvalidRange<size_t>()
-#ifdef FULL_DATA
+#if 0
 		, textureRange = makeInvalidRange<size_t>()
 		, normalRange = makeInvalidRange<size_t>()
-#endif // FULL_DATA
+#endif
 	;
 	std::vector< Vector3 > _vertices;
 	std::vector< Triangle > _faces;
@@ -64,22 +60,24 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 		// ignore empty lines and lines with '#' as first non-space char
 		if (!(iss >> cmd) || cmd[0] == '#')
 			continue;
-#ifdef FULL_DATA
 		else if (cmd == "vn")
 		{
+#if 0
 			double x, y, z;
 			if (!(iss >> x >> y >> z))
 				throw std::runtime_error("Invalid vertex normal: " + line);
 			m_normals.push_back(Vector3(x, y, z));
+#endif
 		}
 		else if (cmd == "vt")
 		{
+#if 0
 			double tx, ty;
 			if (!(iss >> tx >> ty))
 				throw std::runtime_error("Invalid vertex texcoord: " + line);
 			m_texpoints.push_back(SkinVertex(tx, ty));
+#endif
 		}
-#endif // FULL_DATA
 		else if (cmd == "v")
 		{
 			double x, y, z;
@@ -103,10 +101,10 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 				if (!parseFacePoint(fp[i].c_str(), face.indices[i], it, in))
 					throw std::runtime_error("Invalid face: " + line);
 				vertexRange.include(face.indices[i]);
-#ifdef FULL_DATA
+#if 0
 				textureRange.include(face.it[i]);
 				normalRange.include(face.in[i]);
-#endif // FULL_DATA
+#endif
 			}
 			// some obj generators create "triangles" with more than one
 			// identical edge index (crashes normal calculation) - ingore those
@@ -147,7 +145,7 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 		throw std::runtime_error("Bad OBJ file: faces with invalid vertex indices");
 	if (vertexRange.max > _vertices.size())
 		throw std::runtime_error("Bad OBJ file: out-of-range vertex indices");
-#ifdef FULL_DATA
+#if 0
 	if (textureRange.max > m_texpoints.size())
 		throw std::runtime_error("Bad OBJ file: out-of-range texture indices");
 	if (normalRange.max > m_normals.size())
@@ -156,9 +154,9 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 		throw std::runtime_error("Bad OBJ file: mixed texture usage on faces");
 	if (normalRange.min == 0 && normalRange.max != 0)
 		throw std::runtime_error("Bad OBJ file: mixed normal usage on faces");
-#endif // FULL_DATA
+#endif
 
-#ifdef FULL_DATA
+#if 0
 	// this is currently hardcoded, it may be parametrized later on
 	bool recalculateNormals = false;
 
@@ -187,12 +185,12 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 				normal->normalize();
 		}
 	}
-#endif // FULL_DATA
+#endif
 
-#ifdef FULL_DATA
+#if 0
 	// turn on textures if used
 	m_textures = textureRange.min > 0;
-#endif // FULL_DATA
+#endif
 
 	for ( size_t i = 0; i < _vertices.size(); ++i )
 	{
