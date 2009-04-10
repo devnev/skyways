@@ -30,7 +30,9 @@ void Ship::initialize()
 	{
 		std::cerr <<
 			"Warning: failed to load ship model, "
-			"falling back to box ship.\n";
+			"falling back to box ship.\n"
+			"Exception caught was: "
+			<< e.what() << '\n';
 	}
 }
 
