@@ -201,6 +201,14 @@ void loadObjModel(const char* filename, Model& model)
 		_vertices[i].z /= zrange.difference();
 	}
 
+	for ( size_t i = 0; i < _faces.size(); ++i )
+	{
+		for ( size_t j = 0; j < 3; ++j )
+		{
+			_faces[i].vertices.indices[j] -= 1;
+		}
+	}
+
 	using std::swap;
 	swap( vertices, _vertices );
 	swap( faces, _faces );
