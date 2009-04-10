@@ -31,6 +31,11 @@ struct Range
 		this->min = min(this->min, value);
 		this->max = max(this->max, value);
 	}
+	/// Distance between min and max
+	T difference()
+	{
+		return max - min;
+	}
 };
 
 /// Basic inline range constructor.

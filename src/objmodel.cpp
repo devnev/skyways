@@ -55,6 +55,8 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 	std::vector< Vector3 > _vertices;
 	std::vector< Triangle > _faces;
 
+	Range<double> xrange, yrange, zrange;
+
 	while (getline(file, line))
 	{
 		std::istringstream iss(line);
@@ -83,6 +85,7 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 			double x, y, z;
 			if (!(iss >> x >> y >> z))
 				throw std::runtime_error("Invalid vertex: " + line);
+			xrange.include(x); yrange.include(y), zrange.include(z);
 			_vertices.push_back(Vector3(x, y, z));
 		}
 		else if (cmd == "f")
@@ -190,6 +193,17 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 	// turn on textures if used
 	m_textures = textureRange.min > 0;
 #endif // FULL_DATA
+
+	std::cout << "scaling model down by "
+		<< xrange.difference() << ", "
+		<< yrange.difference() << ", "
+		<< zrange.difference() << std::endl;
+	for ( size_t i = 0; i < _vertices.size(); ++i )
+	{
+		_vertices[i].x /= xrange.difference();
+		_vertices[i].y /= yrange.difference();
+		_vertices[i].z /= zrange.difference();
+	}
 
 	using std::swap;
 	swap( vertices, _vertices );

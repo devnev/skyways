@@ -53,7 +53,7 @@ void Ship::draw()
 {
 	if ( _vertices && _faces )
 	{
-		glScaled( 0.01, 0.01, 0.01 );
+		glScaled( _size.x, _size.y, _size.z );
 		glDrawElements(GL_TRIANGLES, _faceCount, GL_UNSIGNED_INT, _faces);
 	}
 	else
