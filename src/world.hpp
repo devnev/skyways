@@ -27,6 +27,7 @@ public:
 
 	size_t elementsDrawn() const throw() { return _elementsDrawn; }
 	size_t blocksLoaded() const throw() { return blocks.size(); }
+	double lowestPoint() const throw() { return -1; /* TODO: calculate */ }
 
 	// collide AABB with world.
 	// assumes aabb.size().z<sectionSize

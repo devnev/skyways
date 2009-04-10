@@ -14,6 +14,7 @@ Controller::Controller()
 	, _yapex( 0 ), _tapex( 0 ), _gravity( 20 )
 	, _jstrength( 1.5 ), _grounded( true )
 	, _camy( 3 ), _camz( 6 )
+	, _dead( false )
 {
 	_ship.pos().x = 0.5;
 }
@@ -128,6 +129,9 @@ void Controller::draw()
 
 void Controller::update( int difference )
 {
+	if ( _dead )
+		return;
+
 	double multiplier = ( (double)difference ) / 1000;
 
 	Vector3 newPos = _ship.pos();
@@ -191,6 +195,14 @@ void Controller::update( int difference )
 	{
 		_ship.pos().y = newPos.y;
 		_grounded = false;
+	}
+
+	if ( _ship.pos().y < _world.lowestPoint() - 1 )
+	{
+		std::cout <<
+			"You dropped into the void!\n"
+			"Distance traveled: " << _ship.pos().z << std::endl;
+		_dead = true;
 	}
 
 }

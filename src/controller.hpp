@@ -36,6 +36,7 @@ private:
 	double _jstrength;
 	bool _grounded;
 	double _camy, _camz;
+	bool _dead;
 };
 
 #endif // _CONTROLLER_HPP_
