@@ -194,14 +194,17 @@ void loadObjModel(const char* filename, Model& model)
 	m_textures = textureRange.min > 0;
 #endif
 
+	double scale =
+		std::max( xrange.difference(),
+		std::max( yrange.difference(), zrange.difference() ) );
 	for ( size_t i = 0; i < _vertices.size(); ++i )
 	{
 		_vertices[i].x -= xrange.center();
-		_vertices[i].x /= xrange.difference();
+		_vertices[i].x /= scale;
 		_vertices[i].y -= yrange.center();
-		_vertices[i].y /= yrange.difference();
+		_vertices[i].y /= scale;
 		_vertices[i].z -= zrange.center();
-		_vertices[i].z /= zrange.difference();
+		_vertices[i].z /= scale;
 	}
 
 	for ( size_t i = 0; i < _faces.size(); ++i )
