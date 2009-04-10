@@ -41,7 +41,19 @@ void Controller::keydown( int key )
 			_tapex = sqrt( _jstrength / _gravity );
 		}
 		break;
-	case QUIT_KEY: _quitcb(); break;
+	case QUIT_KEY:
+		if ( _dead )
+		{
+			_quitcb();
+		}
+		else
+		{
+			std::cout <<
+				"You committed suicide!\n"
+				"Distance traveled: " << _ship.pos().z << std::endl;
+			_dead = true;
+		}
+		break;
 	}
 }
 
