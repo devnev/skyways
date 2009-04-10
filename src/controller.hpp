@@ -45,6 +45,7 @@ private:
 	size_t _deadTime;
 	QuitCallback _quitcb;
 	TextPrinter _printer;
+	size_t _windowwidth, _windowheight;
 
 };
 

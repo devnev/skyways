@@ -17,6 +17,7 @@ Controller::Controller( Controller::QuitCallback cbQuit )
 	, _camy( 3 ), _camz( 6 )
 	, _deadTime( 0 ), _quitcb( cbQuit )
 	, _printer( "DejaVuSans.ttf" )
+	, _windowwidth( 1 ), _windowheight( 1 )
 {
 	_ship.pos().x = 0.5;
 }
@@ -120,6 +121,9 @@ void Controller::resize( int width, int height )
 	double fW = ( (double)width ) / ( (double)height ) * fH;
 	glFrustum( -fW, fW, -fH, fH, 1.0, 1000.0 );
 	glMatrixMode( GL_MODELVIEW );
+
+	_windowwidth = width;
+	_windowheight = height;
 }
 
 void Controller::draw()
@@ -137,7 +141,8 @@ void Controller::draw()
 	{
 		_printer.print(
 			( boost::format( "Distance Traveled: %1%" ) % _ship.pos().z ).str(),
-			200, 350
+			_windowwidth / 2, _windowheight / 4 * 3,
+			TextPrinter::ALIGN_CENTER
 		);
 	}
 }
