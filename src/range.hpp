@@ -36,6 +36,11 @@ struct Range
 	{
 		return max - min;
 	}
+	/// Center between min and max
+	T center()
+	{
+		return (max + min) / 2;
+	}
 };
 
 /// Basic inline range constructor.

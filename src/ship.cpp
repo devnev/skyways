@@ -34,6 +34,7 @@ void Ship::initialize()
 
 void Ship::draw()
 {
+	glTranslated( 0, _size.y / 2, -_size.z / 2 );
 	if ( _vertices.size() && _faces.size() )
 	{
 		glScaled( _size.x, _size.y, _size.z );
@@ -55,27 +56,27 @@ void Ship::draw()
 	{
 		glScaled( _size.x, _size.y, _size.z );
 		glBegin( GL_QUAD_STRIP );
-			glVertex3d( 0, 1, 0 );
-			glVertex3d( 0, 0, 0 );
-			glVertex3d( 1, 1, 0 );
-			glVertex3d( 1, 0, 0 );
-			glVertex3d( 1, 1, -1 );
-			glVertex3d( 1, 0, -1 );
-			glVertex3d( 0, 1, -1 );
-			glVertex3d( 0, 0, -1 );
-			glVertex3d( 0, 1, 0 );
-			glVertex3d( 0, 0, 0 );
+			glVertex3d( -0.5,  0.5,  0.5 );
+			glVertex3d( -0.5, -0.5,  0.5 );
+			glVertex3d(  0.5,  0.5,  0.5 );
+			glVertex3d(  0.5, -0.5,  0.5 );
+			glVertex3d(  0.5,  0.5, -0.5 );
+			glVertex3d(  0.5, -0.5, -0.5 );
+			glVertex3d( -0.5,  0.5, -0.5 );
+			glVertex3d( -0.5, -0.5, -0.5 );
+			glVertex3d( -0.5,  0.5,  0.5 );
+			glVertex3d( -0.5, -0.5,  0.5 );
 		glEnd();
 		glBegin( GL_QUADS );
-			glVertex3d( 0, 0, 0 );
-			glVertex3d( 1, 0, 0 );
-			glVertex3d( 1, 0, -1 );
-			glVertex3d( 0, 0, -1 );
+			glVertex3d( -0.5, -0.5,  0.5 );
+			glVertex3d(  0.5, -0.5,  0.5 );
+			glVertex3d(  0.5, -0.5, -0.5 );
+			glVertex3d( -0.5, -0.5, -0.5 );
 
-			glVertex3d( 0, 1, 0 );
-			glVertex3d( 1, 1, 0 );
-			glVertex3d( 1, 1, -1 );
-			glVertex3d( 0, 1, -1 );
+			glVertex3d( -0.5,  0.5,  0.5 );
+			glVertex3d(  0.5,  0.5,  0.5 );
+			glVertex3d(  0.5,  0.5, -0.5 );
+			glVertex3d( -0.5,  0.5, -0.5 );
 		glEnd();
 	}
 }

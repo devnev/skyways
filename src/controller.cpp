@@ -15,7 +15,7 @@ Controller::Controller()
 	, _jstrength( 1.5 ), _grounded( true )
 	, _camy( 3 ), _camz( 6 )
 {
-	_ship.pos().x += 0.5 - _ship.size().x / 2;
+	_ship.pos().x = 0.5;
 }
 
 void Controller::keydown( int key )
@@ -132,7 +132,10 @@ void Controller::update( int difference )
 
 	Vector3 newPos = _ship.pos();
 
-	AABB shipAabb( Vector3(), _ship.size() );
+	AABB shipAabb(
+		Vector3( -_ship.size().x/2, 0, 0 ),
+		Vector3( _ship.size().x/2, _ship.size().y, _ship.size().z )
+	);
 
 	if ( az < 0 )
 	{

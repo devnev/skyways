@@ -194,14 +194,13 @@ void loadObjModel(const char* filename, std::vector< Vector3 >& vertices, std::v
 	m_textures = textureRange.min > 0;
 #endif // FULL_DATA
 
-	std::cout << "scaling model down by "
-		<< xrange.difference() << ", "
-		<< yrange.difference() << ", "
-		<< zrange.difference() << std::endl;
 	for ( size_t i = 0; i < _vertices.size(); ++i )
 	{
+		_vertices[i].x -= xrange.center();
 		_vertices[i].x /= xrange.difference();
+		_vertices[i].y -= yrange.center();
 		_vertices[i].y /= yrange.difference();
+		_vertices[i].z -= zrange.center();
 		_vertices[i].z /= zrange.difference();
 	}
 
