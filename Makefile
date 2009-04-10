@@ -52,6 +52,7 @@ SkywasyQt_HEADERS= \
 SkywaysGlut_CXXSOURCES= \
 	src/block.cpp \
 	src/controller.cpp \
+	src/element.cpp \
 	src/glutmain.cpp \
 	src/objmodel.cpp \
 	src/ship.cpp \
@@ -60,6 +61,7 @@ SkywaysGlut_CXXSOURCES= \
 SkywaysQt_CXXSOURCES= \
 	src/block.cpp \
 	src/controller.cpp \
+	src/element.cpp \
 	src/moc_qtwindow.cpp \
 	src/objmodel.cpp \
 	src/qtmain.cpp \
