@@ -34,6 +34,7 @@ SkywasyGlut_HEADERS= \
 	src/model.hpp \
 	src/objmodel.hpp \
 	src/ship.hpp \
+	src/textprinter.hpp \
 	src/vector.hpp \
 	src/world.hpp
 
@@ -46,6 +47,7 @@ SkywasyQt_HEADERS= \
 	src/objmodel.hpp \
 	src/qtwindow.hpp \
 	src/ship.hpp \
+	src/textprinter.hpp \
 	src/vector.hpp \
 	src/world.hpp
 
@@ -56,6 +58,7 @@ SkywaysGlut_CXXSOURCES= \
 	src/glutmain.cpp \
 	src/objmodel.cpp \
 	src/ship.cpp \
+	src/textprinter.cpp \
 	src/world.cpp
 
 SkywaysQt_CXXSOURCES= \
@@ -67,10 +70,11 @@ SkywaysQt_CXXSOURCES= \
 	src/qtmain.cpp \
 	src/qtwindow.cpp \
 	src/ship.cpp \
+	src/textprinter.cpp \
 	src/world.cpp
 
-CPPFLAGS+= -O2 -g -Wall
-LDFLAGS+= -lGL  -lboost_filesystem
+CPPFLAGS+= -O2 -g -Wall -I/usr/include/FTGL -I/usr/include/freetype2
+LDFLAGS+= -lGL  -lboost_filesystem -lftgl
 
 SkywaysGlut_LDFLAGS=-lglut
 SkywaysQt_LDFLAGS=-lQtOpenGL -lQtGui -lQtCore -lGLU -lGL -lpthread

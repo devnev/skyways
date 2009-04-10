@@ -1,4 +1,5 @@
 #include <GL/gl.h>
+#include <boost/format.hpp>
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -15,6 +16,7 @@ Controller::Controller( Controller::QuitCallback cbQuit )
 	, _jstrength( 1.5 ), _grounded( true )
 	, _camy( 3 ), _camz( 6 )
 	, _deadTime( 0 ), _quitcb( cbQuit )
+	, _printer( "DejaVuSans.ttf" )
 {
 	_ship.pos().x = 0.5;
 }
@@ -131,6 +133,13 @@ void Controller::draw()
 	glColor3f( 0.8f, 1, 1 );
 	glTranslatef( -0.5, -_camy, _ship.zpos() - _camz );
 	_world.glDraw( _ship.zpos() -_camz );
+	if ( _deadTime > 0 )
+	{
+		_printer.print(
+			( boost::format( "Distance Traveled: %1%" ) % _ship.pos().z ).str(),
+			200, 350
+		);
+	}
 }
 
 void Controller::update( int difference )

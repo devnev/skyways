@@ -3,6 +3,7 @@
 
 #include "ship.hpp"
 #include "world.hpp"
+#include "textprinter.hpp"
 
 class Controller
 {
@@ -43,6 +44,7 @@ private:
 	double _camy, _camz;
 	size_t _deadTime;
 	QuitCallback _quitcb;
+	TextPrinter _printer;
 
 };
 
