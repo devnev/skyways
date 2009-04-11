@@ -23,7 +23,7 @@ void Ship::initialize()
 		loadObjModel("ship.obj", _model);
 		std::cout << "loaded "
 			<< _model.vertices.size() << " vertices and "
-			<< _model.faces.size() << " faces for ship."
+			<< _model.trifaces.size() << " faces for ship."
 			<< std::endl;
 	}
 	catch (std::runtime_error& e)
@@ -39,7 +39,7 @@ void Ship::initialize()
 void Ship::draw()
 {
 	glTranslated( 0, _size.y / 2, -_size.z / 2 );
-	if ( _model.vertices.size() && _model.faces.size() )
+	if ( _model.vertices.size() && _model.trifaces.size() )
 	{
 		glScaled( _size.x, _size.y, -_size.z );
 		_model.draw();

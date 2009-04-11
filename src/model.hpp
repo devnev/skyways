@@ -19,52 +19,66 @@ typedef struct
 
 } Quad;
 
-typedef struct
+template<size_t N>
+struct Face
 {
 
-	Triangle vertices;
-	Triangle normals;
+	size_t vertices[N];
+	size_t normals[N];
 
 	bool valid()
 	{
-		return
-			vertices.ix[0] != vertices.ix[1] &&
-			vertices.ix[1] != vertices.ix[2] &&
-			vertices.ix[2] != vertices.ix[0];
+		for (size_t i = 0; i < N; ++i)
+		{
+			if ( vertices[i] == vertices[(i+1)%N] )
+				return false;
+		}
+		return true;
 	}
 
-} Face;
+};
 
 typedef struct
 {
 
 	std::vector< Vector3 > vertices;
 	std::vector< Vector3 > normals;
-	std::vector< Face > faces;
+	std::vector< Face<3> > trifaces;
+	std::vector< Face<4> > quadfaces;
 
 	void draw()
 	{
 		glBegin( GL_TRIANGLES );
-		for ( size_t i = 0; i < faces.size(); ++i )
+		for ( size_t i = 0; i < trifaces.size(); ++i )
+			drawFace( trifaces[i] );
+		glEnd();
+		glBegin( GL_QUADS );
+		for ( size_t i = 0; i < quadfaces.size(); ++i )
+			drawFace( quadfaces[i] );
+		glEnd();
+	}
+
+private:
+
+	template<size_t N>
+	void drawFace( Face<N>& face )
+	{
+		for ( size_t i = 0; i < N; ++i )
 		{
-			for ( size_t j = 0; j < 3; ++j )
+			if ( normals.size() > 0 )
 			{
-				if ( normals.size() > 0 )
-				{
-					glNormal3d(
-						normals[faces[i].normals.ix[j]].x,
-						normals[faces[i].normals.ix[j]].y,
-						normals[faces[i].normals.ix[j]].z
-					);
-				}
-				glVertex3d(
-					vertices[faces[i].vertices.ix[j]].x,
-					vertices[faces[i].vertices.ix[j]].y,
-					vertices[faces[i].vertices.ix[j]].z
+				glNormal3d(
+					normals[face.normals[i]].x,
+					normals[face.normals[i]].y,
+					normals[face.normals[i]].z
 				);
 			}
+			glVertex3d(
+				vertices[face.vertices[i]].x,
+				vertices[face.vertices[i]].y,
+				vertices[face.vertices[i]].z
+			);
 		}
-		glEnd();
 	}
 
 } Model;

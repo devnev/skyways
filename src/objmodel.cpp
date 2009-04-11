@@ -38,7 +38,7 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 
 	std::vector< Vector3 >& vertices = model.vertices;
 	std::vector< Vector3 >& normals = model.normals;
-	std::vector< Face >& faces = model.faces;
+	std::vector< Face<3> >& faces = model.trifaces;
 
 	// open file
 	std::ifstream file(filename);
@@ -55,7 +55,7 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 	;
 	std::vector< Vector3 > _vertices;
 	std::vector< Vector3 > _normals;
-	std::vector< Face > _faces;
+	std::vector< Face<3> > _faces;
 
 	Range<double> xrange, yrange, zrange;
 
@@ -95,20 +95,20 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 			std::string fp[3];
 			if (!(iss >> fp[0] >> fp[1] >> fp[2]))
 				throw std::runtime_error("Invalid face: " + line);
-			Face face; size_t it; // it: dummy
+			Face<3> face; size_t it; // it: dummy
 			for (size_t i = 0; i < 3; ++i)
 			{
 				// parse indices from triplets
 				// note that even though indices are 1-based in the file, they
 				// are not decremented here. this is so the min/max ranges can
 				// be used for validation
-				if (!parseFacePoint(fp[i].c_str(), face.vertices.ix[i], it, face.normals.ix[i]))
+				if (!parseFacePoint(fp[i].c_str(), face.vertices[i], it, face.normals[i]))
 					throw std::runtime_error("Invalid face: " + line);
-				vertexRange.include(face.vertices.ix[i]);
+				vertexRange.include(face.vertices[i]);
 #if 0
 				textureRange.include(face.it[i]);
 #endif
-				normalRange.include(face.normals.ix[i]);
+				normalRange.include(face.normals[i]);
 			}
 			// some obj generators create "triangles" with more than one
 			// identical edge index (crashes normal calculation) - ingore those
@@ -118,8 +118,8 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 			{
 				// the second tri in the quad has corners (old 2, new, old 0)
 				using std::swap;
-				swap(face.vertices.ix[0], face.vertices.ix[2]);
-				if (!parseFacePoint(fp[0].c_str(), face.vertices.ix[1], it, face.normals.ix[1]))
+				swap(face.vertices[0], face.vertices[2]);
+				if (!parseFacePoint(fp[0].c_str(), face.vertices[1], it, face.normals[1]))
 					throw std::runtime_error("Invalid face: " + line);
 				if (face.valid())
 					_faces.push_back(face);
@@ -219,8 +219,8 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 	{
 		for ( size_t j = 0; j < 3; ++j )
 		{
-			_faces[i].vertices.ix[j] -= 1;
-			_faces[i].normals.ix[j] -= 1;
+			_faces[i].vertices[j] -= 1;
+			_faces[i].normals[j] -= 1;
 		}
 	}
 
