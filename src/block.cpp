@@ -1,6 +1,8 @@
 #include <GL/gl.h>
 #include <stdexcept>
 #include <sstream>
+#include <fstream>
+#include <string>
 #include "block.hpp"
 
 void Block::draw()
@@ -79,12 +81,13 @@ void Block::drawDl()
 	}
 }
 
-std::auto_ptr< Block > Block::fromStream( std::istream& is )
+std::auto_ptr< Block > Block::fromFile( const std::string& filename )
 {
+	std::ifstream file( filename.c_str() );
 	std::auto_ptr< Block > block( new Block() );
 	std::string line;
 
-	while ( getline( is, line ) )
+	while ( getline( file, line ) )
 	{
 		size_t commentStart = line.find( '#' );
 		if ( commentStart != std::string::npos )

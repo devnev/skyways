@@ -43,8 +43,7 @@ void World::loadBlocks()
 			block_path = *iter;
 		for ( ++iter ; iter != block_fs_entry->path().end() ; ++iter )
 			block_path = block_path + "/" + *iter;
-		ifstream block_file( block_fs_entry->path() );
-		blocks.insert( block_path, Block::fromStream( block_file ) );
+		blocks.insert( block_path, Block::fromFile( block_fs_entry->path().string() ) );
 	}
 }
 

@@ -20,6 +20,7 @@ public:
 	void drawDl();
 
 	static std::auto_ptr< Block > fromStream( std::istream& is );
+	static std::auto_ptr< Block > fromFile( const std::string& filename );
 
 	bool collide( const AABB& aabb ) const throw();
 
