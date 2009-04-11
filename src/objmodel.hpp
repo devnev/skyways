@@ -2,9 +2,13 @@
 #define _OBJMODEL_HPP_
 
 #include <vector>
+#include <utility>
 #include "vector.hpp"
 #include "model.hpp"
 
-void loadObjModel(const char* filename, Model& model);
+typedef std::vector< std::pair< std::string, std::string > > ObjUnknownsList;
+
+void loadObjModel(const char* filename, Model& model,
+		ObjUnknownsList* unknowns = 0);
 
 #endif

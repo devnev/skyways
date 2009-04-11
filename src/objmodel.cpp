@@ -25,7 +25,8 @@ static bool parseFacePoint(const char* str, size_t& v, size_t& vt, size_t& vn)
 	return true;
 }
 
-void loadObjModel(const char* filename, Model& model)
+void loadObjModel(const char* filename, Model& model,
+		std::vector< std::pair< std::string, std::string > >* unknowns)
 {
 	// Loading the mesh.
 	// Lines begin with either '#' to indicate a comment, 'v' to indicate a vertex
@@ -130,6 +131,10 @@ void loadObjModel(const char* filename, Model& model)
 			{
 				std::cout << "Unknown token \"" << cmd << "\" encountered. (Additional warnings suppressed.)\n";
 				unknownWarning = true;
+			}
+			if (unknowns)
+			{
+				unknowns->push_back( make_pair(cmd, line) );
 			}
 		}
 	}
