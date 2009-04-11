@@ -38,7 +38,8 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 
 	std::vector< Vector3 >& vertices = model.vertices;
 	std::vector< Vector3 >& normals = model.normals;
-	std::vector< Face<3> >& faces = model.trifaces;
+	std::vector< Face<3> >& triangles = model.trifaces;
+	std::vector< Face<4> >& quads = model.quadfaces;
 
 	// open file
 	std::ifstream file(filename);
@@ -55,7 +56,8 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 	;
 	std::vector< Vector3 > _vertices;
 	std::vector< Vector3 > _normals;
-	std::vector< Face<3> > _faces;
+	std::vector< Face<3> > _triangles;
+	std::vector< Face<4> > _quads;
 
 	Range<double> xrange, yrange, zrange;
 
@@ -95,35 +97,41 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 			std::string fp[3];
 			if (!(iss >> fp[0] >> fp[1] >> fp[2]))
 				throw std::runtime_error("Invalid face: " + line);
-			Face<3> face; size_t it; // it: dummy
+			Face<3> triangle; size_t it; // it: dummy
 			for (size_t i = 0; i < 3; ++i)
 			{
 				// parse indices from triplets
 				// note that even though indices are 1-based in the file, they
 				// are not decremented here. this is so the min/max ranges can
 				// be used for validation
-				if (!parseFacePoint(fp[i].c_str(), face.vertices[i], it, face.normals[i]))
+				if (!parseFacePoint(fp[i].c_str(), triangle.vertices[i], it, triangle.normals[i]))
 					throw std::runtime_error("Invalid face: " + line);
-				vertexRange.include(face.vertices[i]);
+				vertexRange.include(triangle.vertices[i]);
 #if 0
 				textureRange.include(face.it[i]);
 #endif
-				normalRange.include(face.normals[i]);
+				normalRange.include(triangle.normals[i]);
 			}
-			// some obj generators create "triangles" with more than one
-			// identical edge index (crashes normal calculation) - ingore those
-			if (face.valid())
-				_faces.push_back(face);
 			if (iss >> fp[0]) // theres a fourth corner -> it's a quad
 			{
-				// the second tri in the quad has corners (old 2, new, old 0)
-				using std::swap;
-				swap(face.vertices[0], face.vertices[2]);
-				if (!parseFacePoint(fp[0].c_str(), face.vertices[1], it, face.normals[1]))
+				Face<4> quad;
+				for (size_t i = 0; i < 3; ++i)
+				{
+					quad.vertices[i] = triangle.vertices[i];
+					quad.normals[i] = triangle.normals[i];
+				}
+				if (!parseFacePoint(fp[0].c_str(), quad.vertices[3], it, quad.normals[3]))
 					throw std::runtime_error("Invalid face: " + line);
-				if (face.valid())
-					_faces.push_back(face);
+				vertexRange.include(quad.vertices[3]);
+#if 0
+				textureRange.include(quad.it[3]);
+#endif
+				normalRange.include(quad.normals[3]);
+				if (quad.valid())
+					_quads.push_back(quad);
 			}
+			else if (triangle.valid())
+				_triangles.push_back(triangle);
 		}
 		else
 		{
@@ -143,7 +151,7 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 	// validate loaded object
 	if (_vertices.size() == 0) // must have vertices
 		throw std::runtime_error("Bad OBJ file: no vertices");
-	if (_faces.size() == 0) // must have faces
+	if (_triangles.size() == 0 && _quads.size() == 0) // must have faces
 		throw std::runtime_error("Bad OBJ file: no faces");
 	if (vertexRange.min == 0)
 		throw std::runtime_error("Bad OBJ file: faces with invalid vertex indices");
@@ -215,17 +223,26 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 		}
 	}
 
-	for ( size_t i = 0; i < _faces.size(); ++i )
+	for ( size_t i = 0; i < _triangles.size(); ++i )
 	{
 		for ( size_t j = 0; j < 3; ++j )
 		{
-			_faces[i].vertices[j] -= 1;
-			_faces[i].normals[j] -= 1;
+			_triangles[i].vertices[j] -= 1;
+			_triangles[i].normals[j] -= 1;
+		}
+	}
+	for ( size_t i = 0; i < _quads.size(); ++i )
+	{
+		for ( size_t j = 0; j < 4; ++j )
+		{
+			_quads[i].vertices[j] -= 1;
+			_quads[i].normals[j] -= 1;
 		}
 	}
 
 	using std::swap;
 	swap( vertices, _vertices );
 	swap( normals, _normals );
-	swap( faces, _faces );
+	swap( triangles, _triangles );
+	swap( quads, _quads );
 }

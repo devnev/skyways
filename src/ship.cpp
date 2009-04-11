@@ -23,8 +23,8 @@ void Ship::initialize()
 		loadObjModel("ship.obj", _model);
 		std::cout << "loaded "
 			<< _model.vertices.size() << " vertices and "
-			<< _model.trifaces.size() << " faces for ship."
-			<< std::endl;
+			<< _model.trifaces.size() + _model.quadfaces.size()
+			<< " faces for ship." << std::endl;
 	}
 	catch (std::runtime_error& e)
 	{
