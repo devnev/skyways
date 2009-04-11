@@ -25,7 +25,7 @@ static bool parseFacePoint(const char* str, size_t& v, size_t& vt, size_t& vn)
 	return true;
 }
 
-void loadObjModel(const char* filename, Model& model,
+void loadObjModel(const char* filename, Model& model, bool unify,
 		std::vector< std::pair< std::string, std::string > >* unknowns)
 {
 	// Loading the mesh.
@@ -199,17 +199,20 @@ void loadObjModel(const char* filename, Model& model,
 	m_textures = textureRange.min > 0;
 #endif
 
-	double scale =
-		std::max( xrange.difference(),
-		std::max( yrange.difference(), zrange.difference() ) );
-	for ( size_t i = 0; i < _vertices.size(); ++i )
+	if (unify)
 	{
-		_vertices[i].x -= xrange.center();
-		_vertices[i].x /= scale;
-		_vertices[i].y -= yrange.center();
-		_vertices[i].y /= scale;
-		_vertices[i].z -= zrange.center();
-		_vertices[i].z /= scale;
+		double scale =
+			std::max( xrange.difference(),
+			std::max( yrange.difference(), zrange.difference() ) );
+		for ( size_t i = 0; i < _vertices.size(); ++i )
+		{
+			_vertices[i].x -= xrange.center();
+			_vertices[i].x /= scale;
+			_vertices[i].y -= yrange.center();
+			_vertices[i].y /= scale;
+			_vertices[i].z -= zrange.center();
+			_vertices[i].z /= scale;
+		}
 	}
 
 	for ( size_t i = 0; i < _faces.size(); ++i )

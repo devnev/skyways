@@ -8,7 +8,7 @@
 
 typedef std::vector< std::pair< std::string, std::string > > ObjUnknownsList;
 
-void loadObjModel(const char* filename, Model& model,
+void loadObjModel(const char* filename, Model& model, bool unify = true,
 		ObjUnknownsList* unknowns = 0);
 
 #endif
