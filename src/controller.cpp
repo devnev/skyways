@@ -96,7 +96,7 @@ void Controller::generateWorld()
 
 void Controller::initialize()
 {
-	glClearColor( 0, 0, 0, 0 );
+	glClearColor( 0.2, 0.2, 0.2, 0 );
 	glClearDepth( 1.0 );
 
 	glEnable( GL_DEPTH_TEST );
@@ -146,7 +146,7 @@ void Controller::draw()
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glLoadIdentity();
 	glTranslated( _ship.xpos() - 0.5, _ship.ypos() - _camy, -_camz );
-	glColor3f( 1, 0, 0 );
+	glColor4f( 1, 0, 0, 0.25 );
 	_ship.drawDl();
 	glLoadIdentity();
 	glColor3f( 0.8f, 1, 1 );

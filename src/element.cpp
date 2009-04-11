@@ -5,7 +5,7 @@ void Element::glDraw()
 {
 	glPushMatrix();
 
-	glColor4d( _color.x, _color.y, _color.z, 0.75 );
+	glColor4d( _color.x, _color.y, _color.z, 0.5 );
 	glTranslated( _pos.x, _pos.y, -_pos.z );
 	glScaled( 1, 1, _length );
 
