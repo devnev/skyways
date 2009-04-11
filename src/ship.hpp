@@ -27,6 +27,8 @@ public:
 
 private:
 
+	void drawSimple();
+
 	Vector3 _pos;
 	Vector3 _size;
 

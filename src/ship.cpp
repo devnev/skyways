@@ -47,29 +47,17 @@ void Ship::draw()
 	else
 	{
 		glScaled( _size.x, _size.y, _size.z );
-		glBegin( GL_QUAD_STRIP );
-			glVertex3d( -0.5,  0.5,  0.5 );
-			glVertex3d( -0.5, -0.5,  0.5 );
-			glVertex3d(  0.5,  0.5,  0.5 );
-			glVertex3d(  0.5, -0.5,  0.5 );
-			glVertex3d(  0.5,  0.5, -0.5 );
-			glVertex3d(  0.5, -0.5, -0.5 );
-			glVertex3d( -0.5,  0.5, -0.5 );
-			glVertex3d( -0.5, -0.5, -0.5 );
-			glVertex3d( -0.5,  0.5,  0.5 );
-			glVertex3d( -0.5, -0.5,  0.5 );
-		glEnd();
-		glBegin( GL_QUADS );
-			glVertex3d( -0.5, -0.5,  0.5 );
-			glVertex3d(  0.5, -0.5,  0.5 );
-			glVertex3d(  0.5, -0.5, -0.5 );
-			glVertex3d( -0.5, -0.5, -0.5 );
 
-			glVertex3d( -0.5,  0.5,  0.5 );
-			glVertex3d(  0.5,  0.5,  0.5 );
-			glVertex3d(  0.5,  0.5, -0.5 );
-			glVertex3d( -0.5,  0.5, -0.5 );
-		glEnd();
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( 0.01f, 0.01f );
+		drawSimple();
+		glDisable( GL_POLYGON_OFFSET_FILL );
+
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+		glColor3f( 0.75f, 0.75f, 0.75f );
+		glLineWidth( 1.0f );
+		drawSimple();
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 	}
 }
 
@@ -86,4 +74,36 @@ void Ship::drawDl()
 	{
 		glCallList( _shipDl );
 	}
+}
+
+void Ship::drawSimple()
+{
+	glBegin( GL_QUADS );
+		glNormal3d( 0, 0, 1 );
+		glVertex3d( -0.5,  0.5,  0.5 );
+		glVertex3d( -0.5, -0.5,  0.5 );
+		glVertex3d(  0.5, -0.5,  0.5 );
+		glVertex3d(  0.5,  0.5,  0.5 );
+	glEnd();
+	glBegin( GL_TRIANGLES );
+		glNormal3d( -1, 0, -0.5 );
+		glVertex3d( -0.5, -0.5,  0.5 );
+		glVertex3d( -0.5,  0.5,  0.5 );
+		glVertex3d( 0, 0,  -1.0 );
+
+		glNormal3d( 0, 1, -0.5 );
+		glVertex3d( -0.5,  0.5,  0.5 );
+		glVertex3d(  0.5,  0.5,  0.5 );
+		glVertex3d( 0, 0,  -1.0 );
+
+		glNormal3d( 1, 0, -0.5 );
+		glVertex3d(  0.5,  0.5,  0.5 );
+		glVertex3d(  0.5, -0.5,  0.5 );
+		glVertex3d( 0, 0,  -1.0 );
+
+		glNormal3d( 0, -1, -0.5 );
+		glVertex3d(  0.5, -0.5,  0.5 );
+		glVertex3d( -0.5, -0.5,  0.5 );
+		glVertex3d( 0, 0,  -1.0 );
+	glEnd();
 }
