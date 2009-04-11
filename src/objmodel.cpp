@@ -129,7 +129,7 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 		{
 			if (!unknownWarning)
 			{
-				std::cout << "Unknown token \"" << cmd << "\" encountered. (Additional warnings suppressed.)\n";
+				std::cerr << "Unknown token \"" << cmd << "\" encountered. (Additional warnings suppressed.)\n";
 				unknownWarning = true;
 			}
 			if (unknowns)
