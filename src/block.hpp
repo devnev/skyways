@@ -26,9 +26,7 @@ public:
 
 private:
 
-	std::vector< Vector3 > vertices;
-	typedef std::vector< Quad > QuadList;
-	QuadList faces;
+	Model model;
 	typedef std::vector< AABB > AabbList;
 	AabbList bounds;
 

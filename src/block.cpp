@@ -3,25 +3,15 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include "objmodel.hpp"
 #include "block.hpp"
 
 void Block::draw()
 {
-	if (faces.size() > 0)
+	if (model.vertices.size() > 0)
 	{
 		glScalef( 1, 1, -1 );
-		glBegin( GL_QUADS );
-		for ( QuadList::iterator face = faces.begin();
-				face != faces.end(); ++face )
-		{
-			for ( size_t i = 0 ; i < 4 ; ++i )
-				glVertex3d(
-					vertices[face->ix[i]].x,
-					vertices[face->ix[i]].y,
-					vertices[face->ix[i]].z
-				);
-		}
-		glEnd();
+		model.draw();
 		glScalef( 1, 1, -1 );
 	}
 	else
@@ -83,49 +73,32 @@ void Block::drawDl()
 
 std::auto_ptr< Block > Block::fromFile( const std::string& filename )
 {
-	std::ifstream file( filename.c_str() );
 	std::auto_ptr< Block > block( new Block() );
-	std::string line;
+	ObjUnknownsList objunknowns;
 
-	while ( getline( file, line ) )
+	loadObjModel( filename.c_str(), block->model, false, &objunknowns );
+
+	for ( ObjUnknownsList::iterator unknown = objunknowns.begin();
+			unknown != objunknowns.end(); ++unknown )
 	{
-		size_t commentStart = line.find( '#' );
-		if ( commentStart != std::string::npos )
-			line.resize( commentStart );
-		size_t start = line.find_first_not_of( " \t" );
-		if ( start == std::string::npos )
-			continue;
-		std::istringstream iss( line );
-		std::string type;
-		iss >> type;
-		if ( type == "v" )
+		if ( unknown->first == "b" )
 		{
-			Vector3 v;
-			iss >> v.x >> v.y >> v.z;
-			block->vertices.push_back( v );
-		}
-		else if ( type == "f" )
-		{
-			Quad f;
-			iss >> f.ix[0] >> f.ix[1] >> f.ix[2] >> f.ix[3];
-			--f.ix[0]; --f.ix[1]; --f.ix[2]; --f.ix[3];
-			block->faces.push_back( f );
-		}
-		else if ( type == "b" )
-		{
+			std::istringstream iss( unknown->second );
+			std::string cmd;
+			iss >> cmd;
+
 			AABB aabb;
 			iss >> aabb.p1.x >> aabb.p1.y >> aabb.p1.z
 				>> aabb.p2.x >> aabb.p2.y >> aabb.p2.z;
 			block->bounds.push_back( aabb );
 		}
 	}
-
 	return block;
 }
 
 bool Block::collide( const AABB& aabb ) const throw()
 {
-	if ( faces.size() == 0 )
+	if ( model.vertices.size() == 0 )
 	{
 		return aabb.collide( AABB( Vector3( 0, 0, 0 ), Vector3( 1, 1, 1 ) ) );
 	}
