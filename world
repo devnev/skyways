@@ -1,7 +1,7 @@
 . flat 0
 _ cube -1
 - cube 0.25
-a cube 1.0
+a tunnel 1.0
 b cube 1.5
 %%
 4
