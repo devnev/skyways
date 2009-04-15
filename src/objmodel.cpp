@@ -22,6 +22,7 @@
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
+#include <set>
 #include "vector.hpp"
 #include "range.hpp"
 #include "objmodel.hpp"
@@ -45,7 +46,8 @@ static bool parseFacePoint(const char* str, size_t& v, size_t& vt, size_t& vn)
 }
 
 void loadObjModel(const char* filename, Model& model, bool unify,
-		std::vector< std::pair< std::string, std::string > >* unknowns)
+		std::vector< std::pair< std::string, std::string > >* unknowns,
+		const char * expectedUnknowns)
 {
 	// Loading the mesh.
 	// Lines begin with either '#' to indicate a comment, 'v' to indicate a vertex
@@ -79,6 +81,18 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 	std::vector< Face<4> > _quads;
 
 	Range<double> xrange, yrange, zrange;
+
+	std::set<std::string> _expectedUnknowns;
+	if (expectedUnknowns)
+	{
+		const char * eubeg = expectedUnknowns;
+		while (*eubeg)
+		{
+			std::string eucur(eubeg);
+			_expectedUnknowns.insert(eucur);
+			eubeg += eucur.length();
+		}
+	}
 
 	while (getline(file, line))
 	{
@@ -154,7 +168,7 @@ void loadObjModel(const char* filename, Model& model, bool unify,
 		}
 		else
 		{
-			if (!unknownWarning)
+			if (!unknownWarning && _expectedUnknowns.find(cmd) == _expectedUnknowns.end())
 			{
 				std::cerr << "Unknown token \"" << cmd << "\" encountered. (Additional warnings suppressed.)\n";
 				unknownWarning = true;

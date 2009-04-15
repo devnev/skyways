@@ -39,7 +39,7 @@ void Ship::initialize()
 {
 	try
 	{
-		loadObjModel("ship.obj", _model);
+		loadObjModel("ship.obj", _model, true, 0, "mtl\0");
 		std::cout << "loaded "
 			<< _model.vertices.size() << " vertices and "
 			<< _model.trifaces.size() + _model.quadfaces.size()

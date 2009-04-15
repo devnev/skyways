@@ -95,7 +95,7 @@ std::auto_ptr< Block > Block::fromFile( const std::string& filename )
 	std::auto_ptr< Block > block( new Block() );
 	ObjUnknownsList objunknowns;
 
-	loadObjModel( filename.c_str(), block->model, false, &objunknowns );
+	loadObjModel( filename.c_str(), block->model, false, &objunknowns, "b\0" );
 
 	for ( ObjUnknownsList::iterator unknown = objunknowns.begin();
 			unknown != objunknowns.end(); ++unknown )
