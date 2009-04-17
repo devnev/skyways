@@ -23,6 +23,7 @@
 #include <QTime>
 #include <iostream>
 #include <cmath>
+#include "controller.hpp"
 #include "qtwindow.hpp"
 
 void quitFunc()
@@ -31,18 +32,19 @@ void quitFunc()
 }
 
 Window::Window( QWidget * parent )
-	: QGLWidget( parent ), controller( &quitFunc )
+	: QGLWidget( parent )
 {
 	timer = new QTimer( this );
 	connect( timer, SIGNAL(timeout()), this, SLOT(update()) );
 	timer->start( 0 );
 	time = new QTime();
 	setFocusPolicy( Qt::StrongFocus );
+	controller.reset( new Controller( &quitFunc ) );
 	QStringList argv = qApp->arguments();
 	if ( argv.size() > 1 )
-		controller.loadWorld( argv.at(1).toStdString() );
+		controller->loadWorld( argv.at(1).toStdString() );
 	else
-		controller.generateWorld();
+		controller->generateWorld();
 }
 
 Window::~Window()
@@ -58,7 +60,7 @@ void Window::update()
 	}
 	else
 	{
-		controller.update( time->restart() );
+		controller->update( time->restart() );
 	}
 	( (QWidget*)this )->update();
 }
@@ -83,7 +85,7 @@ void Window::keyPressEvent( QKeyEvent * event )
 	{
 		int key = mapKey( event->key() );
 		if ( key > 0 )
-			controller.keydown( key );
+			controller->keydown( key );
 	}
 }
 
@@ -93,21 +95,21 @@ void Window::keyReleaseEvent( QKeyEvent * event )
 	{
 		int key = mapKey( event->key() );
 		if ( key > 0 )
-			controller.keyup( key );
+			controller->keyup( key );
 	}
 }
 
 void Window::initializeGL()
 {
-	controller.initialize();
+	controller->initialize();
 }
 
 void Window::resizeGL( int width, int height )
 {
-	controller.resize( width, height );
+	controller->resize( width, height );
 }
 
 void Window::paintGL()
 {
-	controller.draw();
+	controller->draw();
 }

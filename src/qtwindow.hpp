@@ -21,7 +21,9 @@
 #define _WINDOW_HPP_
 
 #include <QGLWidget>
-#include "controller.hpp"
+#include <memory>
+
+class Controller;
 
 class QKeyEvent;
 class QTimer;
@@ -48,7 +50,7 @@ protected:
 private:
 	int mapKey( int key );
 
-	Controller controller;
+	std::auto_ptr< Controller > controller;
 	QTimer * timer;
 	QTime * time;
 };
