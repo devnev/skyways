@@ -24,9 +24,13 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include "textprinter.hpp"
 #include "controller.hpp"
 
-Controller::Controller( Controller::QuitCallback cbQuit )
+Controller::Controller(
+	Controller::QuitCallback cbQuit
+  , std::auto_ptr< TextPrinter > printer
+)
 	: _ship(), _world( 10 )
 	, vx( 0 ), az( 0 )
 	, _zacc( 10 ), _xspeed( 5 )
@@ -35,7 +39,7 @@ Controller::Controller( Controller::QuitCallback cbQuit )
 	, _jstrength( 1.5 ), _grounded( true )
 	, _camy( 3 ), _camz( 6 )
 	, _dead( false ), _quitcb( cbQuit )
-	, _printer( "DejaVuSans.ttf" )
+	, _printer( printer )
 	, _windowwidth( 1 ), _windowheight( 1 )
 {
 	_ship.pos().x = 0.5;
@@ -173,7 +177,7 @@ void Controller::draw()
 	_world.glDraw( _ship.zpos() -_camz );
 	if ( _dead )
 	{
-		_printer.print(
+		_printer->print(
 			( boost::format( "Distance Traveled: %1%" ) % _ship.pos().z ).str(),
 			_windowwidth / 2, _windowheight / 4 * 3,
 			TextPrinter::ALIGN_CENTER

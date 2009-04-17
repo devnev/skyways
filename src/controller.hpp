@@ -20,9 +20,11 @@
 #ifndef _CONTROLLER_HPP_
 #define _CONTROLLER_HPP_
 
+#include <memory>
 #include "ship.hpp"
 #include "world.hpp"
-#include "textprinter.hpp"
+
+class TextPrinter;
 
 class Controller
 {
@@ -31,7 +33,10 @@ public:
 
 	typedef void (*QuitCallback)();
 
-	Controller( QuitCallback cbQuit );
+	Controller(
+		QuitCallback cbQuit
+	  , std::auto_ptr< TextPrinter > printer
+	);
 
 	enum {
 		JUMP_KEY = 1,
@@ -64,7 +69,7 @@ private:
 	double _camy, _camz;
 	bool _dead;
 	QuitCallback _quitcb;
-	TextPrinter _printer;
+	std::auto_ptr< TextPrinter > _printer;
 	size_t _windowwidth, _windowheight;
 
 };
