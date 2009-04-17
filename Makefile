@@ -29,6 +29,7 @@ SkywaysQt_BINARY=skyways.qt
 SkywasyGlut_HEADERS= \
 	src/aabb.hpp \
 	src/block.hpp \
+	src/configuration.hpp \
 	src/controller.hpp \
 	src/element.hpp \
 	src/model.hpp \
@@ -41,6 +42,7 @@ SkywasyGlut_HEADERS= \
 SkywasyQt_HEADERS= \
 	src/aabb.hpp \
 	src/block.hpp \
+	src/configuration.hpp \
 	src/controller.hpp \
 	src/element.hpp \
 	src/model.hpp \
@@ -53,6 +55,7 @@ SkywasyQt_HEADERS= \
 
 SkywaysGlut_CXXSOURCES= \
 	src/block.cpp \
+	src/configuration.cpp \
 	src/controller.cpp \
 	src/element.cpp \
 	src/glutmain.cpp \
@@ -63,6 +66,7 @@ SkywaysGlut_CXXSOURCES= \
 
 SkywaysQt_CXXSOURCES= \
 	src/block.cpp \
+	src/configuration.cpp \
 	src/controller.cpp \
 	src/element.cpp \
 	src/moc_qtwindow.cpp \

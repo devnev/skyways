@@ -23,7 +23,7 @@
 #include <QTime>
 #include <iostream>
 #include <cmath>
-#include "textprinter.hpp"
+#include "configuration.hpp"
 #include "controller.hpp"
 #include "qtwindow.hpp"
 
@@ -40,8 +40,8 @@ Window::Window( QWidget * parent )
 	timer->start( 0 );
 	time = new QTime();
 	setFocusPolicy( Qt::StrongFocus );
-	std::auto_ptr< TextPrinter > printer( new TextPrinter( "DejaVuSans.ttf" ) );
-	controller.reset( new Controller( &quitFunc, printer ) );
+	Configuration config;
+	controller = config.buildController( &quitFunc );
 	QStringList argv = qApp->arguments();
 	if ( argv.size() > 1 )
 		controller->loadWorld( argv.at(1).toStdString() );

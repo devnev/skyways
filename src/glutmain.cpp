@@ -32,7 +32,7 @@
 #endif
 
 #include "controller.hpp"
-#include "textprinter.hpp"
+#include "configuration.hpp"
 
 std::auto_ptr< Controller > controller;
 
@@ -125,8 +125,8 @@ int main( int argc, char * argv[] )
 	glutInitWindowSize( 800, 600 );
 	glutCreateWindow( "Skyways" );
 
-	std::auto_ptr< TextPrinter > printer( new TextPrinter( "DejaVuSans.ttf" ) );
-	controller.reset( new Controller( &glutLeaveMainLoop, printer ) );
+	Configuration config;
+	controller = config.buildController( &glutLeaveMainLoop );
 
 	glutReshapeFunc( resize );
 	glutDisplayFunc( display );
