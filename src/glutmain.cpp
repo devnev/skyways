@@ -33,18 +33,18 @@
 
 #include "controller.hpp"
 
-Controller controller( &glutLeaveMainLoop );
+std::auto_ptr< Controller > controller;
 
 static void resize( int width, int height )
 {
-	controller.resize(width, height);
+	controller->resize(width, height);
 
 	glutPostRedisplay();
 }
 
 static void display()
 {
-	controller.draw();
+	controller->draw();
 
 	glutSwapBuffers();
 }
@@ -54,9 +54,9 @@ static void keyDown( unsigned char key, int x, int y )
 	switch ( key )
 	{
 	case ' ':
-		return controller.keydown( Controller::JUMP_KEY );
+		return controller->keydown( Controller::JUMP_KEY );
 	case 27: // ESCAPE
-		return controller.keydown( Controller::QUIT_KEY );
+		return controller->keydown( Controller::QUIT_KEY );
 	}
 
 	glutPostRedisplay();
@@ -67,13 +67,13 @@ static void specialKeyDown( int key, int x, int y )
 	switch ( key )
 	{
 	case GLUT_KEY_LEFT:
-		return controller.keydown( Controller::STRAFE_L_KEY );
+		return controller->keydown( Controller::STRAFE_L_KEY );
 	case GLUT_KEY_RIGHT:
-		return controller.keydown( Controller::STRAFE_R_KEY );
+		return controller->keydown( Controller::STRAFE_R_KEY );
 	case GLUT_KEY_UP:
-		return controller.keydown( Controller::ACCEL_KEY );
+		return controller->keydown( Controller::ACCEL_KEY );
 	case GLUT_KEY_DOWN:
-		return controller.keydown( Controller::DECEL_KEY );
+		return controller->keydown( Controller::DECEL_KEY );
 	}
 
 	glutPostRedisplay();
@@ -84,7 +84,7 @@ static void keyUp( unsigned char key, int x, int y )
 	switch ( key )
 	{
 	case ' ':
-		return controller.keyup( Controller::JUMP_KEY );
+		return controller->keyup( Controller::JUMP_KEY );
 	}
 
 	glutPostRedisplay();
@@ -95,13 +95,13 @@ static void specialKeyUp( int key, int x, int y )
 	switch ( key )
 	{
 	case GLUT_KEY_LEFT:
-		return controller.keyup( Controller::STRAFE_L_KEY );
+		return controller->keyup( Controller::STRAFE_L_KEY );
 	case GLUT_KEY_RIGHT:
-		return controller.keyup( Controller::STRAFE_R_KEY );
+		return controller->keyup( Controller::STRAFE_R_KEY );
 	case GLUT_KEY_UP:
-		return controller.keyup( Controller::ACCEL_KEY );
+		return controller->keyup( Controller::ACCEL_KEY );
 	case GLUT_KEY_DOWN:
-		return controller.keyup( Controller::DECEL_KEY );
+		return controller->keyup( Controller::DECEL_KEY );
 	}
 
 	glutPostRedisplay();
@@ -111,7 +111,7 @@ static void idle()
 {
 	static int tick = glutGet( GLUT_ELAPSED_TIME );
 	int newTick = glutGet( GLUT_ELAPSED_TIME );
-	controller.update( newTick - tick );
+	controller->update( newTick - tick );
 	tick = newTick;
 
 	glutPostRedisplay();
@@ -124,6 +124,8 @@ int main( int argc, char * argv[] )
 	glutInitWindowSize( 800, 600 );
 	glutCreateWindow( "Skyways" );
 
+	controller.reset( new Controller( &glutLeaveMainLoop ) );
+
 	glutReshapeFunc( resize );
 	glutDisplayFunc( display );
 	glutKeyboardFunc( keyDown );
@@ -133,11 +135,11 @@ int main( int argc, char * argv[] )
 	glutIdleFunc( idle );
 
 	if ( argc > 1 )
-		controller.loadWorld( argv[1] );
+		controller->loadWorld( argv[1] );
 	else
-		controller.generateWorld();
+		controller->generateWorld();
 
-	controller.initialize();
+	controller->initialize();
 
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 	glutMainLoop();
