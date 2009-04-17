@@ -23,6 +23,7 @@
 #include <QTime>
 #include <iostream>
 #include <cmath>
+#include "qtconfigparser.hpp"
 #include "configuration.hpp"
 #include "controller.hpp"
 #include "qtwindow.hpp"
@@ -41,12 +42,9 @@ Window::Window( QWidget * parent )
 	time = new QTime();
 	setFocusPolicy( Qt::StrongFocus );
 	Configuration config;
+	ConfigParser configParser( config );
+	configParser.readSettings();
 	controller = config.buildController( &quitFunc );
-	QStringList argv = qApp->arguments();
-	if ( argv.size() > 1 )
-		controller->loadWorld( argv.at(1).toStdString() );
-	else
-		controller->generateWorld();
 }
 
 Window::~Window()

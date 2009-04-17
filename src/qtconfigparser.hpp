@@ -17,21 +17,28 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "textprinter.hpp"
-#include "controller.hpp"
+#ifndef _QTCONFIGPARSER_HPP_
+#define _QTCONFIGPARSER_HPP_
+
+#ifdef _CONFIGPARSER_HPP_
+#error "Invalid build: cannot include qtconfigparser.hpp and configparser.hpp"
+#endif // _CONFIGPARSER_HPP_
+
 #include "configuration.hpp"
 
-Configuration::Configuration()
+class ConfigParser
 {
-}
 
-std::auto_ptr< Controller > Configuration::buildController( Controller::QuitCallback cbquit )
-{
-	std::auto_ptr< TextPrinter > printer( new TextPrinter( "DejaVuSans.ttf" ) );
-	std::auto_ptr< Controller > controller( new Controller ( cbquit, printer ) );
-	if ( _world.length() )
-		controller->loadWorld( _world );
-	else
-		controller->generateWorld();
-	return controller;
-}
+public:
+
+	ConfigParser( Configuration& config );
+
+	void readSettings();
+
+private:
+
+	Configuration& _config;
+
+};
+
+#endif // _QTCONFIGPARSER_HPP_

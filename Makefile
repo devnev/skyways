@@ -29,6 +29,7 @@ SkywaysQt_BINARY=skyways.qt
 SkywasyGlut_HEADERS= \
 	src/aabb.hpp \
 	src/block.hpp \
+	src/configparser.hpp \
 	src/configuration.hpp \
 	src/controller.hpp \
 	src/element.hpp \
@@ -47,6 +48,7 @@ SkywasyQt_HEADERS= \
 	src/element.hpp \
 	src/model.hpp \
 	src/objmodel.hpp \
+	src/qtconfigparser.hpp \
 	src/qtwindow.hpp \
 	src/ship.hpp \
 	src/textprinter.hpp \
@@ -55,6 +57,7 @@ SkywasyQt_HEADERS= \
 
 SkywaysGlut_CXXSOURCES= \
 	src/block.cpp \
+	src/configparser.cpp \
 	src/configuration.cpp \
 	src/controller.cpp \
 	src/element.cpp \
@@ -71,6 +74,7 @@ SkywaysQt_CXXSOURCES= \
 	src/element.cpp \
 	src/moc_qtwindow.cpp \
 	src/objmodel.cpp \
+	src/qtconfigparser.cpp \
 	src/qtmain.cpp \
 	src/qtwindow.cpp \
 	src/ship.cpp \
@@ -80,7 +84,7 @@ SkywaysQt_CXXSOURCES= \
 CPPFLAGS+= -O2 -g -Wall -I/usr/include/FTGL -I/usr/include/freetype2
 LDFLAGS+= -lGL  -lboost_filesystem -lftgl
 
-SkywaysGlut_LDFLAGS=-lglut
+SkywaysGlut_LDFLAGS=-lglut -lboost_program_options
 SkywaysQt_LDFLAGS=-lQtOpenGL -lQtGui -lQtCore -lGLU -lGL -lpthread
 SkywaysQt_CPPFLAGS=-D_REENTRANT -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtOpenGL -I/usr/include/qt4
 

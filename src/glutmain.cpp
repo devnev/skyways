@@ -32,6 +32,7 @@
 #endif
 
 #include "controller.hpp"
+#include "configparser.hpp"
 #include "configuration.hpp"
 
 std::auto_ptr< Controller > controller;
@@ -126,6 +127,9 @@ int main( int argc, char * argv[] )
 	glutCreateWindow( "Skyways" );
 
 	Configuration config;
+	ConfigParser configParser( config );
+	if ( !configParser.args( argc, argv ) )
+		return 0;
 	controller = config.buildController( &glutLeaveMainLoop );
 
 	glutReshapeFunc( resize );
@@ -135,11 +139,6 @@ int main( int argc, char * argv[] )
 	glutSpecialFunc( specialKeyDown );
 	glutSpecialUpFunc( specialKeyUp );
 	glutIdleFunc( idle );
-
-	if ( argc > 1 )
-		controller->loadWorld( argv[1] );
-	else
-		controller->generateWorld();
 
 	controller->initialize();
 

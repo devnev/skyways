@@ -17,21 +17,23 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "textprinter.hpp"
-#include "controller.hpp"
-#include "configuration.hpp"
+#include <QSettings>
+#include "qtconfigparser.hpp"
 
-Configuration::Configuration()
+ConfigParser::ConfigParser( Configuration& config )
+	: _config( config )
 {
 }
 
-std::auto_ptr< Controller > Configuration::buildController( Controller::QuitCallback cbquit )
+void ConfigParser::readSettings()
 {
-	std::auto_ptr< TextPrinter > printer( new TextPrinter( "DejaVuSans.ttf" ) );
-	std::auto_ptr< Controller > controller( new Controller ( cbquit, printer ) );
-	if ( _world.length() )
-		controller->loadWorld( _world );
-	else
-		controller->generateWorld();
-	return controller;
+	QSettings settings(
+		QSettings::IniFormat, QSettings::UserScope,
+		"Unspecified", "Skyways"
+	);
+	_config.setWorld(
+		settings.value("worldfile", QString(""))
+			.toString().toStdString()
+	);
 }
+

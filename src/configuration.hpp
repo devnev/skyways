@@ -30,7 +30,13 @@ public:
 
 	Configuration();
 
+	void setWorld( const std::string& world ) { _world = world; }
+
 	std::auto_ptr< Controller > buildController( Controller::QuitCallback cbquit );
+
+private:
+
+	std::string _world;
 
 };
 

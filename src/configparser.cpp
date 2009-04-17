@@ -17,21 +17,31 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "textprinter.hpp"
-#include "controller.hpp"
-#include "configuration.hpp"
+#include <iostream>
+#include "configparser.hpp"
 
-Configuration::Configuration()
+ConfigParser::ConfigParser( Configuration& config )
+	: _config( config )
 {
+	namespace po = boost::program_options;
+	options.add_options()
+		("help,h", "print help message")
+		("world,w",
+		 po::value<std::string>()->default_value(std::string()),
+		 "set world to load")
+	;
 }
 
-std::auto_ptr< Controller > Configuration::buildController( Controller::QuitCallback cbquit )
+bool ConfigParser::args(int argc, char * argv[])
 {
-	std::auto_ptr< TextPrinter > printer( new TextPrinter( "DejaVuSans.ttf" ) );
-	std::auto_ptr< Controller > controller( new Controller ( cbquit, printer ) );
-	if ( _world.length() )
-		controller->loadWorld( _world );
-	else
-		controller->generateWorld();
-	return controller;
+	namespace po = boost::program_options;
+	po::store(po::command_line_parser(argc, argv).options(options).run(), vm);
+	po::notify(vm);
+	if (vm.count("help"))
+	{
+		std::cout << options << '\n';
+		return false;
+	}
+	_config.setWorld(vm["world"].as<std::string>());
+	return true;
 }
