@@ -38,6 +38,8 @@ public:
 	  , std::auto_ptr< TextPrinter > printer
 	);
 
+	~Controller();
+
 	enum {
 		JUMP_KEY = 1,
 		STRAFE_L_KEY = 2,

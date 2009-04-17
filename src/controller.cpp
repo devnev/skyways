@@ -45,6 +45,10 @@ Controller::Controller(
 	_ship.pos().x = 0.5;
 }
 
+Controller::~Controller()
+{
+}
+
 void Controller::keydown( int key )
 {
 	switch ( key )
