@@ -34,7 +34,10 @@ public:
 	typedef void (*QuitCallback)();
 
 	Controller(
-		QuitCallback cbQuit
+	    double acceleration, double strafespeed, double speedlimit
+	  , double gravity, double jumpstrengt
+	  , double cameraheight, double cameradistance
+	  , QuitCallback cbQuit
 	  , std::auto_ptr< TextPrinter > printer
 	);
 

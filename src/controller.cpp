@@ -28,16 +28,19 @@
 #include "controller.hpp"
 
 Controller::Controller(
-	Controller::QuitCallback cbQuit
-  , std::auto_ptr< TextPrinter > printer
+	  double acceleration, double strafespeed, double speedlimit
+	, double gravity, double jumpstrength
+	, double cameraheight, double cameradistance
+	, Controller::QuitCallback cbQuit
+	, std::auto_ptr< TextPrinter > printer
 )
 	: _ship(), _world( 10 )
 	, vx( 0 ), az( 0 )
-	, _zacc( 10 ), _xspeed( 5 )
-	, _maxSpeed( 100 ), _zspeed( 0 )
-	, _yapex( 0 ), _tapex( 0 ), _gravity( 20 )
-	, _jstrength( 1.5 ), _grounded( true )
-	, _camy( 3 ), _camz( 6 )
+	, _zacc( acceleration ), _xspeed( strafespeed )
+	, _maxSpeed( speedlimit ), _zspeed( 0 )
+	, _yapex( 0 ), _tapex( 0 ), _gravity( gravity )
+	, _jstrength( jumpstrength ), _grounded( true )
+	, _camy( cameraheight ), _camz( cameradistance )
 	, _dead( false ), _quitcb( cbQuit )
 	, _printer( printer )
 	, _windowwidth( 1 ), _windowheight( 1 )

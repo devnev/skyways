@@ -28,7 +28,10 @@ Configuration::Configuration()
 std::auto_ptr< Controller > Configuration::buildController( Controller::QuitCallback cbquit )
 {
 	std::auto_ptr< TextPrinter > printer( new TextPrinter( "DejaVuSans.ttf" ) );
-	std::auto_ptr< Controller > controller( new Controller ( cbquit, printer ) );
+	std::auto_ptr< Controller > controller( new Controller (
+		10, 5, 100, 20, 1.5, 3, 6,
+		cbquit, printer
+	) );
 	if ( _world.length() )
 		controller->loadWorld( _world );
 	else
