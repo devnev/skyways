@@ -2,7 +2,9 @@
 _ cube -1
 - cube 0.25
 a tunnel 1.0
+o flat 0.75 tunnel 1.0
 b cube 1.5
+= cube 0 cube 2
 %%
 4
 10 :  _
@@ -10,8 +12,8 @@ b cube 1.5
 20 :   .
 10 :.  -
 15 :   -
-10 :.  a
-10 :_  b
+10 :.  o
+10 :_  =
 10 :  b
 10 : _
 10 :b

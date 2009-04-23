@@ -24,6 +24,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <list>
 #include "world.hpp"
 
 World::World( size_t sectionSize )
@@ -180,7 +181,7 @@ struct BlockPos
 void World::loadWorld( std::istream& is )
 {
 	std::string line;
-	std::vector< BlockPos > aliases(256);
+	std::vector< std::list< BlockPos > > aliases(256);
 	std::vector< Element > newElements;
 
 	while ( std::getline( is, line ) )
@@ -189,13 +190,16 @@ void World::loadWorld( std::istream& is )
 			break;
 		std::istringstream iss( line );
 		char key;
-		BlockPos pos;
-		iss >> key >> pos.block >> pos.ypos;
+		iss >> key;
 		if ( key < 0 )
 			throw std::runtime_error( std::string("Invalid alias name ") + key );
-		if ( blocks.find( pos.block ) == blocks.end() )
-			throw std::runtime_error( "Unknown block " + pos.block );
-		aliases[ key ] = pos;
+		BlockPos pos;
+		while ( iss >> pos.block >> pos.ypos )
+		{
+			if ( blocks.find( pos.block ) == blocks.end() )
+				throw std::runtime_error( "Unknown block " + pos.block );
+			aliases[ key ].push_back( pos );
+		}
 	}
 	if ( !is || !std::getline( is, line ) )
 		throw std::runtime_error( "Unexpected eof before map." );
@@ -227,7 +231,7 @@ void World::loadWorld( std::istream& is )
 		for (size_t i = 0; i < columns; ++i)
 		{
 			char key = row[i];
-			if ( key < 0 || ( key != ' ' && aliases[key].block.empty() ) )
+			if ( key < 0 || ( key != ' ' && aliases[key].empty() ) )
 				throw std::runtime_error( std::string("Invalid alias name ") + key );
 			if ( key == runningdata[i].key )
 			{
@@ -237,18 +241,24 @@ void World::loadWorld( std::istream& is )
 			{
 				if ( runningdata[i].key != ' ' )
 				{
-					newElements.push_back(Element(
-						( (double)i ) - ( (double)columns ) / 2,
-						aliases[runningdata[i].key].ypos,
-						runningdata[i].start,
-						runningdata[i].length,
-						blocks.find( aliases[runningdata[i].key].block )->second,
-						Vector3(
-							( (double)rand() ) / RAND_MAX,
-							( (double)rand() ) / RAND_MAX,
-							( (double)rand() ) / RAND_MAX
-						)
-					));
+					for ( std::list< BlockPos >::iterator posIter =
+							aliases[runningdata[i].key].begin();
+							posIter != aliases[runningdata[i].key].end();
+							++posIter)
+					{
+						newElements.push_back(Element(
+							( (double)i ) - ( (double)columns ) / 2,
+							posIter->ypos,
+							runningdata[i].start,
+							runningdata[i].length,
+							blocks.find( posIter->block )->second,
+							Vector3(
+								( (double)rand() ) / RAND_MAX,
+								( (double)rand() ) / RAND_MAX,
+								( (double)rand() ) / RAND_MAX
+							)
+						));
+					}
 				}
 				runningdata[i].key = key;
 				runningdata[i].start = position;
@@ -261,18 +271,24 @@ void World::loadWorld( std::istream& is )
 	{
 		if ( runningdata[i].key != ' ' )
 		{
-			newElements.push_back(Element(
-				( (double)i ) - ( (double)columns ) / 2,
-				aliases[runningdata[i].key].ypos,
-				runningdata[i].start,
-				runningdata[i].length,
-				blocks.find( aliases[runningdata[i].key].block )->second,
-				Vector3(
-					( (double)rand() ) / RAND_MAX,
-					( (double)rand() ) / RAND_MAX,
-					( (double)rand() ) / RAND_MAX
-				)
-			));
+			for ( std::list< BlockPos >::iterator posIter =
+					aliases[runningdata[i].key].begin();
+					posIter != aliases[runningdata[i].key].end();
+					++posIter)
+			{
+				newElements.push_back(Element(
+					( (double)i ) - ( (double)columns ) / 2,
+					posIter->ypos,
+					runningdata[i].start,
+					runningdata[i].length,
+					blocks.find( posIter->block )->second,
+					Vector3(
+						( (double)rand() ) / RAND_MAX,
+						( (double)rand() ) / RAND_MAX,
+						( (double)rand() ) / RAND_MAX
+					)
+				));
+			}
 		}
 	}
 
