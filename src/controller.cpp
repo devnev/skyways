@@ -30,7 +30,7 @@
 Controller::Controller(
 	  double acceleration, double strafespeed, double speedlimit
 	, double gravity, double jumpstrength
-	, double cameraheight, double cameradistance
+	, double cameraheight, double cameradistance, double camerarotation
 	, Controller::QuitCallback cbQuit
 	, std::auto_ptr< TextPrinter > printer
 )
@@ -40,7 +40,7 @@ Controller::Controller(
 	, _maxSpeed( speedlimit ), _zspeed( 0 )
 	, _yapex( 0 ), _tapex( 0 ), _gravity( gravity )
 	, _jstrength( jumpstrength ), _grounded( true )
-	, _camy( cameraheight ), _camz( cameradistance )
+	, _camy( cameraheight ), _camz( cameradistance ), _camrot( camerarotation )
 	, _dead( false ), _quitcb( cbQuit )
 	, _printer( printer )
 	, _windowwidth( 1 ), _windowheight( 1 )
@@ -175,11 +175,13 @@ void Controller::draw()
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glLoadIdentity();
+	glRotatef( _camrot, 1, 0, 0 );
 	glTranslated( _ship.xpos() - 0.5, _ship.ypos() - _camy, -_camz );
 	glColor4f( 1, 0, 0, 0.25 );
 	_ship.drawDl();
 	glLoadIdentity();
 	glColor3f( 0.8f, 1, 1 );
+	glRotatef( _camrot, 1, 0, 0 );
 	glTranslatef( -0.5, -_camy, _ship.zpos() - _camz );
 	_world.glDraw( _ship.zpos() -_camz );
 	if ( _dead )

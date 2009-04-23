@@ -36,7 +36,7 @@ public:
 	Controller(
 	    double acceleration, double strafespeed, double speedlimit
 	  , double gravity, double jumpstrengt
-	  , double cameraheight, double cameradistance
+	  , double cameraheight, double cameradistance, double camerarotation
 	  , QuitCallback cbQuit
 	  , std::auto_ptr< TextPrinter > printer
 	);
@@ -71,7 +71,7 @@ private:
 	double _yapex, _tapex, _gravity;
 	double _jstrength;
 	bool _grounded;
-	double _camy, _camz;
+	double _camy, _camz, _camrot;
 	bool _dead;
 	QuitCallback _quitcb;
 	std::auto_ptr< TextPrinter > _printer;
