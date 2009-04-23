@@ -170,11 +170,17 @@ struct Column
 	double start, length;
 };
 
+struct BlockPos
+{
+	BlockPos() : block(), ypos(0.0) { }
+	std::string block;
+	double ypos;
+};
+
 void World::loadWorld( std::istream& is )
 {
 	std::string line;
-	std::vector< std::pair< std::string, double > >
-		aliases(256, std::make_pair(std::string(), 0.0));
+	std::vector< BlockPos > aliases(256);
 	std::vector< Element > newElements;
 
 	while ( std::getline( is, line ) )
@@ -182,15 +188,14 @@ void World::loadWorld( std::istream& is )
 		if ( line == "%%" )
 			break;
 		std::istringstream iss( line );
-		std::string block;
 		char key;
-		double ypos;
-		iss >> key >> block >> ypos;
+		BlockPos pos;
+		iss >> key >> pos.block >> pos.ypos;
 		if ( key < 0 )
 			throw std::runtime_error( std::string("Invalid alias name ") + key );
-		if ( blocks.find( block ) == blocks.end() )
-			throw std::runtime_error( "Unknown block " + block );
-		aliases[ key ] = std::make_pair( block, ypos );
+		if ( blocks.find( pos.block ) == blocks.end() )
+			throw std::runtime_error( "Unknown block " + pos.block );
+		aliases[ key ] = pos;
 	}
 	if ( !is || !std::getline( is, line ) )
 		throw std::runtime_error( "Unexpected eof before map." );
@@ -222,7 +227,7 @@ void World::loadWorld( std::istream& is )
 		for (size_t i = 0; i < columns; ++i)
 		{
 			char key = row[i];
-			if ( key < 0 || ( key != ' ' && aliases[key].first.empty() ) )
+			if ( key < 0 || ( key != ' ' && aliases[key].block.empty() ) )
 				throw std::runtime_error( std::string("Invalid alias name ") + key );
 			if ( key == runningdata[i].key )
 			{
@@ -234,10 +239,10 @@ void World::loadWorld( std::istream& is )
 				{
 					newElements.push_back(Element(
 						( (double)i ) - ( (double)columns ) / 2,
-						aliases[runningdata[i].key].second,
+						aliases[runningdata[i].key].ypos,
 						runningdata[i].start,
 						runningdata[i].length,
-						blocks.find( aliases[runningdata[i].key].first )->second,
+						blocks.find( aliases[runningdata[i].key].block )->second,
 						Vector3(
 							( (double)rand() ) / RAND_MAX,
 							( (double)rand() ) / RAND_MAX,
@@ -258,10 +263,10 @@ void World::loadWorld( std::istream& is )
 		{
 			newElements.push_back(Element(
 				( (double)i ) - ( (double)columns ) / 2,
-				aliases[runningdata[i].key].second,
+				aliases[runningdata[i].key].ypos,
 				runningdata[i].start,
 				runningdata[i].length,
-				blocks.find( aliases[runningdata[i].key].first )->second,
+				blocks.find( aliases[runningdata[i].key].block )->second,
 				Vector3(
 					( (double)rand() ) / RAND_MAX,
 					( (double)rand() ) / RAND_MAX,
