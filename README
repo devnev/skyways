@@ -4,3 +4,11 @@ SkyWays
 Skyways is a toy project to create a game roughly based on the DOS game called
 "Skyroads". The aim is not to recreate the original game, just make something
 similarly fun, and to explore possibilities along the way.
+
+Depends
+-------
+
+One of: SDL, Qt4, freeglut, OpenGlut (remove the unavailable parts from the
+	PROGRAMS line in the Makefile.)
+
+All of: Boost, OpenGL, FTGL
