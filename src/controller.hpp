@@ -21,8 +21,8 @@
 #define _CONTROLLER_HPP_
 
 #include <memory>
-#include "ship.hpp"
 #include "map.hpp"
+#include "world.hpp"
 
 class TextPrinter;
 
@@ -34,8 +34,7 @@ public:
 	typedef void (*QuitCallback)();
 
 	Controller(
-	    double acceleration, double strafespeed, double speedlimit
-	  , double gravity, double jumpstrengt
+		std::auto_ptr< World > world
 	  , double cameraheight, double cameradistance, double camerarotation
 	  , QuitCallback cbQuit
 	  , std::auto_ptr< TextPrinter > printer
@@ -63,14 +62,8 @@ public:
 
 private:
 
-	Ship _ship;
+	std::auto_ptr< World > _world;
 	Map _map;
-	int vx, az;
-	double _zacc, _xspeed;
-	double _maxSpeed, _zspeed;
-	double _yapex, _tapex, _gravity;
-	double _jstrength;
-	bool _grounded;
 	double _camy, _camz, _camrot;
 	bool _dead;
 	QuitCallback _quitcb;

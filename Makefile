@@ -33,12 +33,13 @@ HEADERS= \
 	src/configuration.hpp \
 	src/controller.hpp \
 	src/element.hpp \
+	src/map.hpp \
 	src/model.hpp \
 	src/objmodel.hpp \
 	src/ship.hpp \
 	src/textprinter.hpp \
 	src/vector.hpp \
-	src/map.hpp
+	src/world.hpp
 
 SkywasyGlut_HEADERS= $(HEADERS) \
 	src/configparser.hpp
@@ -55,10 +56,11 @@ CXXSOURCES= \
 	src/configuration.cpp \
 	src/controller.cpp \
 	src/element.cpp \
+	src/map.cpp \
 	src/objmodel.cpp \
 	src/ship.cpp \
 	src/textprinter.cpp \
-	src/map.cpp
+	src/world.cpp
 
 SkywaysGlut_CXXSOURCES= $(CXXSOURCES) \
 	src/configparser.cpp \

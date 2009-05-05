@@ -1,0 +1,62 @@
+//
+// This file is part of the game Skyways.
+// Copyright (C) 2009 Mark Nevill
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+//
+
+#ifndef _WORLD_HPP_
+#define _WORLD_HPP_
+
+#include "ship.hpp"
+#include "map.hpp"
+
+class World
+{
+
+public:
+
+	World(
+	    double acceleration, double strafespeed, double speedlimit
+	  , double gravity, double jumpstrength
+	);
+
+	void setMap(Map& map) throw() { _map = &map; }
+
+	void setAcceleration( double accel ) { _currAcc = accel*_maxAcc; }
+	void setStrafe( double strafe ) { _currStrafe = strafe*_maxStrafe; }
+	void startJump();
+
+	void draw( double zminClip );
+	void update( int difference );
+
+	double distanceTraveled() const throw() { return _ship.pos().z; }
+	bool droppedOut() const throw() {
+		return _ship.pos().y < _map->lowestPoint() - 1;
+	}
+
+private:
+
+	Ship _ship;
+	Map* _map;
+	double _currAcc, _maxAcc;
+	double _currStrafe, _maxStrafe;
+	double _maxSpeed, _zspeed;
+	double _yapex, _tapex, _gravity;
+	double _jstrength;
+	bool _grounded;
+};
+
+#endif // _WORLD_HPP_
