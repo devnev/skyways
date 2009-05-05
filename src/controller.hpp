@@ -22,7 +22,7 @@
 
 #include <memory>
 #include "ship.hpp"
-#include "world.hpp"
+#include "map.hpp"
 
 class TextPrinter;
 
@@ -54,8 +54,8 @@ public:
 
 	void keydown( int key );
 	void keyup( int key );
-	void loadWorld( std::string filename );
-	void generateWorld();
+	void loadMap( std::string filename );
+	void generateMap();
 	void initialize();
 	void resize( int width, int height );
 	void draw();
@@ -64,7 +64,7 @@ public:
 private:
 
 	Ship _ship;
-	World _world;
+	Map _map;
 	int vx, az;
 	double _zacc, _xspeed;
 	double _maxSpeed, _zspeed;

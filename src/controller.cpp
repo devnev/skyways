@@ -34,7 +34,7 @@ Controller::Controller(
 	, Controller::QuitCallback cbQuit
 	, std::auto_ptr< TextPrinter > printer
 )
-	: _ship(), _world( 10 )
+	: _ship(), _map( 10 )
 	, vx( 0 ), az( 0 )
 	, _zacc( acceleration ), _xspeed( strafespeed )
 	, _maxSpeed( speedlimit ), _zspeed( 0 )
@@ -62,7 +62,7 @@ void Controller::keydown( int key )
 	case DECEL_KEY: az = -1; break;
 	case JUMP_KEY:
 		if ( _grounded ||
-			_world.collide( AABB(
+			_map.collide( AABB(
 				_ship.pos().offset(0, -0.2, 0),
 				_ship.pos().offset(0, -0.2, 0).offset(_ship.size())
 			) ) )
@@ -110,18 +110,18 @@ void Controller::keyup( int key )
 	}
 }
 
-void Controller::loadWorld( std::string filename )
+void Controller::loadMap( std::string filename )
 {
-	_world.loadBlocks();
-	std::ifstream worldFile( filename.c_str() );
-	_world.loadWorld( worldFile );
+	_map.loadBlocks();
+	std::ifstream mapFile( filename.c_str() );
+	_map.loadMap( mapFile );
 }
 
-void Controller::generateWorld()
+void Controller::generateMap()
 {
-	_world.loadBlocks();
+	_map.loadBlocks();
 	srand(time(0));
-	_world.generateWorld();
+	_map.generateMap();
 }
 
 void Controller::initialize()
@@ -152,7 +152,7 @@ void Controller::initialize()
 	glLightfv( GL_LIGHT1, GL_POSITION, position );
 	glEnable( GL_LIGHT1 );
 
-	_world.optimize();
+	_map.optimize();
 	_ship.initialize();
 }
 
@@ -183,7 +183,7 @@ void Controller::draw()
 	glColor3f( 0.8f, 1, 1 );
 	glRotatef( _camrot, 1, 0, 0 );
 	glTranslatef( -0.5, -_camy, _ship.zpos() - _camz );
-	_world.glDraw( _ship.zpos() -_camz );
+	_map.glDraw( _ship.zpos() -_camz );
 	if ( _dead )
 	{
 		_printer->print(
@@ -222,7 +222,7 @@ void Controller::update( int difference )
 	}
 
 	newPos.z += multiplier * _zspeed;
-	if ( _world.collide( shipAabb.offset( newPos ) ) )
+	if ( _map.collide( shipAabb.offset( newPos ) ) )
 	{
 		newPos.z = _ship.pos().z;
 		_zspeed = 0;
@@ -236,7 +236,7 @@ void Controller::update( int difference )
 		newPos.x += _xspeed*multiplier;
 	if ( vx != 0 )
 	{
-		if ( _world.collide( shipAabb.offset( newPos ) ) )
+		if ( _map.collide( shipAabb.offset( newPos ) ) )
 			newPos.x = _ship.pos().x;
 		else
 			_ship.pos().x = newPos.x;
@@ -250,7 +250,7 @@ void Controller::update( int difference )
 
 	_tapex -= multiplier;
 	newPos.y = _yapex - _gravity * ( _tapex*_tapex );
-	if ( _world.collide( shipAabb.offset( newPos ) ) )
+	if ( _map.collide( shipAabb.offset( newPos ) ) )
 	{
 		newPos.y = _ship.pos().y;
 		if (_tapex < 0)
@@ -264,7 +264,7 @@ void Controller::update( int difference )
 		_grounded = false;
 	}
 
-	if ( _ship.pos().y < _world.lowestPoint() - 1 )
+	if ( _ship.pos().y < _map.lowestPoint() - 1 )
 	{
 		std::cout <<
 			"You dropped into the void!\n"

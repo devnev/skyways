@@ -31,8 +31,8 @@ void ConfigParser::readSettings()
 		QSettings::IniFormat, QSettings::UserScope,
 		"Unspecified", "Skyways"
 	);
-	_config.setWorld(
-		settings.value("worldfile", QString(""))
+	_config.setMap(
+		settings.value("mapfile", QString(""))
 			.toString().toStdString()
 	);
 }

@@ -26,9 +26,9 @@ ConfigParser::ConfigParser( Configuration& config )
 	namespace po = boost::program_options;
 	options.add_options()
 		("help,h", "print help message")
-		("world,w",
+		("map,w",
 		 po::value<std::string>()->default_value(std::string()),
-		 "set world to load")
+		 "set map to load")
 	;
 }
 
@@ -42,6 +42,6 @@ bool ConfigParser::args(int argc, char * argv[])
 		std::cout << options << '\n';
 		return false;
 	}
-	_config.setWorld(vm["world"].as<std::string>());
+	_config.setMap(vm["map"].as<std::string>());
 	return true;
 }

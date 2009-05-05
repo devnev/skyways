@@ -25,16 +25,16 @@
 #include <string>
 #include <sstream>
 #include <list>
-#include "world.hpp"
+#include "map.hpp"
 
-World::World( size_t sectionSize )
+Map::Map( size_t sectionSize )
 	: sectionSize( sectionSize )
 {
 	std::string empty;
 	blocks.insert( empty, new Block() );
 }
 
-void World::glDraw( double )
+void Map::glDraw( double )
 {
 	for ( ElementList::iterator elem = elements.begin() ;
 			elem != elements.end(); ++elem )
@@ -44,7 +44,7 @@ void World::glDraw( double )
 	_elementsDrawn = elements.size();
 }
 
-void World::loadBlocks()
+void Map::loadBlocks()
 {
 	using namespace boost::filesystem;
 	path block_dir( "blocks" );
@@ -67,7 +67,7 @@ void World::loadBlocks()
 	}
 }
 
-void World::optimize()
+void Map::optimize()
 {
 	for ( ElementList::iterator elem = elements.begin() ;
 			elem != elements.end(); ++elem )
@@ -76,7 +76,7 @@ void World::optimize()
 	}
 }
 
-void World::processElement( Element& e )
+void Map::processElement( Element& e )
 {
 	Element * pe = &e;
 
@@ -105,7 +105,7 @@ void World::processElement( Element& e )
 	sections[ beginSection ].ending.push_back( pe );
 }
 
-bool World::collide(const AABB& aabb)
+bool Map::collide(const AABB& aabb)
 {
 	size_t section1 = ( (size_t)aabb.p1.z ) / sectionSize,
 		   section2 = ( (size_t)aabb.p2.z ) / sectionSize;
@@ -117,7 +117,7 @@ bool World::collide(const AABB& aabb)
 	return result;
 }
 
-bool World::collide(const AABB& aabb, WorldSection& section)
+bool Map::collide(const AABB& aabb, MapSection& section)
 {
 	return (
 		collide(aabb, section.beginning) ||
@@ -127,7 +127,7 @@ bool World::collide(const AABB& aabb, WorldSection& section)
 	);
 }
 
-bool World::collide(const AABB& aabb, std::vector< Element* >& elemreflist)
+bool Map::collide(const AABB& aabb, std::vector< Element* >& elemreflist)
 {
 	typedef std::vector< Element* > ElemRefList;
 	typedef ElemRefList::iterator ElemRefIter;
@@ -141,7 +141,7 @@ bool World::collide(const AABB& aabb, std::vector< Element* >& elemreflist)
 	return false;
 }
 
-void World::generateWorld()
+void Map::generateMap()
 {
 	sections.clear();
 	elements.clear();
@@ -178,7 +178,7 @@ struct BlockPos
 	double ypos;
 };
 
-void World::loadWorld( std::istream& is )
+void Map::loadMap( std::istream& is )
 {
 	std::string line;
 	std::vector< std::list< BlockPos > > aliases(256);

@@ -17,8 +17,8 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#ifndef _WORLD_HPP_
-#define _WORLD_HPP_
+#ifndef _MAP_HPP_
+#define _MAP_HPP_
 
 #include <vector>
 #include <istream>
@@ -26,18 +26,18 @@
 #include "element.hpp"
 #include "aabb.hpp"
 
-class World
+class Map
 {
 public:
 
-	World( size_t sectionSize );
+	Map( size_t sectionSize );
 
 	void glDraw( double zmin = 0 );
 
 	void loadBlocks();
 
-	void generateWorld();
-	void loadWorld( std::istream& is );
+	void generateMap();
+	void loadMap( std::istream& is );
 	void optimize();
 
 	Block * block( const char * name ) { return &blocks.at( name ); }
@@ -48,7 +48,7 @@ public:
 	size_t blocksLoaded() const throw() { return blocks.size(); }
 	double lowestPoint() const throw() { return -1; /* TODO: calculate */ }
 
-	// collide AABB with world.
+	// collide AABB with map.
 	// assumes aabb.size().z<sectionSize
 	bool collide( const AABB& aabb );
 
@@ -64,17 +64,17 @@ private:
 	{
 		std::vector< Element* >
 			beginning, running, ending, complete;
-	} WorldSection;
-	typedef std::vector< WorldSection > SectionList;
+	} MapSection;
+	typedef std::vector< MapSection > SectionList;
 	SectionList sections;
 
 	size_t _elementsDrawn; // for statistics
 
 	boost::ptr_map< std::string, Block > blocks;
 
-	bool collide( const AABB& aabb, WorldSection& section );
+	bool collide( const AABB& aabb, MapSection& section );
 	bool collide( const AABB& aabb, std::vector< Element* >& elemreflist );
 
 };
 
-#endif // _WORLD_HPP_
+#endif // _MAP_HPP_

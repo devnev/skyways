@@ -30,13 +30,13 @@ public:
 
 	Configuration();
 
-	void setWorld( const std::string& world ) { _world = world; }
+	void setMap( const std::string& map ) { _map = map; }
 
 	std::auto_ptr< Controller > buildController( Controller::QuitCallback cbquit );
 
 private:
 
-	std::string _world;
+	std::string _map;
 
 };
 

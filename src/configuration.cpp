@@ -32,9 +32,9 @@ std::auto_ptr< Controller > Configuration::buildController( Controller::QuitCall
 		10, 5, 100, 20, 1.5, 3.5, 6, 10,
 		cbquit, printer
 	) );
-	if ( _world.length() )
-		controller->loadWorld( _world );
+	if ( _map.length() )
+		controller->loadMap( _map );
 	else
-		controller->generateWorld();
+		controller->generateMap();
 	return controller;
 }
