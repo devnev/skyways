@@ -42,7 +42,7 @@ void Element::glDraw()
 	glPopMatrix();
 }
 
-bool Element::collide( const AABB& aabb )
+bool Element::collide( const AABB& aabb ) const
 {
 	AABB _aabb( aabb.offset( -_pos.x, -_pos.y, -_pos.z ) );
 	_aabb.p1.z /= _length;

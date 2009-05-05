@@ -25,6 +25,7 @@
 #include <boost/ptr_container/ptr_map.hpp>
 #include "element.hpp"
 #include "aabb.hpp"
+#include "collisionaccelerator.hpp"
 
 class Map
 {
@@ -54,26 +55,14 @@ public:
 
 private:
 
-	void processElement( Element& e );
+	CollisionAccelerator _accelerator;
 
 	typedef std::vector< Element > ElementList;
 	ElementList elements;
 
-	size_t sectionSize;
-	typedef struct
-	{
-		std::vector< Element* >
-			beginning, running, ending, complete;
-	} MapSection;
-	typedef std::vector< MapSection > SectionList;
-	SectionList sections;
-
 	size_t _elementsDrawn; // for statistics
 
 	boost::ptr_map< std::string, Block > blocks;
-
-	bool collide( const AABB& aabb, MapSection& section );
-	bool collide( const AABB& aabb, std::vector< Element* >& elemreflist );
 
 };
 

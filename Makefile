@@ -30,6 +30,7 @@ SkywaysSdl_BINARY=skyways.sdl
 HEADERS= \
 	src/aabb.hpp \
 	src/block.hpp \
+	src/collisionaccelerator.hpp \
 	src/configuration.hpp \
 	src/controller.hpp \
 	src/element.hpp \
@@ -53,6 +54,7 @@ SkywaysSdl_HEADERS= $(HEADERS) \
 
 CXXSOURCES= \
 	src/block.cpp \
+	src/collisionaccelerator.cpp \
 	src/configuration.cpp \
 	src/controller.cpp \
 	src/element.cpp \

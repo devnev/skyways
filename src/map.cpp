@@ -28,7 +28,7 @@
 #include "map.hpp"
 
 Map::Map( size_t sectionSize )
-	: sectionSize( sectionSize )
+	: _accelerator( sectionSize )
 {
 	std::string empty;
 	blocks.insert( empty, new Block() );
@@ -72,78 +72,18 @@ void Map::optimize()
 	for ( ElementList::iterator elem = elements.begin() ;
 			elem != elements.end(); ++elem )
 	{
-		processElement( *elem );
+		_accelerator.addElement( *elem );
 	}
 }
 
-void Map::processElement( Element& e )
+bool Map::collide( const AABB& aabb )
 {
-	Element * pe = &e;
-
-	size_t beginIndex = (size_t)pe->zoff();
-	size_t beginSection = beginIndex / sectionSize;
-	size_t sectionCount = ( (size_t)pe->length() + ( beginIndex % sectionSize ) ) / sectionSize;
-
-	// make sure section array has sufficient space
-	if ( sections.size() <= ( beginSection + sectionCount ) )
-		sections.resize( beginSection + sectionCount + 1 );
-
-	if ( sectionCount == 0 ) // fully contained in one section
-	{
-		sections[ beginSection ].complete.push_back( pe );
-		return;
-	}
-
-	sections[ beginSection ].beginning.push_back( pe );
-	++beginSection; --sectionCount;
-
-	for ( ; sectionCount > 0 ; --sectionCount, ++beginSection )
-	{
-		sections[ beginSection ].running.push_back( pe );
-	}
-
-	sections[ beginSection ].ending.push_back( pe );
-}
-
-bool Map::collide(const AABB& aabb)
-{
-	size_t section1 = ( (size_t)aabb.p1.z ) / sectionSize,
-		   section2 = ( (size_t)aabb.p2.z ) / sectionSize;
-	if ( section1 >= sections.size() )
-		return false;
-	bool result = collide(aabb, sections[ section1 ]);
-	if ( !result && section2 != section1 && section2 < sections.size() )
-		result = collide(aabb, sections[ section2 ]);
-	return result;
-}
-
-bool Map::collide(const AABB& aabb, MapSection& section)
-{
-	return (
-		collide(aabb, section.beginning) ||
-		collide(aabb, section.running) ||
-		collide(aabb, section.ending) ||
-		collide(aabb, section.complete)
-	);
-}
-
-bool Map::collide(const AABB& aabb, std::vector< Element* >& elemreflist)
-{
-	typedef std::vector< Element* > ElemRefList;
-	typedef ElemRefList::iterator ElemRefIter;
-
-	for ( ElemRefIter elemref = elemreflist.begin() ;
-			elemref != elemreflist.end(); ++elemref )
-	{
-		if ( (*elemref)->collide( aabb ) )
-			return true;
-	}
-	return false;
+	return _accelerator.collide( aabb );
 }
 
 void Map::generateMap()
 {
-	sections.clear();
+	_accelerator.clear();
 	elements.clear();
 	elements.push_back(Element(
 		0, -1, 0, 20, block( "" ), Vector3( 1, 1, 1 )
@@ -292,7 +232,7 @@ void Map::loadMap( std::istream& is )
 		}
 	}
 
-	sections.clear();
+	_accelerator.clear();
 	using std::swap;
 	swap( elements, newElements );
 }

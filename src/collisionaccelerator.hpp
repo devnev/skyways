@@ -17,37 +17,43 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#ifndef _ELEMENT_HPP_
-#define _ELEMENT_HPP_
+#ifndef _COLLISIONACCELERATOR_HPP_
+#define _COLLISIONACCELERATOR_HPP_
 
-#include "block.hpp"
+#include <vector>
+#include "element.hpp"
+#include "aabb.hpp"
 
-class Element
+class CollisionAccelerator
 {
+
 public:
 
-	Element( double x, double y, double z, double l, Block * b, const Vector3& color )
-		: _pos(Vector3( x,  y,  z)), _length( l ), _block( b ), _color( color )
-	{
-	}
+	CollisionAccelerator( size_t sectionSize );
 
-	void glDraw();
+	void addElement( const Element& e );
+	void clear() { sections.clear(); }
 
-	const Vector3& pos() const throw() { return _pos; }
-	double xoff() const throw() { return _pos.x; }
-	double yoff() const throw() { return _pos.y; }
-	double zoff() const throw() { return _pos.z; }
-	double length() const throw() { return _length; }
+	size_t sectionSize() const throw() { return _sectionSize; }
 
 	bool collide( const AABB& aabb ) const;
 
 private:
 
-	Vector3 _pos;
-	double _length;
-	Block * _block;
-	Vector3 _color;
+	size_t _sectionSize;
+	typedef struct
+	{
+		std::vector< const Element* >
+			beginning, running, ending, complete;
+	} MapSection;
+	typedef std::vector< MapSection > SectionList;
+	SectionList sections;
+
+	size_t _elementsDrawn; // for statistics
+
+	bool collide( const AABB& aabb, const MapSection& section ) const;
+	bool collide( const AABB& aabb, const std::vector< const Element* >& elemreflist ) const;
 
 };
 
-#endif // _ELEMENT_HPP_
+#endif // _COLLISIONACCELERATOR_HPP_
