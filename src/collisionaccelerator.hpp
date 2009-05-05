@@ -29,18 +29,18 @@ class CollisionAccelerator
 
 public:
 
-	CollisionAccelerator( size_t sectionSize );
+	CollisionAccelerator( double sectionSize );
 
 	void addElement( const Element& e );
 	void clear() { sections.clear(); }
 
-	size_t sectionSize() const throw() { return _sectionSize; }
+	double sectionSize() const throw() { return _sectionSize; }
 
 	bool collide( const AABB& aabb ) const;
 
 private:
 
-	size_t _sectionSize;
+	double _sectionSize;
 	typedef struct
 	{
 		std::vector< const Element* >

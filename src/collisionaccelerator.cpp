@@ -18,19 +18,20 @@
 //
 
 #include "collisionaccelerator.hpp"
+#include <cmath>
 
-CollisionAccelerator::CollisionAccelerator( size_t sectionSize )
+CollisionAccelerator::CollisionAccelerator( double sectionSize )
 	: _sectionSize( sectionSize )
 {
 }
 
 void CollisionAccelerator::addElement( const Element& e )
 {
-	const Element * pe = &e;
+	const Element * const pe = &e;
 
-	size_t beginIndex = (size_t)pe->zoff();
-	size_t beginSection = beginIndex / _sectionSize;
-	size_t sectionCount = ( (size_t)pe->length() + ( beginIndex % _sectionSize ) ) / _sectionSize;
+	const double beginDistance = pe->zoff();
+	size_t beginSection = (size_t)(beginDistance / _sectionSize);
+	size_t sectionCount = (size_t)((pe->length() + fmod(beginDistance, _sectionSize)) / _sectionSize);
 
 	// make sure section array has sufficient space
 	if ( sections.size() <= ( beginSection + sectionCount ) )
