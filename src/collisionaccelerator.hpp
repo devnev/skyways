@@ -36,7 +36,7 @@ public:
 
 	double sectionSize() const throw() { return _sectionSize; }
 
-	bool collide( const AABB& aabb ) const;
+	const Element * collide( const AABB& aabb ) const;
 
 private:
 
@@ -51,8 +51,8 @@ private:
 
 	size_t _elementsDrawn; // for statistics
 
-	bool collide( const AABB& aabb, const MapSection& section ) const;
-	bool collide( const AABB& aabb, const std::vector< const Element* >& elemreflist ) const;
+	const Element * collide( const AABB& aabb, const MapSection& section ) const;
+	const Element * collide( const AABB& aabb, const std::vector< const Element* >& elemreflist ) const;
 
 };
 

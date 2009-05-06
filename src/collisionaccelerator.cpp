@@ -54,29 +54,29 @@ void CollisionAccelerator::addElement( const Element& e )
 	sections[ beginSection ].ending.push_back( pe );
 }
 
-bool CollisionAccelerator::collide(const AABB& aabb) const
+const Element * CollisionAccelerator::collide(const AABB& aabb) const
 {
 	size_t section1 = ( (size_t)aabb.p1.z ) / _sectionSize,
 		   section2 = ( (size_t)aabb.p2.z ) / _sectionSize;
 	if ( section1 >= sections.size() )
-		return false;
-	bool result = collide(aabb, sections[ section1 ]);
+		return 0;
+	const Element * result = collide(aabb, sections[ section1 ]);
 	if ( !result && section2 != section1 && section2 < sections.size() )
 		result = collide(aabb, sections[ section2 ]);
 	return result;
 }
 
-bool CollisionAccelerator::collide(const AABB& aabb, const MapSection& section) const
+const Element * CollisionAccelerator::collide(const AABB& aabb, const MapSection& section) const
 {
-	return (
-		collide(aabb, section.beginning) ||
-		collide(aabb, section.running) ||
-		collide(aabb, section.ending) ||
-		collide(aabb, section.complete)
-	);
+	const Element * result = 0;
+	(result = collide(aabb, section.beginning)) ||
+	(result = collide(aabb, section.running)) ||
+	(result = collide(aabb, section.ending)) ||
+	(result = collide(aabb, section.complete));
+	return result;
 }
 
-bool CollisionAccelerator::collide(const AABB& aabb, const std::vector< const Element* >& elemreflist) const
+const Element * CollisionAccelerator::collide(const AABB& aabb, const std::vector< const Element* >& elemreflist) const
 {
 	typedef std::vector< const Element* > ElemRefList;
 	typedef ElemRefList::const_iterator ElemRefIter;
@@ -85,8 +85,8 @@ bool CollisionAccelerator::collide(const AABB& aabb, const std::vector< const El
 			elemref != elemreflist.end(); ++elemref )
 	{
 		if ( (*elemref)->collide( aabb ) )
-			return true;
+			return *elemref;
 	}
-	return false;
+	return 0;
 }
 
