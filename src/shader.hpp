@@ -108,6 +108,17 @@ public:
 	void compile()
 	{
 		glCompileShader(_shaderId);
+
+		GLint status;
+		glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &status);
+		if(status == GL_FALSE)
+		{
+			GLint length;
+			glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &length);
+			std::vector< char > errorstr(length);
+			glGetShaderInfoLog(_shaderId, length, NULL, &errorstr[0]);
+			throw std::runtime_error("Compile errors(s): " + std::string(&errorstr[0]));
+		}
 	}
 
 	GLuint getGlId()
