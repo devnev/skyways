@@ -37,6 +37,7 @@ HEADERS= \
 	src/map.hpp \
 	src/model.hpp \
 	src/objmodel.hpp \
+	src/shader.hpp \
 	src/ship.hpp \
 	src/textprinter.hpp \
 	src/vector.hpp \
@@ -60,6 +61,7 @@ CXXSOURCES= \
 	src/element.cpp \
 	src/map.cpp \
 	src/objmodel.cpp \
+	src/shader.cpp \
 	src/ship.cpp \
 	src/textprinter.cpp \
 	src/world.cpp

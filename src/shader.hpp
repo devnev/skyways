@@ -22,12 +22,7 @@
 
 #include <list>
 #include <string>
-#include <sstream>
-#include <fstream>
-#include <iterator>
-#include <algorithm>
 #include <vector>
-#include <stdexcept>
 
 class ShaderSource
 {
@@ -37,21 +32,9 @@ public:
 	ShaderSource() { }
 	~ShaderSource() { }
 
-	void addShaderSource( const std::string& source )
-	{
-		_sources.push_back( source );
-	}
+	void addShaderSource( const std::string& source );
 
-	void loadShaderSource( const char * filename )
-	{
-		std::ifstream fin;
-		fin.exceptions( std::ios::badbit | std::ios::failbit );
-		std::ostringstream sout;
-		fin.open( filename );
-		sout << fin.rdbuf();
-		fin.close();
-		addShaderSource( sout.str() );
-	}
+	void loadShaderSource( const char * filename );
 
 	std::list< std::string > getSources() const
 	{
@@ -80,46 +63,9 @@ public:
 	{
 	}
 
-	void setSource(const ShaderSource& source)
-	{
-		std::list< std::string > sources = source.getSources();
-		if ( sources.size() == 0 )
-		{
-			throw std::runtime_error("Attempted to create shader with empty sources");
-		}
-		if ( sources.size() == 1 )
-		{
-			const char * cstr = sources.front().c_str();
-			glShaderSource(_shaderId, 1, &cstr, 0);
-		}
-		else
-		{
-			std::vector< const char* > strArray(sources.size(), 0);
-			size_t i = 0;
-			std::list< std::string >::iterator sourcestr = sources.begin();
-			for ( ; sourcestr != sources.end(); ++sourcestr, ++i )
-			{
-				strArray[i] = sourcestr->c_str();
-			}
-			glShaderSource(_shaderId, i, &strArray[0], 0);
-		}
-	}
+	void setSource(const ShaderSource& source);
 
-	void compile()
-	{
-		glCompileShader(_shaderId);
-
-		GLint status;
-		glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &status);
-		if(status == GL_FALSE)
-		{
-			GLint length;
-			glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &length);
-			std::vector< char > errorstr(length);
-			glGetShaderInfoLog(_shaderId, length, NULL, &errorstr[0]);
-			throw std::runtime_error("Compile errors(s): " + std::string(&errorstr[0]));
-		}
-	}
+	void compile();
 
 	GLuint getGlId()
 	{
@@ -144,37 +90,11 @@ public:
 	{
 	}
 
-	void attachShader( Shader& shader )
-	{
-		glAttachShader( _programId, shader.getGlId() );
-		shaders.push_back( &shader );
-	}
+	void attachShader( Shader& shader );
 
-	void link()
-	{
-		std::for_each( shaders.begin(), shaders.end(), std::mem_fun( &Shader::compile ) );
-		glLinkProgram( _programId );
+	void link();
 
-		GLint status;
-		glGetProgramiv(_programId, GL_LINK_STATUS, &status);
-		if(status == GL_FALSE)
-		{
-			GLint length;
-			glGetProgramiv(_programId, GL_INFO_LOG_LENGTH, &length);
-			std::vector< char > errorstr(length);
-			glGetProgramInfoLog(_programId, length, NULL, &errorstr[0]);
-			throw std::runtime_error("Link error(s): " + std::string(&errorstr[0]));
-		}
-
-		_linked = true;
-	}
-
-	void use()
-	{
-		if (!_linked)
-			link();
-		glUseProgram( _programId );
-	}
+	void use();
 
 	GLuint getGlId()
 	{
