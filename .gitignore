@@ -2,4 +2,5 @@
 *.d
 skyways.glut
 skyways.qt
+skyways.sdl
 src/moc_qtwindow.cpp
