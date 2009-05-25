@@ -154,6 +154,18 @@ public:
 	{
 		std::for_each( shaders.begin(), shaders.end(), std::mem_fun( &Shader::compile ) );
 		glLinkProgram( _programId );
+
+		GLint status;
+		glGetProgramiv(_programId, GL_LINK_STATUS, &status);
+		if(status == GL_FALSE)
+		{
+			GLint length;
+			glGetProgramiv(_programId, GL_INFO_LOG_LENGTH, &length);
+			std::vector< char > errorstr(length);
+			glGetProgramInfoLog(_programId, length, NULL, &errorstr[0]);
+			throw std::runtime_error("Link error(s): " + std::string(&errorstr[0]));
+		}
+
 		_linked = true;
 	}
 
