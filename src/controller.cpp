@@ -17,6 +17,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <boost/format.hpp>
 #include <iostream>
@@ -106,6 +107,12 @@ void Controller::generateMap()
 
 void Controller::initialize()
 {
+	GLenum err = glewInit();
+	if (err != GLEW_OK)
+		throw std::runtime_error((const char*)glewGetErrorString(err));
+	if (!GLEW_VERSION_2_0)
+		throw std::runtime_error("Nead OpenGL >= 2.0 for shaders. Update your graphics drivers!");
+
 	glClearColor( 0.2, 0.2, 0.2, 0 );
 	glClearDepth( 1.0 );
 

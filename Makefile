@@ -79,7 +79,7 @@ SkywaysSdl_CXXSOURCES= $(CXXSOURCES) \
 	src/sdlmain.cpp
 
 CPPFLAGS+= -O2 -g -Wall -I/usr/include/FTGL -I/usr/include/freetype2
-LDFLAGS+= -lGL  -lboost_filesystem -lftgl
+LDFLAGS+= -lGL  -lboost_filesystem -lftgl -lGLEW
 
 SkywaysGlut_LDFLAGS=-lglut -lboost_program_options
 SkywaysQt_LDFLAGS=-lQtOpenGL -lQtGui -lQtCore -lGLU -lGL -lpthread
