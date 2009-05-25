@@ -26,6 +26,7 @@
 #include <ctime>
 #include <cmath>
 #include "textprinter.hpp"
+#include "shader.hpp"
 #include "controller.hpp"
 
 Controller::Controller(
@@ -112,6 +113,20 @@ void Controller::initialize()
 		throw std::runtime_error((const char*)glewGetErrorString(err));
 	if (!GLEW_VERSION_2_0)
 		throw std::runtime_error("Nead OpenGL >= 2.0 for shaders. Update your graphics drivers!");
+
+	ShaderSource vertexSource;
+	vertexSource.loadShaderSource( "shaders/shader.glslv" );
+	Shader vertexShader( Shader::VertexShader );
+	vertexShader.setSource( vertexSource );
+	ShaderSource fragmentSource;
+	fragmentSource.loadShaderSource( "shaders/shader.glslf" );
+	Shader fragmentShader( Shader::FragmentShader );
+	fragmentShader.setSource( fragmentSource );
+	_shaderProgram.reset( new ShaderProgram() );
+	_shaderProgram->attachShader( vertexShader );
+	_shaderProgram->attachShader( fragmentShader );
+	_shaderProgram->link();
+	_shaderProgram->use();
 
 	glClearColor( 0.2, 0.2, 0.2, 0 );
 	glClearDepth( 1.0 );

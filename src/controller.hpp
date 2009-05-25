@@ -25,6 +25,7 @@
 #include "world.hpp"
 
 class TextPrinter;
+class ShaderProgram;
 
 class Controller
 {
@@ -69,6 +70,7 @@ private:
 	QuitCallback _quitcb;
 	std::auto_ptr< TextPrinter > _printer;
 	size_t _windowwidth, _windowheight;
+	std::auto_ptr< ShaderProgram > _shaderProgram;
 
 };
 
