@@ -23,6 +23,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include <memory>
 
 class ShaderSource
 {
@@ -108,5 +109,11 @@ private:
 	bool _linked;
 
 };
+
+std::auto_ptr< ShaderProgram >
+createShaderProgram(
+	const char * vertexFilename,
+	const char * fragmentFilename
+);
 
 #endif // _SHADER_HPP_

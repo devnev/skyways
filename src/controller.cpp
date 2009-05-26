@@ -114,18 +114,7 @@ void Controller::initialize()
 	if (!GLEW_VERSION_2_0)
 		throw std::runtime_error("Nead OpenGL >= 2.0 for shaders. Update your graphics drivers!");
 
-	ShaderSource vertexSource;
-	vertexSource.loadShaderSource( "shaders/shader.glslv" );
-	Shader vertexShader( Shader::VertexShader );
-	vertexShader.setSource( vertexSource );
-	ShaderSource fragmentSource;
-	fragmentSource.loadShaderSource( "shaders/shader.glslf" );
-	Shader fragmentShader( Shader::FragmentShader );
-	fragmentShader.setSource( fragmentSource );
-	_shaderProgram.reset( new ShaderProgram() );
-	_shaderProgram->attachShader( vertexShader );
-	_shaderProgram->attachShader( fragmentShader );
-	_shaderProgram->link();
+	_shaderProgram = createShaderProgram("shaders/shader.glslv", "shaders/shader.glslf");
 	_shaderProgram->use();
 
 	glClearColor( 0.2, 0.2, 0.2, 0 );

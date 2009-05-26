@@ -116,3 +116,24 @@ void ShaderProgram::use()
 		link();
 	glUseProgram( _programId );
 }
+
+std::auto_ptr< ShaderProgram >
+createShaderProgram(
+	const char * vertexFilename,
+	const char * fragmentFilename
+)
+{
+	ShaderSource vertexSource;
+	vertexSource.loadShaderSource( vertexFilename );
+	Shader vertexShader( Shader::VertexShader );
+	vertexShader.setSource( vertexSource );
+	ShaderSource fragmentSource;
+	fragmentSource.loadShaderSource( fragmentFilename );
+	Shader fragmentShader( Shader::FragmentShader );
+	fragmentShader.setSource( fragmentSource );
+	std::auto_ptr< ShaderProgram > program( new ShaderProgram() );
+	program->attachShader( vertexShader );
+	program->attachShader( fragmentShader );
+	program->link();
+	return program;
+}
