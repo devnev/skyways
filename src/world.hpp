@@ -23,6 +23,8 @@
 #include "ship.hpp"
 #include "map.hpp"
 
+class ShaderProgram;
+
 class World
 {
 
@@ -31,9 +33,11 @@ public:
 	World(
 	    double acceleration, double strafespeed, double speedlimit
 	  , double gravity, double jumpstrength
+	  , ShaderProgram * shader = 0
 	);
 
 	void setMap(Map& map) throw() { _map = &map; }
+	void setShader(ShaderProgram& shader) throw() { _shader = &shader; }
 
 	void setAcceleration( double accel ) { _currAcc = accel*_maxAcc; }
 	void setStrafe( double strafe ) { _currStrafe = strafe*_maxStrafe; }
@@ -51,6 +55,7 @@ private:
 
 	Ship _ship;
 	Map* _map;
+	ShaderProgram * _shader;
 	double _currAcc, _maxAcc;
 	double _currStrafe, _maxStrafe;
 	double _maxSpeed, _zspeed;

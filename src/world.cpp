@@ -17,17 +17,18 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include <GL/gl.h>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include "shader.hpp"
 #include "world.hpp"
 
 World::World(
     double acceleration, double strafespeed, double speedlimit
   , double gravity, double jumpstrength
+  , ShaderProgram * shader
 )
-	: _ship(), _map( 0 )
+	: _ship(), _map( 0 ), _shader( shader )
 	, _currAcc( 0 ), _maxAcc( acceleration )
 	, _currStrafe( 0 ), _maxStrafe( strafespeed )
 	, _maxSpeed( speedlimit ), _zspeed( 0 )
@@ -53,6 +54,7 @@ void World::startJump()
 
 void World::draw( double zminClip )
 {
+	_shader->use();
 	glPushMatrix();
 	glTranslated( _ship.xpos() - 0.5, _ship.ypos(), 0.0 );
 	glColor4f( 1, 0, 0, 0.25 );

@@ -115,6 +115,7 @@ void Controller::initialize()
 		throw std::runtime_error("Nead OpenGL >= 2.0 for shaders. Update your graphics drivers!");
 
 	_shaderProgram = createShaderProgram("shaders/shader.glslv", "shaders/shader.glslf");
+	_world->setShader( *_shaderProgram );
 
 	glClearColor( 0.2, 0.2, 0.2, 0 );
 	glClearDepth( 1.0 );
@@ -166,7 +167,6 @@ void Controller::draw()
 	glLoadIdentity();
 	glRotatef( _camrot, 1, 0, 0 );
 	glTranslated( 0.0, -_camy, -_camz );
-	_shaderProgram->use();
 	_world->draw( _camz );
 	if ( _dead )
 	{
