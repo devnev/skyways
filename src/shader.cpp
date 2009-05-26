@@ -91,6 +91,12 @@ void ShaderProgram::attachShader( Shader& shader )
 	shaders.push_back( &shader );
 }
 
+Uniform ShaderProgram::getUniform( const std::string& name )
+{
+	GLint location = glGetUniformLocation( _programId, name.c_str() );
+	return Uniform( location );
+}
+
 void ShaderProgram::link()
 {
 	std::for_each( shaders.begin(), shaders.end(), std::mem_fun( &Shader::compile ) );

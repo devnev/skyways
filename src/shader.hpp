@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "uniform.hpp"
 
 class ShaderSource
 {
@@ -92,6 +93,8 @@ public:
 	}
 
 	void attachShader( Shader& shader );
+
+	Uniform getUniform( const std::string& name );
 
 	void link();
 
