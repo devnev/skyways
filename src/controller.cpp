@@ -37,8 +37,7 @@ Controller::Controller(
 )
 	: _game( game ), _map( 10 )
 	, _camy( cameraheight ), _camz( cameradistance ), _camrot( camerarotation )
-	, _dead( false ), _quitcb( cbQuit )
-	, _printer( printer )
+	, _quitcb( cbQuit ), _printer( printer )
 	, _windowwidth( 1 ), _windowheight( 1 )
 {
 	_game->setMap( _map );
@@ -58,7 +57,7 @@ void Controller::keydown( int key )
 	case DECEL_KEY: _game->setAcceleration( -1 ); break;
 	case JUMP_KEY: _game->startJump(); break;
 	case QUIT_KEY:
-		if ( _dead )
+		if ( _game->dead() )
 		{
 			_quitcb();
 		}
@@ -67,7 +66,7 @@ void Controller::keydown( int key )
 			std::cout <<
 				"You committed suicide!\n"
 				"Distance traveled: " << _game->distanceTraveled() << std::endl;
-			_dead = true;
+			_game->kill();
 		}
 		break;
 	}
@@ -168,7 +167,7 @@ void Controller::draw()
 	glRotatef( _camrot, 1, 0, 0 );
 	glTranslated( 0.0, -_camy, -_camz );
 	_game->draw( _camz );
-	if ( _dead )
+	if ( _game->dead() )
 	{
 		glUseProgram(0);
 		_printer->print(
@@ -181,17 +180,9 @@ void Controller::draw()
 
 void Controller::update( int difference )
 {
-	if ( _dead )
+	if ( _game->dead() )
 		return;
 
 	_game->update( difference );
-
-	if ( _game->droppedOut() )
-	{
-		std::cout <<
-			"You dropped into the void!\n"
-			"Distance traveled: " << _game->distanceTraveled() << std::endl;
-		_dead = true;
-	}
 
 }

@@ -20,6 +20,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <iostream>
 #include "shader.hpp"
 #include "game.hpp"
 
@@ -33,7 +34,7 @@ Game::Game(
 	, _currStrafe( 0 ), _maxStrafe( strafespeed )
 	, _maxSpeed( speedlimit ), _zspeed( 0 )
 	, _yapex( 0 ), _tapex( 0 ), _gravity( gravity )
-	, _jstrength( jumpstrength ), _grounded( true )
+	, _jstrength( jumpstrength ), _grounded( true ), _dead( false )
 {
 	_ship.initialize();
 	_ship.pos().x = 0.5;
@@ -124,4 +125,17 @@ void Game::update( int difference )
 		_grounded = false;
 	}
 
+	if ( droppedOut() )
+	{
+		std::cout <<
+			"You dropped into the void!\n"
+			"Distance traveled: " << distanceTraveled() << std::endl;
+		kill();
+	}
+
+}
+
+void Game::kill()
+{
+	_dead = true;
 }

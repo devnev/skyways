@@ -51,6 +51,9 @@ public:
 		return _ship.pos().y < _map->lowestPoint() - 1;
 	}
 
+	void kill();
+	bool dead() const throw() { return _dead; }
+
 private:
 
 	Ship _ship;
@@ -62,6 +65,7 @@ private:
 	double _yapex, _tapex, _gravity;
 	double _jstrength;
 	bool _grounded;
+	bool _dead;
 };
 
 #endif // _WORLD_HPP_

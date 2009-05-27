@@ -66,7 +66,6 @@ private:
 	std::auto_ptr< Game > _game;
 	Map _map;
 	double _camy, _camz, _camrot;
-	bool _dead;
 	QuitCallback _quitcb;
 	std::auto_ptr< TextPrinter > _printer;
 	size_t _windowwidth, _windowheight;
