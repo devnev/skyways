@@ -41,7 +41,7 @@ HEADERS= \
 	src/ship.hpp \
 	src/textprinter.hpp \
 	src/vector.hpp \
-	src/world.hpp
+	src/game.hpp
 
 SkywasyGlut_HEADERS= $(HEADERS) \
 	src/configparser.hpp
@@ -64,7 +64,7 @@ CXXSOURCES= \
 	src/shader.cpp \
 	src/ship.cpp \
 	src/textprinter.cpp \
-	src/world.cpp
+	src/game.cpp
 
 SkywaysGlut_CXXSOURCES= $(CXXSOURCES) \
 	src/configparser.cpp \

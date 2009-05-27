@@ -30,18 +30,18 @@
 #include "controller.hpp"
 
 Controller::Controller(
-	  std::auto_ptr< World > world
+	  std::auto_ptr< Game > game
 	, double cameraheight, double cameradistance, double camerarotation
 	, Controller::QuitCallback cbQuit
 	, std::auto_ptr< TextPrinter > printer
 )
-	: _world( world ), _map( 10 )
+	: _game( game ), _map( 10 )
 	, _camy( cameraheight ), _camz( cameradistance ), _camrot( camerarotation )
 	, _dead( false ), _quitcb( cbQuit )
 	, _printer( printer )
 	, _windowwidth( 1 ), _windowheight( 1 )
 {
-	_world->setMap( _map );
+	_game->setMap( _map );
 }
 
 Controller::~Controller()
@@ -52,11 +52,11 @@ void Controller::keydown( int key )
 {
 	switch ( key )
 	{
-	case STRAFE_L_KEY: _world->setStrafe( -1 ); break;
-	case STRAFE_R_KEY: _world->setStrafe( 1 ); break;
-	case ACCEL_KEY: _world->setAcceleration( 1 ); break;
-	case DECEL_KEY: _world->setAcceleration( -1 ); break;
-	case JUMP_KEY: _world->startJump(); break;
+	case STRAFE_L_KEY: _game->setStrafe( -1 ); break;
+	case STRAFE_R_KEY: _game->setStrafe( 1 ); break;
+	case ACCEL_KEY: _game->setAcceleration( 1 ); break;
+	case DECEL_KEY: _game->setAcceleration( -1 ); break;
+	case JUMP_KEY: _game->startJump(); break;
 	case QUIT_KEY:
 		if ( _dead )
 		{
@@ -66,7 +66,7 @@ void Controller::keydown( int key )
 		{
 			std::cout <<
 				"You committed suicide!\n"
-				"Distance traveled: " << _world->distanceTraveled() << std::endl;
+				"Distance traveled: " << _game->distanceTraveled() << std::endl;
 			_dead = true;
 		}
 		break;
@@ -78,16 +78,16 @@ void Controller::keyup( int key )
 	switch ( key )
 	{
 	case STRAFE_L_KEY:
-		_world->setStrafe( 0 );
+		_game->setStrafe( 0 );
 		break;
 	case STRAFE_R_KEY:
-		_world->setStrafe( 0 );
+		_game->setStrafe( 0 );
 		break;
 	case ACCEL_KEY:
-		_world->setAcceleration( 0 );
+		_game->setAcceleration( 0 );
 		break;
 	case DECEL_KEY:
-		_world->setAcceleration( 0 );
+		_game->setAcceleration( 0 );
 		break;
 	}
 }
@@ -115,7 +115,7 @@ void Controller::initialize()
 		throw std::runtime_error("Nead OpenGL >= 2.0 for shaders. Update your graphics drivers!");
 
 	_shaderProgram = createShaderProgram("shaders/shader.glslv", "shaders/shader.glslf");
-	_world->setShader( *_shaderProgram );
+	_game->setShader( *_shaderProgram );
 
 	glClearColor( 0.2, 0.2, 0.2, 0 );
 	glClearDepth( 1.0 );
@@ -167,12 +167,12 @@ void Controller::draw()
 	glLoadIdentity();
 	glRotatef( _camrot, 1, 0, 0 );
 	glTranslated( 0.0, -_camy, -_camz );
-	_world->draw( _camz );
+	_game->draw( _camz );
 	if ( _dead )
 	{
 		glUseProgram(0);
 		_printer->print(
-			( boost::format( "Distance Traveled: %1%" ) % _world->distanceTraveled() ).str(),
+			( boost::format( "Distance Traveled: %1%" ) % _game->distanceTraveled() ).str(),
 			_windowwidth / 2, _windowheight / 4 * 3,
 			TextPrinter::ALIGN_CENTER
 		);
@@ -184,13 +184,13 @@ void Controller::update( int difference )
 	if ( _dead )
 		return;
 
-	_world->update( difference );
+	_game->update( difference );
 
-	if ( _world->droppedOut() )
+	if ( _game->droppedOut() )
 	{
 		std::cout <<
 			"You dropped into the void!\n"
-			"Distance traveled: " << _world->distanceTraveled() << std::endl;
+			"Distance traveled: " << _game->distanceTraveled() << std::endl;
 		_dead = true;
 	}
 

@@ -25,12 +25,12 @@
 
 class ShaderProgram;
 
-class World
+class Game
 {
 
 public:
 
-	World(
+	Game(
 	    double acceleration, double strafespeed, double speedlimit
 	  , double gravity, double jumpstrength
 	  , ShaderProgram * shader = 0

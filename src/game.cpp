@@ -21,9 +21,9 @@
 #include <ctime>
 #include <cmath>
 #include "shader.hpp"
-#include "world.hpp"
+#include "game.hpp"
 
-World::World(
+Game::Game(
     double acceleration, double strafespeed, double speedlimit
   , double gravity, double jumpstrength
   , ShaderProgram * shader
@@ -39,7 +39,7 @@ World::World(
 	_ship.pos().x = 0.5;
 }
 
-void World::startJump()
+void Game::startJump()
 {
 	if ( _grounded ||
 		_map->collide( AABB(
@@ -52,7 +52,7 @@ void World::startJump()
 	}
 }
 
-void World::draw( double zminClip )
+void Game::draw( double zminClip )
 {
 	_shader->use();
 	glPushMatrix();
@@ -65,7 +65,7 @@ void World::draw( double zminClip )
 	_map->glDraw( _ship.zpos() - zminClip );
 }
 
-void World::update( int difference )
+void Game::update( int difference )
 {
 	double multiplier = ( (double)difference ) / 1000;
 

@@ -22,7 +22,7 @@
 
 #include <memory>
 #include "map.hpp"
-#include "world.hpp"
+#include "game.hpp"
 
 class TextPrinter;
 class ShaderProgram;
@@ -35,7 +35,7 @@ public:
 	typedef void (*QuitCallback)();
 
 	Controller(
-		std::auto_ptr< World > world
+		std::auto_ptr< Game > game
 	  , double cameraheight, double cameradistance, double camerarotation
 	  , QuitCallback cbQuit
 	  , std::auto_ptr< TextPrinter > printer
@@ -63,7 +63,7 @@ public:
 
 private:
 
-	std::auto_ptr< World > _world;
+	std::auto_ptr< Game > _game;
 	Map _map;
 	double _camy, _camz, _camrot;
 	bool _dead;
