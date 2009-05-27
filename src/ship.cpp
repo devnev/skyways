@@ -71,12 +71,6 @@ void Ship::draw()
 		glPolygonOffset( 0.01f, 0.01f );
 		drawSimple();
 		glDisable( GL_POLYGON_OFFSET_FILL );
-
-		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-		glColor3f( 0.75f, 0.75f, 0.75f );
-		glLineWidth( 1.0f );
-		drawSimple();
-		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 	}
 }
 

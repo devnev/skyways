@@ -33,12 +33,6 @@ void Element::glDraw()
 	_block->drawDl();
 	glDisable( GL_POLYGON_OFFSET_FILL );
 
-	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-	glColor3f( 0.75f, 0.75f, 0.75f );
-	glLineWidth( 1.0f );
-	_block->drawDl();
-	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-
 	glPopMatrix();
 }
 
