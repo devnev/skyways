@@ -116,28 +116,11 @@ void Controller::initialize()
 	glClearColor( 0.2, 0.2, 0.2, 0 );
 	glClearDepth( 1.0 );
 
-	glEnable( GL_DEPTH_TEST );
 	glDepthFunc( GL_LEQUAL );
-	glEnable( GL_CULL_FACE );
-
-	glEnable( GL_LIGHTING );
-	glShadeModel( GL_SMOOTH );
-	glEnable( GL_COLOR_MATERIAL );
-	glEnable( GL_NORMALIZE );
-
-	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
 	glEnable( GL_LINE_SMOOTH );
 	glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
-
-	float ambient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-	float diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	float position[] = { 0.0f, 4.0f, -2.0f, 1.0f };
-	glLightfv( GL_LIGHT1, GL_AMBIENT, ambient );
-	glLightfv( GL_LIGHT1, GL_DIFFUSE, diffuse );
-	glLightfv( GL_LIGHT1, GL_POSITION, position );
-	glEnable( GL_LIGHT1 );
 
 	_map.optimize();
 }
@@ -159,7 +142,34 @@ void Controller::resize( int width, int height )
 
 void Controller::draw()
 {
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	glClear( GL_DEPTH_BUFFER_BIT );
+
+	// draw gradient background
+	glMatrixMode( GL_PROJECTION );
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho( 0, 1, 1, 0, -1, 1 );
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+	glDisable( GL_DEPTH_TEST );
+	glDisable( GL_BLEND );
+	glBegin( GL_QUADS );
+		glColor3f(0.1, 0.1, 0.1);
+		glVertex2f(0, 0);
+		glColor3f(0.15, 0.05, 0);
+		glVertex2f(0, 1);
+		glColor3f(0.15, 0.05, 0);
+		glVertex2f(1, 1);
+		glColor3f(0.1, 0.1, 0.1);
+		glVertex2f(1, 0);
+	glEnd();
+	glMatrixMode( GL_PROJECTION );
+	glPopMatrix();
+	glMatrixMode( GL_MODELVIEW );
+
+	glEnable( GL_DEPTH_TEST );
+	glEnable( GL_CULL_FACE );
+	glEnable( GL_BLEND );
 	glLoadIdentity();
 	glRotatef( _camrot, 1, 0, 0 );
 	glTranslated( 0.0, -_camy, -_camz );
