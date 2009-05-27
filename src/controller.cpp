@@ -40,7 +40,6 @@ Controller::Controller(
 	, _quitcb( cbQuit ), _printer( printer )
 	, _windowwidth( 1 ), _windowheight( 1 )
 {
-	_game->setMap( _map );
 }
 
 Controller::~Controller()
@@ -93,6 +92,7 @@ void Controller::loadMap( std::string filename )
 	_map.loadBlocks();
 	std::ifstream mapFile( filename.c_str() );
 	_map.loadMap( mapFile );
+	_game->setMap( _map );
 }
 
 void Controller::generateMap()
@@ -100,6 +100,7 @@ void Controller::generateMap()
 	_map.loadBlocks();
 	srand(time(0));
 	_map.generateMap();
+	_game->setMap( _map );
 }
 
 void Controller::initialize()

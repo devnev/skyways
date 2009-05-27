@@ -124,6 +124,7 @@ void Map::generateMap()
 			running[j] -= mindist;
 		base += mindist;
 	}
+	_startPoint = Vector3(0.5, 0, 0);
 }
 
 struct Column
@@ -185,9 +186,12 @@ void Map::loadMap( std::istream& is )
 		throw std::runtime_error( "Unexpected eof before map." );
 
 	size_t columns;
+	Vector3 startPoint;
 	{
 		std::istringstream iss( line );
 		iss >> columns;
+		if (!( iss >> startPoint.x >> startPoint.y ))
+			startPoint = Vector3( 0.5, 0, 0 );
 	}
 
 	Column emptyColumn = { ' ', 0, 0 };
@@ -277,4 +281,5 @@ void Map::loadMap( std::istream& is )
 	_accelerator.clear();
 	using std::swap;
 	swap( elements, newElements );
+	_startPoint = startPoint;
 }

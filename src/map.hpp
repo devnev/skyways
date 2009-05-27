@@ -48,6 +48,7 @@ public:
 	size_t elementsDrawn() const throw() { return _elementsDrawn; }
 	size_t blocksLoaded() const throw() { return blocks.size(); }
 	double lowestPoint() const throw() { return -1; /* TODO: calculate */ }
+	const Vector3& startPoint() const throw() { return _startPoint; }
 
 	// collide AABB with map.
 	// assumes aabb.size().z<sectionSize
@@ -63,6 +64,8 @@ private:
 	size_t _elementsDrawn; // for statistics
 
 	boost::ptr_map< std::string, Block > blocks;
+
+	Vector3 _startPoint;
 
 };
 

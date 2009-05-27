@@ -7,7 +7,7 @@ o flat 0.75 tunnel 1.0
 b cube 1.5
 = cube 0 cube 2
 %%
-4
+4 0.5 6
 10 :  _
 30 : .
 20 :   .

@@ -36,7 +36,7 @@ public:
 	  , ShaderProgram * shader = 0
 	);
 
-	void setMap(Map& map) throw() { _map = &map; }
+	void setMap(Map& map) throw() { _map = &map; _ship.pos() = _map->startPoint(); }
 	void setShader(ShaderProgram& shader) throw() { _shader = &shader; }
 
 	void setAcceleration( double accel ) { _currAcc = accel*_maxAcc; }
