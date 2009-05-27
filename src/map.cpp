@@ -25,6 +25,7 @@
 #include <string>
 #include <sstream>
 #include <list>
+#include <cctype>
 #include "map.hpp"
 
 Map::Map( size_t sectionSize )
@@ -135,6 +136,7 @@ struct BlockPos
 	BlockPos() : block(), ypos(0.0) { }
 	std::string block;
 	double ypos;
+	char flag;
 };
 
 void Map::loadMap( std::istream& is )
@@ -153,10 +155,24 @@ void Map::loadMap( std::istream& is )
 		if ( key < 0 )
 			throw std::runtime_error( std::string("Invalid alias name ") + key );
 		BlockPos pos;
-		while ( iss >> pos.block >> pos.ypos )
+		while ( iss >> pos.block )
 		{
 			if ( blocks.find( pos.block ) == blocks.end() )
 				throw std::runtime_error( "Unknown block " + pos.block );
+
+			std::string tmp;
+			if (!( iss >> tmp ))
+				throw std::runtime_error( "Unexpected end of line" );
+			if (tmp.size() == 1 && std::isalpha(tmp[0]))
+			{
+				pos.flag = tmp[0];
+				if (!( iss >> tmp ))
+					throw std::runtime_error( "Unexpected end of line" );
+			}
+			else
+				pos.flag = 0;
+			std::istringstream( tmp ) >> pos.ypos;
+
 			aliases[ key ].push_back( pos );
 		}
 	}
