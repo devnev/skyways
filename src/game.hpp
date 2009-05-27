@@ -52,6 +52,7 @@ public:
 	}
 
 	void kill( const std::string & cause );
+	void suicide();
 	bool dead() const throw() { return !_death.empty(); }
 	const std::string& deathCause() const { return _death; }
 

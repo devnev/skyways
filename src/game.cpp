@@ -126,9 +126,14 @@ void Game::update( int difference )
 
 	if ( droppedOut() )
 	{
-		kill( "You dropped into the void" );
+		kill( "You dropped into the void!" );
 	}
 
+}
+
+void Game::suicide()
+{
+	kill( "You committed suicide!" );
 }
 
 void Game::kill( const std::string & cause )

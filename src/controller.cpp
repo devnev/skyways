@@ -63,7 +63,7 @@ void Controller::keydown( int key )
 		}
 		else
 		{
-			_game->kill( "You committed suicide!" );
+			_game->suicide();
 		}
 		break;
 	}
