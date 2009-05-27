@@ -63,10 +63,7 @@ void Controller::keydown( int key )
 		}
 		else
 		{
-			std::cout <<
-				"You committed suicide!\n"
-				"Distance traveled: " << _game->distanceTraveled() << std::endl;
-			_game->kill();
+			_game->kill( "You committed suicide!" );
 		}
 		break;
 	}
@@ -171,7 +168,9 @@ void Controller::draw()
 	{
 		glUseProgram(0);
 		_printer->print(
-			( boost::format( "Distance Traveled: %1%" ) % _game->distanceTraveled() ).str(),
+			( boost::format( "%1% Distance Traveled: %2%" )
+			  % _game->deathCause()
+			  % _game->distanceTraveled() ).str(),
 			_windowwidth / 2, _windowheight / 4 * 3,
 			TextPrinter::ALIGN_CENTER
 		);
@@ -184,5 +183,4 @@ void Controller::update( int difference )
 		return;
 
 	_game->update( difference );
-
 }

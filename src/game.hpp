@@ -51,8 +51,9 @@ public:
 		return _ship.pos().y < _map->lowestPoint() - 1;
 	}
 
-	void kill();
-	bool dead() const throw() { return _dead; }
+	void kill( const std::string & cause );
+	bool dead() const throw() { return !_death.empty(); }
+	const std::string& deathCause() const { return _death; }
 
 private:
 
@@ -65,7 +66,7 @@ private:
 	double _yapex, _tapex, _gravity;
 	double _jstrength;
 	bool _grounded;
-	bool _dead;
+	std::string _death;
 };
 
 #endif // _WORLD_HPP_
