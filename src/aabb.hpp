@@ -51,12 +51,12 @@ struct AABB
 	bool collide(const AABB& other) const throw()
 	{
 		int c = 0;
-		c |= (p1.x > other.p1.x && p1.x < other.p2.x) ? 0x01 : 0;
-		c |= (p1.y > other.p1.y && p1.y < other.p2.y) ? 0x02 : 0;
-		c |= (p1.z > other.p1.z && p1.z < other.p2.z) ? 0x04 : 0;
-		c |= (p2.x > other.p1.x && p2.x < other.p2.x) ? 0x01 : 0;
-		c |= (p2.y > other.p1.y && p2.y < other.p2.y) ? 0x02 : 0;
-		c |= (p2.z > other.p1.z && p2.z < other.p2.z) ? 0x04 : 0;
+		c |= ((p1.x > other.p1.x && p1.x < other.p2.x) ? 0x01 : 0);
+		c |= ((p1.y > other.p1.y && p1.y < other.p2.y) ? 0x02 : 0);
+		c |= ((p1.z > other.p1.z && p1.z < other.p2.z) ? 0x04 : 0);
+		c |= ((p2.x > other.p1.x && p2.x < other.p2.x) ? 0x01 : 0);
+		c |= ((p2.y > other.p1.y && p2.y < other.p2.y) ? 0x02 : 0);
+		c |= ((p2.z > other.p1.z && p2.z < other.p2.z) ? 0x04 : 0);
 		return c == 0x07;
 	}
 
