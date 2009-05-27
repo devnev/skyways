@@ -26,6 +26,7 @@
 #include <sstream>
 #include <list>
 #include <cctype>
+#include "game.hpp"
 #include "map.hpp"
 
 Map::Map( size_t sectionSize )
@@ -77,7 +78,7 @@ void Map::optimize()
 	}
 }
 
-bool Map::collide( const AABB& aabb )
+const Element * Map::collide( const AABB& aabb )
 {
 	return _accelerator.collide( aabb );
 }
@@ -136,7 +137,7 @@ struct BlockPos
 	BlockPos() : block(), ypos(0.0) { }
 	std::string block;
 	double ypos;
-	char flag;
+	Element::TriggerFn tfn;
 };
 
 void Map::loadMap( std::istream& is )
@@ -165,12 +166,16 @@ void Map::loadMap( std::istream& is )
 				throw std::runtime_error( "Unexpected end of line" );
 			if (tmp.size() == 1 && std::isalpha(tmp[0]))
 			{
-				pos.flag = tmp[0];
+				switch ( tmp[0] )
+				{
+				case 'd': pos.tfn = std::mem_fun_ref( &Game::explode ); break;
+				default: pos.tfn = 0; break;
+				}
 				if (!( iss >> tmp ))
 					throw std::runtime_error( "Unexpected end of line" );
 			}
 			else
-				pos.flag = 0;
+				pos.tfn = 0;
 			std::istringstream( tmp ) >> pos.ypos;
 
 			aliases[ key ].push_back( pos );
@@ -231,7 +236,8 @@ void Map::loadMap( std::istream& is )
 								( (double)rand() ) / RAND_MAX,
 								( (double)rand() ) / RAND_MAX,
 								( (double)rand() ) / RAND_MAX
-							)
+							),
+							posIter->tfn
 						));
 					}
 				}
@@ -261,7 +267,8 @@ void Map::loadMap( std::istream& is )
 						( (double)rand() ) / RAND_MAX,
 						( (double)rand() ) / RAND_MAX,
 						( (double)rand() ) / RAND_MAX
-					)
+					),
+					posIter->tfn
 				));
 			}
 		}

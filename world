@@ -1,5 +1,6 @@
 . flat 0
 _ cube -1
+e cube d -1
 - cube 0.25
 a tunnel 1.0
 o flat 0.75 tunnel 1.0
@@ -13,8 +14,10 @@ b cube 1.5
 10 :.  -
 15 :   -
 10 :.  o
-10 :_  =
-10 :  b
+10 :e  =
+4  :  b
+4  :  b_
+2  :  b
 10 : _
 10 :b
 10 :b  _

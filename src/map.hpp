@@ -51,7 +51,7 @@ public:
 
 	// collide AABB with map.
 	// assumes aabb.size().z<sectionSize
-	bool collide( const AABB& aabb );
+	const Element * collide( const AABB& aabb );
 
 private:
 

@@ -21,17 +21,23 @@
 #define _ELEMENT_HPP_
 
 #include "block.hpp"
+#include <boost/function.hpp>
+
+class Game;
 
 class Element
 {
 public:
 
-	Element( double x, double y, double z, double l, Block * b, const Vector3& color )
-		: _pos(Vector3( x,  y,  z)), _length( l ), _block( b ), _color( color )
+	typedef boost::function1<void, Game&> TriggerFn;
+
+	Element( double x, double y, double z, double l, Block * b, const Vector3& color, TriggerFn trigger = 0 )
+		: _pos(Vector3( x,  y,  z)), _length( l ), _block( b ), _color( color ), _trigger( trigger )
 	{
 	}
 
 	void glDraw();
+	void trigger(Game& game) const { if (_trigger) _trigger(game); }
 
 	const Vector3& pos() const throw() { return _pos; }
 	double xoff() const throw() { return _pos.x; }
@@ -47,6 +53,7 @@ private:
 	double _length;
 	Block * _block;
 	Vector3 _color;
+	TriggerFn _trigger;
 
 };
 

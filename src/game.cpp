@@ -110,11 +110,14 @@ void Game::update( int difference )
 
 	_tapex -= multiplier;
 	newPos.y = _yapex - _gravity * ( _tapex*_tapex );
-	if ( _map->collide( shipAabb.offset( newPos ) ) )
+	const Element * collision;
+	if ( ( collision = _map->collide( shipAabb.offset( newPos ) ) ) )
 	{
 		newPos.y = _ship.pos().y;
-		if (_tapex < 0)
+		if (_tapex < 0) {
 			_grounded = true;
+			collision->trigger( *this );
+		}
 		_tapex = 0;
 		_yapex = _ship.pos().y;
 	}
@@ -134,6 +137,11 @@ void Game::update( int difference )
 void Game::suicide()
 {
 	kill( "You committed suicide!" );
+}
+
+void Game::explode()
+{
+	kill( "You exploded!" );
 }
 
 void Game::kill( const std::string & cause )
