@@ -1,13 +1,13 @@
-. flat 0
-_ cube -1
-e cube d -1
-- cube 0.25
-a tunnel 1.0
-o flat 0.75 tunnel 1.0
-b cube 1.5
-= cube 0 cube 2
-%%
-4 0.5 6
+alias . flat 0
+alias _ cube -1
+alias e cube d -1
+alias - cube 0.25
+alias a tunnel 1.0
+alias o flat 0.75 tunnel 1.0
+alias b cube 1.5
+alias = cube 0 cube 2
+start 0.5 6
+map 4 EOMAP
 10 :  _
 30 : .
 20 :   .
@@ -24,3 +24,4 @@ b cube 1.5
 10 :
 10 :   _
 10 :   _
+EOMAP

@@ -146,62 +146,78 @@ void Map::loadMap( std::istream& is )
 	std::string line;
 	std::vector< std::list< BlockPos > > aliases(256);
 	std::vector< Element > newElements;
+	size_t columns = 0;
+	Vector3 startPoint = Vector3( 0.5, 0, 0 );
+	std::vector< std::string > maplines;
 
 	while ( std::getline( is, line ) )
 	{
-		if ( line == "%%" )
-			break;
 		std::istringstream iss( line );
-		char key;
-		iss >> key;
-		if ( key < 0 )
-			throw std::runtime_error( std::string("Invalid alias name ") + key );
-		BlockPos pos;
-		while ( iss >> pos.block )
+		std::string cmd;
+		if (!( iss >> cmd ))
+			continue;
+		else if ( cmd == "alias" )
 		{
-			if ( blocks.find( pos.block ) == blocks.end() )
-				throw std::runtime_error( "Unknown block " + pos.block );
-
-			std::string tmp;
-			if (!( iss >> tmp ))
-				throw std::runtime_error( "Unexpected end of line" );
-			if (tmp.size() == 1 && std::isalpha(tmp[0]))
+			char key;
+			iss >> key;
+			if ( key < 0 )
+				throw std::runtime_error( std::string("Invalid alias name ") + key );
+			BlockPos pos;
+			while ( iss >> pos.block )
 			{
-				switch ( tmp[0] )
-				{
-				case 'd': pos.tfn = std::mem_fun_ref( &Game::explode ); break;
-				default: pos.tfn = 0; break;
-				}
-				if (!( iss >> tmp ))
-					throw std::runtime_error( "Unexpected end of line" );
-			}
-			else
-				pos.tfn = 0;
-			std::istringstream( tmp ) >> pos.ypos;
+				if ( blocks.find( pos.block ) == blocks.end() )
+					throw std::runtime_error( "Unknown block " + pos.block );
 
-			aliases[ key ].push_back( pos );
+				std::string tmp;
+				if (!( iss >> tmp ))
+					throw std::runtime_error( "Unexpected end of line." );
+				if (tmp.size() == 1 && std::isalpha(tmp[0]))
+				{
+					switch ( tmp[0] )
+					{
+					case 'd': pos.tfn = std::mem_fun_ref( &Game::explode ); break;
+					default: pos.tfn = 0; break;
+					}
+					if (!( iss >> tmp ))
+						throw std::runtime_error( "Unexpected end of line." );
+				}
+				else
+					pos.tfn = 0;
+				std::istringstream( tmp ) >> pos.ypos;
+
+				aliases[ key ].push_back( pos );
+			}
+		}
+		else if ( cmd == "start" )
+		{
+			if (!( iss >> startPoint.x >> startPoint.y ))
+				throw std::runtime_error( "Unexpected end of line in start coordinates." );
+		}
+		else if ( cmd == "map" )
+		{
+			std::string delim;
+			if (!( iss >> columns ))
+				throw std::runtime_error( "Unexpected end of line before map width." );
+			if (!( iss >> delim ))
+				throw std::runtime_error( "Unexpected end of line before map delim." );
+			while ( is && std::getline( is, line ) && line != delim )
+				maplines.push_back(line);
+			if ( line != delim )
+				throw std::runtime_error( "Unexpected eof during map block." );
 		}
 	}
-	if ( !is || !std::getline( is, line ) )
-		throw std::runtime_error( "Unexpected eof before map." );
 
-	size_t columns;
-	Vector3 startPoint;
-	{
-		std::istringstream iss( line );
-		iss >> columns;
-		if (!( iss >> startPoint.x >> startPoint.y ))
-			startPoint = Vector3( 0.5, 0, 0 );
-	}
+	if ( maplines.empty() )
+		throw std::runtime_error( "Missing/empty map block." );
 
 	Column emptyColumn = { ' ', 0, 0 };
-
 	std::vector< Column > runningdata(columns, emptyColumn);
-
 	double rowlength, position = 0.0;
 
-	while ( std::getline( is, line ) )
+	for ( std::vector< std::string >::iterator mapiter = maplines.begin();
+			mapiter != maplines.end(); ++mapiter )
 	{
+		const std::string& line = *mapiter;
 		size_t seperator = line.find(':');
 		if ( seperator == std::string::npos )
 			throw std::runtime_error( "Missing seperator in map row." );
