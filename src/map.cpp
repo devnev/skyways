@@ -141,6 +141,46 @@ struct BlockPos
 	Element::TriggerFn tfn;
 };
 
+void parseAlias(
+    std::istream& is
+  , const boost::ptr_map< std::string, Block >& blocks
+  , std::vector< std::list< BlockPos > >& aliases
+  )
+{
+	char key;
+	is >> key;
+	if ( key < 0 )
+		throw std::runtime_error( std::string("Invalid alias name ") + key );
+	BlockPos pos;
+	std::string blockName;
+	while ( is >> blockName )
+	{
+		if ( blocks.find( blockName ) == blocks.end() )
+			throw std::runtime_error( "Unknown block " + blockName );
+		else
+			pos.block = blocks.find( blockName )->second;
+
+		std::string tmp;
+		if (!( is >> tmp ))
+			throw std::runtime_error( "Unexpected end of line." );
+		if (tmp.size() == 1 && std::isalpha(tmp[0]))
+		{
+			switch ( tmp[0] )
+			{
+			case 'd': pos.tfn = std::mem_fun_ref( &Game::explode ); break;
+			default: pos.tfn = 0; break;
+			}
+			if (!( is >> tmp ))
+				throw std::runtime_error( "Unexpected end of line." );
+		}
+		else
+			pos.tfn = 0;
+		std::istringstream( tmp ) >> pos.ypos;
+
+		aliases[ key ].push_back( pos );
+	}
+}
+
 void Map::loadMap( std::istream& is )
 {
 	std::string line;
@@ -158,38 +198,7 @@ void Map::loadMap( std::istream& is )
 			continue;
 		else if ( cmd == "alias" )
 		{
-			char key;
-			iss >> key;
-			if ( key < 0 )
-				throw std::runtime_error( std::string("Invalid alias name ") + key );
-			BlockPos pos;
-			std::string blockName;
-			while ( iss >> blockName )
-			{
-				if ( blocks.find( blockName ) == blocks.end() )
-					throw std::runtime_error( "Unknown block " + blockName );
-				else
-					pos.block = blocks.find( blockName )->second;
-
-				std::string tmp;
-				if (!( iss >> tmp ))
-					throw std::runtime_error( "Unexpected end of line." );
-				if (tmp.size() == 1 && std::isalpha(tmp[0]))
-				{
-					switch ( tmp[0] )
-					{
-					case 'd': pos.tfn = std::mem_fun_ref( &Game::explode ); break;
-					default: pos.tfn = 0; break;
-					}
-					if (!( iss >> tmp ))
-						throw std::runtime_error( "Unexpected end of line." );
-				}
-				else
-					pos.tfn = 0;
-				std::istringstream( tmp ) >> pos.ypos;
-
-				aliases[ key ].push_back( pos );
-			}
+			parseAlias( iss, blocks, aliases );
 		}
 		else if ( cmd == "start" )
 		{
