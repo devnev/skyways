@@ -135,8 +135,8 @@ struct Column
 
 struct BlockPos
 {
-	BlockPos() : block(), ypos(0.0) { }
-	std::string block;
+	BlockPos() : block(0), ypos(0.0) { }
+	Block * block;
 	double ypos;
 	Element::TriggerFn tfn;
 };
@@ -163,10 +163,13 @@ void Map::loadMap( std::istream& is )
 			if ( key < 0 )
 				throw std::runtime_error( std::string("Invalid alias name ") + key );
 			BlockPos pos;
-			while ( iss >> pos.block )
+			std::string blockName;
+			while ( iss >> blockName )
 			{
-				if ( blocks.find( pos.block ) == blocks.end() )
-					throw std::runtime_error( "Unknown block " + pos.block );
+				if ( blocks.find( blockName ) == blocks.end() )
+					throw std::runtime_error( "Unknown block " + blockName );
+				else
+					pos.block = blocks.find( blockName )->second;
 
 				std::string tmp;
 				if (!( iss >> tmp ))
@@ -251,7 +254,7 @@ void Map::loadMap( std::istream& is )
 							posIter->ypos,
 							runningdata[i].start,
 							runningdata[i].length,
-							blocks.find( posIter->block )->second,
+							posIter->block,
 							Vector3(
 								( (double)rand() ) / RAND_MAX,
 								( (double)rand() ) / RAND_MAX,
@@ -282,7 +285,7 @@ void Map::loadMap( std::istream& is )
 					posIter->ypos,
 					runningdata[i].start,
 					runningdata[i].length,
-					blocks.find( posIter->block )->second,
+					posIter->block,
 					Vector3(
 						( (double)rand() ) / RAND_MAX,
 						( (double)rand() ) / RAND_MAX,
