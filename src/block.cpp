@@ -25,7 +25,7 @@
 #include "objmodel.hpp"
 #include "block.hpp"
 
-void Block::draw()
+void Block::draw() const
 {
 	if (model.vertices.size() > 0)
 	{
@@ -75,7 +75,7 @@ void Block::draw()
 	}
 }
 
-void Block::drawDl()
+void Block::drawDl() const
 {
 	if ( _blockDl == 0 )
 	{

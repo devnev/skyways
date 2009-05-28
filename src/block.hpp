@@ -35,8 +35,8 @@ public:
 
 	Block() : _blockDl( 0 ) { }
 
-	void draw();
-	void drawDl();
+	void draw() const;
+	void drawDl() const;
 
 	static std::auto_ptr< Block > fromStream( std::istream& is );
 	static std::auto_ptr< Block > fromFile( const std::string& filename );
@@ -49,7 +49,7 @@ private:
 	typedef std::vector< AABB > AabbList;
 	AabbList bounds;
 
-	GLuint _blockDl;
+	mutable GLuint _blockDl;
 
 };
 

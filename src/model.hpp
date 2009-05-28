@@ -65,7 +65,7 @@ typedef struct
 	std::vector< Face<3> > trifaces;
 	std::vector< Face<4> > quadfaces;
 
-	void draw()
+	void draw() const
 	{
 		glBegin( GL_TRIANGLES );
 		for ( size_t i = 0; i < trifaces.size(); ++i )
@@ -80,7 +80,7 @@ typedef struct
 private:
 
 	template<size_t N>
-	void drawFace( Face<N>& face )
+	void drawFace( const Face<N>& face ) const
 	{
 		for ( size_t i = 0; i < N; ++i )
 		{

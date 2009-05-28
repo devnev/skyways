@@ -136,7 +136,7 @@ struct Column
 struct BlockPos
 {
 	BlockPos() : block(0), ypos(0.0) { }
-	Block * block;
+	const Block * block;
 	double ypos;
 	Element::TriggerFn tfn;
 };

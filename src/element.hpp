@@ -31,7 +31,7 @@ public:
 
 	typedef boost::function1<void, Game&> TriggerFn;
 
-	Element( double x, double y, double z, double l, Block * b, const Vector3& color, TriggerFn trigger = 0 )
+	Element( double x, double y, double z, double l, const Block * b, const Vector3& color, TriggerFn trigger = 0 )
 		: _pos(Vector3( x,  y,  z)), _length( l ), _block( b ), _color( color ), _trigger( trigger )
 	{
 	}
@@ -51,7 +51,7 @@ private:
 
 	Vector3 _pos;
 	double _length;
-	Block * _block;
+	const Block * _block;
 	Vector3 _color;
 	TriggerFn _trigger;
 
