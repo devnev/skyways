@@ -127,6 +127,12 @@ void Map::generateMap()
 	_startPoint = Vector3(0.5, 0, 0);
 }
 
+struct Row
+{
+	std::string data;
+	double start, length;
+};
+
 struct Column
 {
 	char key;
@@ -181,84 +187,35 @@ void parseAlias(
 	}
 }
 
-void parseMap( size_t columns
-  , const std::vector< std::string >& maplines
+void parseRow( size_t columns, const Row& row
+  , std::vector< Column >& runningdata
   , const std::vector< std::list< BlockPos > >& aliases
   , std::vector< Element >& elements
   )
 {
-	Column emptyColumn = { ' ', 0, 0 };
-	std::vector< Column > runningdata(columns, emptyColumn);
-	double rowlength, position = 0.0;
-
-	for ( std::vector< std::string >::const_iterator mapiter = maplines.begin();
-			mapiter != maplines.end(); ++mapiter )
+	for (size_t i = 0; i < columns; ++i)
 	{
-		const std::string& line = *mapiter;
-		size_t seperator = line.find(':');
-		if ( seperator == std::string::npos )
-			throw std::runtime_error( "Missing seperator in map row." );
-		if ( sscanf( line.substr(0, seperator).c_str(), " %lf ", &rowlength ) != 1 )
-			throw std::runtime_error( "Invalid row length in map row." );
-		std::string row = line.substr( seperator+1 );
-		if ( row.length() > columns )
-			throw std::runtime_error( "Bad row size." );
-		else if ( row.length() < columns )
-			row.resize( columns,  ' ' );
-		for (size_t i = 0; i < columns; ++i)
+		char key = ' ';
+		if ( !row.data.empty() )
 		{
-			char key = row[i];
+			key = row.data[i];
 			if ( key < 0 || ( key != ' ' && aliases[key].empty() ) )
 				throw std::runtime_error( std::string("Invalid alias name ") + key );
 			if ( key == runningdata[i].key )
 			{
-				runningdata[i].length += rowlength;
-			}
-			else
-			{
-				if ( runningdata[i].key != ' ' )
-				{
-					for ( std::list< BlockPos >::const_iterator posIter =
-							aliases[runningdata[i].key].begin();
-							posIter != aliases[runningdata[i].key].end();
-							++posIter)
-					{
-						elements.push_back(Element(
-							( (double)i ) - ( (double)columns ) / 2,
-							posIter->ypos,
-							runningdata[i].start,
-							runningdata[i].length,
-							posIter->block,
-							Vector3(
-								( (double)rand() ) / RAND_MAX,
-								( (double)rand() ) / RAND_MAX,
-								( (double)rand() ) / RAND_MAX
-							),
-							posIter->tfn
-						));
-					}
-				}
-				runningdata[i].key = key;
-				runningdata[i].start = position;
-				runningdata[i].length = rowlength;
+				runningdata[i].length += row.length;
+				continue;
 			}
 		}
-		position += rowlength;
-	}
-	for (size_t i = 0; i < columns; ++i)
-	{
+
 		if ( runningdata[i].key != ' ' )
 		{
-			for ( std::list< BlockPos >::const_iterator posIter =
-					aliases[runningdata[i].key].begin();
-					posIter != aliases[runningdata[i].key].end();
-					++posIter)
+			for ( std::list< BlockPos >::const_iterator posIter = aliases[runningdata[i].key].begin();
+					posIter != aliases[runningdata[i].key].end(); ++posIter)
 			{
 				elements.push_back(Element(
 					( (double)i ) - ( (double)columns ) / 2,
-					posIter->ypos,
-					runningdata[i].start,
-					runningdata[i].length,
+					posIter->ypos, runningdata[i].start, runningdata[i].length,
 					posIter->block,
 					Vector3(
 						( (double)rand() ) / RAND_MAX,
@@ -269,7 +226,46 @@ void parseMap( size_t columns
 				));
 			}
 		}
+
+		if ( !row.data.empty() )
+		{
+			runningdata[i].key = key;
+			runningdata[i].start = row.start;
+			runningdata[i].length = row.length;
+		}
 	}
+}
+
+void parseMap( size_t columns
+  , const std::vector< std::string >& maplines
+  , const std::vector< std::list< BlockPos > >& aliases
+  , std::vector< Element >& elements
+  )
+{
+	Column emptyColumn = { ' ', 0, 0 };
+	Row row;
+	std::vector< Column > runningdata(columns, emptyColumn);
+	row.start = 0;
+
+	for ( std::vector< std::string >::const_iterator mapiter = maplines.begin();
+			mapiter != maplines.end(); ++mapiter )
+	{
+		const std::string& line = *mapiter;
+		size_t seperator = line.find(':');
+		if ( seperator == std::string::npos )
+			throw std::runtime_error( "Missing seperator in map row." );
+		if ( sscanf( line.substr(0, seperator).c_str(), " %lf ", &row.length ) != 1 )
+			throw std::runtime_error( "Invalid row length in map row." );
+		row.data = line.substr( seperator+1 );
+		if ( row.data.length() > columns )
+			throw std::runtime_error( "Bad row size." );
+		else if ( row.data.length() < columns )
+			row.data.resize( columns,  ' ' );
+		parseRow( columns, row, runningdata, aliases, elements );
+		row.start += row.length;
+	}
+	row.data.clear();
+	parseRow( columns, row, runningdata, aliases, elements );
 }
 
 void Map::loadMap( std::istream& is )
