@@ -20,9 +20,9 @@
 #include <stdexcept>
 #include <boost/format.hpp>
 #include <SDL.h>
-#include "controller.hpp"
+#include <controller.hpp>
 #include "configparser.hpp"
-#include "configuration.hpp"
+#include <configuration.hpp>
 
 void SdlThrowError( const char * message )
 {

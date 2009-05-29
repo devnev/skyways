@@ -25,7 +25,7 @@
 #endif // _QTCONFIGPARSER_HPP_
 
 #include <boost/program_options.hpp>
-#include "configuration.hpp"
+#include <configuration.hpp>
 
 class ConfigParser
 {

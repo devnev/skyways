@@ -21,7 +21,7 @@
 #define _CONTROLLER_HPP_
 
 #include <memory>
-#include "map.hpp"
+#include <world/map.hpp>
 #include "game.hpp"
 
 class TextPrinter;

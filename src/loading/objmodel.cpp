@@ -23,8 +23,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <set>
-#include "vector.hpp"
-#include "range.hpp"
+#include <vector.hpp>
+#include <range.hpp>
 #include "objmodel.hpp"
 
 static bool parseFacePoint(const char* str, size_t& v, size_t& vt, size_t& vn)

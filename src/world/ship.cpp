@@ -21,8 +21,8 @@
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
+#include <loading/objmodel.hpp>
 #include "ship.hpp"
-#include "objmodel.hpp"
 
 Ship::Ship()
 	: _pos(Vector3(0, 0, 0))

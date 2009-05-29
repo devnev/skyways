@@ -24,8 +24,8 @@
 #include <iostream>
 #include <cmath>
 #include "qtconfigparser.hpp"
-#include "configuration.hpp"
-#include "controller.hpp"
+#include <configuration.hpp>
+#include <controller.hpp>
 #include "qtwindow.hpp"
 
 void quitFunc()

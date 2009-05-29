@@ -25,11 +25,11 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
-#include "textprinter.hpp"
-#include "shader.hpp"
-#include "maploader.hpp"
-#include "mapgenerator.hpp"
-#include "blockloader.hpp"
+#include <display/textprinter.hpp>
+#include <display/shader.hpp>
+#include <loading/maploader.hpp>
+#include <loading/mapgenerator.hpp>
+#include <loading/blockloader.hpp>
 #include "controller.hpp"
 
 Controller::Controller(

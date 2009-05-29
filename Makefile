@@ -1,22 +1,4 @@
-
-###########################
-# prelude: do not change! #
-###########################
-
-CWD:=$(shell pwd)
-
-default: all
-
-BUILDFLAGS=CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
-
-define FLAGINIT_template
-  ifndef $(1)
-    $(1)=
-  endif
-endef
-
-$(foreach flag,$(BUILDFLAGS),$(eval $(call FLAGINIT_template,$(flag))))
-
+#!/usr/bin/make
 ######################################
 # configuration: change things here. #
 ######################################
@@ -28,66 +10,76 @@ SkywaysQt_BINARY=skyways.qt
 SkywaysSdl_BINARY=skyways.sdl
 
 HEADERS= \
-	src/aabb.hpp \
-	src/block.hpp \
-	src/blockloader.hpp \
-	src/collisionaccelerator.hpp \
 	src/configuration.hpp \
 	src/controller.hpp \
-	src/element.hpp \
-	src/map.hpp \
-	src/mapgenerator.hpp \
-	src/maploader.hpp \
-	src/model.hpp \
-	src/objmodel.hpp \
-	src/shader.hpp \
-	src/ship.hpp \
-	src/textprinter.hpp \
+	src/display/shader.hpp \
+	src/display/textprinter.hpp \
+	src/display/uniform.hpp \
+	src/game.hpp \
+	src/loading/blockloader.hpp \
+	src/loading/mapgenerator.hpp \
+	src/loading/maploader.hpp \
+	src/loading/objmodel.hpp \
+	src/range.hpp \
 	src/vector.hpp \
-	src/game.hpp
+	src/world/aabb.hpp \
+	src/world/block.hpp \
+	src/world/collisionaccelerator.hpp \
+	src/world/element.hpp \
+	src/world/map.hpp \
+	src/world/model.hpp \
+	src/world/ship.hpp \
+	#
 
 SkywasyGlut_HEADERS= $(HEADERS) \
-	src/configparser.hpp
+	src/backends/configparser.hpp \
+	#
 
 SkywasyQt_HEADERS= $(HEADERS) \
-	src/qtconfigparser.hpp \
-	src/qtwindow.hpp
+	src/backends/qtconfigparser.hpp \
+	src/backends/qtwindow.hpp \
+	#
 
 SkywaysSdl_HEADERS= $(HEADERS) \
-	src/configparser.hpp
+	src/backends/configparser.hpp \
+	#
 
 CXXSOURCES= \
-	src/block.cpp \
-	src/blockloader.cpp \
-	src/collisionaccelerator.cpp \
 	src/configuration.cpp \
 	src/controller.cpp \
-	src/element.cpp \
-	src/map.cpp \
-	src/mapgenerator.cpp \
-	src/maploader.cpp \
-	src/objmodel.cpp \
-	src/shader.cpp \
-	src/ship.cpp \
-	src/textprinter.cpp \
-	src/game.cpp
+	src/display/shader.cpp \
+	src/display/textprinter.cpp \
+	src/game.cpp \
+	src/loading/blockloader.cpp \
+	src/loading/mapgenerator.cpp \
+	src/loading/maploader.cpp \
+	src/loading/objmodel.cpp \
+	src/world/block.cpp \
+	src/world/collisionaccelerator.cpp \
+	src/world/element.cpp \
+	src/world/map.cpp \
+	src/world/ship.cpp \
+	#
 
 SkywaysGlut_CXXSOURCES= $(CXXSOURCES) \
-	src/configparser.cpp \
-	src/glutmain.cpp
+	src/backends/configparser.cpp \
+	src/backends/glutmain.cpp \
+	#
 
 SkywaysQt_CXXSOURCES= $(CXXSOURCES) \
-	src/moc_qtwindow.cpp \
-	src/qtconfigparser.cpp \
-	src/qtmain.cpp \
-	src/qtwindow.cpp
+	src/backends/moc_qtwindow.cpp \
+	src/backends/qtconfigparser.cpp \
+	src/backends/qtmain.cpp \
+	src/backends/qtwindow.cpp \
+	#
 
 SkywaysSdl_CXXSOURCES= $(CXXSOURCES) \
-	src/configparser.cpp \
-	src/sdlmain.cpp
+	src/backends/configparser.cpp \
+	src/backends/sdlmain.cpp \
+	#
 
-CPPFLAGS+= -O2 -g -Wall -I/usr/include/FTGL -I/usr/include/freetype2
-LDFLAGS+= -lGL  -lboost_filesystem -lftgl -lGLEW
+CPPFLAGS:= -O2 -g -Wall -I/usr/include/FTGL -I/usr/include/freetype2 $(CPPFLAGS) -Isrc
+LDFLAGS:= -lGL  -lboost_filesystem -lftgl -lGLEW $(LDFLAGS)
 
 SkywaysGlut_LDFLAGS=-lglut -lboost_program_options
 SkywaysQt_LDFLAGS=-lQtOpenGL -lQtGui -lQtCore -lGLU -lGL -lpthread
@@ -100,6 +92,10 @@ EXTRADIST=
 ######################################
 # auto-configuration: do not change! #
 ######################################
+
+CWD:=$(shell pwd)
+
+default: all
 
 $(foreach prog,$(PROGRAMS),$(eval $(prog)_SOURCES=$($(prog)_CSOURCES) $($(prog)_CXXSOURCES)))
 $(foreach prog,$(PROGRAMS),$(eval $(prog)_OBJECTS=$(patsubst %.c,%_$(prog).o,$($(prog)_CSOURCES)) $(patsubst %.cpp,%_$(prog).o,$($(prog)_CXXSOURCES))))

@@ -17,7 +17,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "textprinter.hpp"
+#include <display/textprinter.hpp>
 #include "controller.hpp"
 #include "configuration.hpp"
 

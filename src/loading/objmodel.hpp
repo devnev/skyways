@@ -17,22 +17,17 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#ifndef _BLOCKLOADER_HPP_
-#define _BLOCKLOADER_HPP_
+#ifndef _OBJMODEL_HPP_
+#define _OBJMODEL_HPP_
 
-#include <memory>
-#include <string>
-#include <boost/ptr_container/ptr_map.hpp>
-#include "block.hpp"
+#include <vector>
+#include <utility>
+#include <vector.hpp>
+#include <world/model.hpp>
 
-class BlockLoader
-{
+typedef std::vector< std::pair< std::string, std::string > > ObjUnknownsList;
 
-public:
+void loadObjModel(const char* filename, Model& model, bool unify = true,
+		ObjUnknownsList* unknowns = 0, const char * expectedUnknowns = 0);
 
-	void loadDirectory( const char * directory, boost::ptr_map< std::string, Block >& block );
-	std::auto_ptr< Block > load( const std::string& filename );
-
-};
-
-#endif // _BLOCKLOADER_HPP_
+#endif

@@ -31,9 +31,9 @@
 #  error "Unknown GLUT implementation. Need glutLeaveMainLoop extension."
 #endif
 
-#include "controller.hpp"
+#include <controller.hpp>
 #include "configparser.hpp"
-#include "configuration.hpp"
+#include <configuration.hpp>
 
 std::auto_ptr< Controller > controller;
 

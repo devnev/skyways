@@ -20,8 +20,8 @@
 #ifndef _ELEMENT_HPP_
 #define _ELEMENT_HPP_
 
-#include "block.hpp"
 #include <boost/function.hpp>
+#include "block.hpp"
 
 class Game;
 

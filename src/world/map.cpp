@@ -24,7 +24,7 @@
 #include <sstream>
 #include <list>
 #include <cctype>
-#include "game.hpp"
+#include <game.hpp>
 #include "map.hpp"
 
 Map::Map( size_t sectionSize )

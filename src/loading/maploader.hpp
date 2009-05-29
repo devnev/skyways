@@ -5,8 +5,8 @@
 #include <memory>
 #include <istream>
 #include <boost/ptr_container/ptr_map.hpp>
-#include "vector.hpp"
-#include "map.hpp"
+#include <vector.hpp>
+#include <world/map.hpp>
 
 struct MapInfo
 {

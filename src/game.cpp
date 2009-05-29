@@ -20,7 +20,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
-#include "shader.hpp"
+#include <display/shader.hpp>
 #include "game.hpp"
 
 Game::Game(

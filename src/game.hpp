@@ -20,8 +20,8 @@
 #ifndef _WORLD_HPP_
 #define _WORLD_HPP_
 
-#include "ship.hpp"
-#include "map.hpp"
+#include <world/ship.hpp>
+#include <world/map.hpp>
 
 class ShaderProgram;
 

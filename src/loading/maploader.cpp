@@ -6,9 +6,9 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include "block.hpp"
-#include "element.hpp"
-#include "game.hpp"
+#include <world/block.hpp>
+#include <world/element.hpp>
+#include <game.hpp>
 #include "maploader.hpp"
 
 struct Row

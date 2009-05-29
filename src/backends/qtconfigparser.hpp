@@ -24,7 +24,7 @@
 #error "Invalid build: cannot include qtconfigparser.hpp and configparser.hpp"
 #endif // _CONFIGPARSER_HPP_
 
-#include "configuration.hpp"
+#include <configuration.hpp>
 
 class ConfigParser
 {

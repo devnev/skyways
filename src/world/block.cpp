@@ -22,7 +22,6 @@
 #include <sstream>
 #include <fstream>
 #include <string>
-#include "objmodel.hpp"
 #include "block.hpp"
 
 void Block::draw() const
