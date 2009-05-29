@@ -43,6 +43,7 @@ Controller::Controller(
 	, _quitcb( cbQuit ), _printer( printer )
 	, _windowwidth( 1 ), _windowheight( 1 )
 {
+	srand(time(0));
 }
 
 Controller::~Controller()
