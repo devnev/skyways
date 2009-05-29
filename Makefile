@@ -30,11 +30,14 @@ SkywaysSdl_BINARY=skyways.sdl
 HEADERS= \
 	src/aabb.hpp \
 	src/block.hpp \
+	src/blockloader.hpp \
 	src/collisionaccelerator.hpp \
 	src/configuration.hpp \
 	src/controller.hpp \
 	src/element.hpp \
 	src/map.hpp \
+	src/mapgenerator.hpp \
+	src/maploader.hpp \
 	src/model.hpp \
 	src/objmodel.hpp \
 	src/shader.hpp \
@@ -55,11 +58,14 @@ SkywaysSdl_HEADERS= $(HEADERS) \
 
 CXXSOURCES= \
 	src/block.cpp \
+	src/blockloader.cpp \
 	src/collisionaccelerator.cpp \
 	src/configuration.cpp \
 	src/controller.cpp \
 	src/element.cpp \
 	src/map.cpp \
+	src/mapgenerator.cpp \
+	src/maploader.cpp \
 	src/objmodel.cpp \
 	src/shader.cpp \
 	src/ship.cpp \

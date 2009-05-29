@@ -17,48 +17,22 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include <algorithm>
-#include <functional>
-#include <fstream>
+#ifndef _BLOCKLOADER_HPP_
+#define _BLOCKLOADER_HPP_
+
+#include <memory>
 #include <string>
-#include <sstream>
-#include <list>
-#include <cctype>
-#include "game.hpp"
-#include "map.hpp"
+#include <boost/ptr_container/ptr_map.hpp>
+#include "block.hpp"
 
-Map::Map( size_t sectionSize )
-	: _accelerator( sectionSize )
+class BlockLoader
 {
-}
 
-Map::Map( size_t sectionSize, std::vector< Element >& elements )
-	: _accelerator( sectionSize )
-{
-	using std::swap;
-	swap ( elements, _elements );
-}
+public:
 
-void Map::glDraw( double )
-{
-	for ( ElementList::iterator elem = _elements.begin() ;
-			elem != _elements.end(); ++elem )
-	{
-		elem->glDraw();
-	}
-	_elementsDrawn = _elements.size();
-}
+	void loadDirectory( const char * directory, boost::ptr_map< std::string, Block >& block );
+	std::auto_ptr< Block > load( const std::string& filename );
 
-void Map::optimize()
-{
-	for ( ElementList::iterator elem = _elements.begin() ;
-			elem != _elements.end(); ++elem )
-	{
-		_accelerator.addElement( *elem );
-	}
-}
+};
 
-const Element * Map::collide( const AABB& aabb )
-{
-	return _accelerator.collide( aabb );
-}
+#endif // _BLOCKLOADER_HPP_

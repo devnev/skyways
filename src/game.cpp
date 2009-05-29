@@ -37,6 +37,8 @@ Game::Game(
 {
 	_ship.initialize();
 	_ship.pos().x = 0.5;
+	std::string empty;
+	_blocks.insert( empty, new Block() );
 }
 
 void Game::startJump()

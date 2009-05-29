@@ -27,6 +27,9 @@
 #include <cmath>
 #include "textprinter.hpp"
 #include "shader.hpp"
+#include "maploader.hpp"
+#include "mapgenerator.hpp"
+#include "blockloader.hpp"
 #include "controller.hpp"
 
 Controller::Controller(
@@ -35,7 +38,7 @@ Controller::Controller(
 	, Controller::QuitCallback cbQuit
 	, std::auto_ptr< TextPrinter > printer
 )
-	: _game( game ), _map( 10 )
+	: _game( game )
 	, _camy( cameraheight ), _camz( cameradistance ), _camrot( camerarotation )
 	, _quitcb( cbQuit ), _printer( printer )
 	, _windowwidth( 1 ), _windowheight( 1 )
@@ -87,20 +90,33 @@ void Controller::keyup( int key )
 	}
 }
 
+void Controller::loadBlocks()
+{
+	BlockLoader bl;
+	boost::ptr_map< std::string, Block > blocks;
+	bl.loadDirectory( "blocks", blocks );
+	_game->addBlocks( blocks );
+}
+
 void Controller::loadMap( std::string filename )
 {
-	_map.loadBlocks();
+	loadBlocks();
+	MapLoader ml( &_game->getBlocks() );
 	std::ifstream mapFile( filename.c_str() );
-	_map.loadMap( mapFile );
-	_game->setMap( _map );
+	MapInfo mapinfo;
+	ml.loadMap( mapFile, mapinfo );
+	_game->setMap( mapinfo.map );
+	_game->setPos( mapinfo.startPos );
 }
 
 void Controller::generateMap()
 {
-	_map.loadBlocks();
-	srand(time(0));
-	_map.generateMap();
-	_game->setMap( _map );
+	loadBlocks();
+	MapGenerator mg( &_game->getBlocks() );
+	MapInfo mapinfo;
+	mg.generate( mapinfo );
+	_game->setMap( mapinfo.map );
+	_game->setPos( mapinfo.startPos );
 }
 
 void Controller::initialize()
@@ -122,8 +138,6 @@ void Controller::initialize()
 
 	glEnable( GL_LINE_SMOOTH );
 	glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
-
-	_map.optimize();
 }
 
 void Controller::resize( int width, int height )

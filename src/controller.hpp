@@ -54,6 +54,7 @@ public:
 
 	void keydown( int key );
 	void keyup( int key );
+	void loadBlocks();
 	void loadMap( std::string filename );
 	void generateMap();
 	void initialize();
@@ -64,7 +65,6 @@ public:
 private:
 
 	std::auto_ptr< Game > _game;
-	Map _map;
 	double _camy, _camz, _camrot;
 	QuitCallback _quitcb;
 	std::auto_ptr< TextPrinter > _printer;

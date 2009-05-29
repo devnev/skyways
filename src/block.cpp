@@ -27,10 +27,10 @@
 
 void Block::draw() const
 {
-	if (model.vertices.size() > 0)
+	if ( _model.get() )
 	{
 		glScalef( 1, 1, -1 );
-		model.draw();
+		_model->draw();
 		glScalef( 1, 1, -1 );
 	}
 	else
@@ -90,39 +90,14 @@ void Block::drawDl() const
 	}
 }
 
-std::auto_ptr< Block > Block::fromFile( const std::string& filename )
-{
-	std::auto_ptr< Block > block( new Block() );
-	ObjUnknownsList objunknowns;
-
-	loadObjModel( filename.c_str(), block->model, false, &objunknowns, "b\0" );
-
-	for ( ObjUnknownsList::iterator unknown = objunknowns.begin();
-			unknown != objunknowns.end(); ++unknown )
-	{
-		if ( unknown->first == "b" )
-		{
-			std::istringstream iss( unknown->second );
-			std::string cmd;
-			iss >> cmd;
-
-			AABB aabb;
-			iss >> aabb.p1.x >> aabb.p1.y >> aabb.p1.z
-				>> aabb.p2.x >> aabb.p2.y >> aabb.p2.z;
-			block->bounds.push_back( aabb );
-		}
-	}
-	return block;
-}
-
 bool Block::collide( const AABB& aabb ) const throw()
 {
-	if ( model.vertices.size() == 0 )
+	if ( !_model.get() )
 	{
 		return aabb.collide( AABB( Vector3( 0, 0, 0 ), Vector3( 1, 1, 1 ) ) );
 	}
-	for ( AabbList::const_iterator iter = bounds.begin();
-			iter != bounds.end(); ++iter )
+	for ( AabbList::const_iterator iter = _bounds.begin();
+			iter != _bounds.end(); ++iter )
 	{
 		if ( aabb.collide( *iter ) )
 			return true;

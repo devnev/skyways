@@ -36,8 +36,11 @@ public:
 	  , ShaderProgram * shader = 0
 	);
 
-	void setMap(Map& map) throw() { _map = &map; _ship.pos() = _map->startPoint(); }
+	void addBlocks(boost::ptr_map< std::string, Block >& blocks) { _blocks.transfer( blocks ); }
+	void setMap(std::auto_ptr<Map> map) throw() { _map = map; _map->optimize(); }
+	void setPos(const Vector3& pos) throw() { _ship.pos() = pos; }
 	void setShader(ShaderProgram& shader) throw() { _shader = &shader; }
+	const boost::ptr_map< std::string, Block >& getBlocks() { return _blocks; }
 
 	void setAcceleration( double accel ) { _currAcc = accel*_maxAcc; }
 	void setStrafe( double strafe ) { _currStrafe = strafe*_maxStrafe; }
@@ -59,8 +62,9 @@ public:
 
 private:
 
+	boost::ptr_map< std::string, Block > _blocks;
 	Ship _ship;
-	Map* _map;
+	std::auto_ptr< Map > _map;
 	ShaderProgram * _shader;
 	double _currAcc, _maxAcc;
 	double _currStrafe, _maxStrafe;

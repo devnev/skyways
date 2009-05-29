@@ -33,21 +33,30 @@ class Block
 
 public:
 
-	Block() : _blockDl( 0 ) { }
+	Block()
+		: _model( 0 )
+		, _bounds()
+		, _blockDl( 0 )
+	{
+	}
+
+	Block( std::auto_ptr<Model> model, std::vector< AABB > bounds)
+		: _model( model )
+		, _bounds( bounds )
+		, _blockDl( 0 )
+	{
+	}
 
 	void draw() const;
 	void drawDl() const;
-
-	static std::auto_ptr< Block > fromStream( std::istream& is );
-	static std::auto_ptr< Block > fromFile( const std::string& filename );
 
 	bool collide( const AABB& aabb ) const throw();
 
 private:
 
-	Model model;
+	std::auto_ptr< Model > _model;
 	typedef std::vector< AABB > AabbList;
-	AabbList bounds;
+	AabbList _bounds;
 
 	mutable GLuint _blockDl;
 
