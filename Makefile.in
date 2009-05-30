@@ -78,14 +78,14 @@ SkywaysSdl_CXXSOURCES= $(Common_CXXSOURCES) \
 	src/backends/sdlmain.cpp \
 	#
 
-CPPFLAGS:= -O2 -g -Wall -I/usr/include/FTGL -I/usr/include/freetype2 $(CPPFLAGS) -Isrc
-LDFLAGS:= -lGL  -lboost_filesystem -lftgl -lGLEW $(LDFLAGS)
+CPPFLAGS:= @CFLAGS@ -Wall @FTGL_CFLAGS@ $(CPPFLAGS) -Isrc
+LDFLAGS:= @LIBS@ -lboost_filesystem @FTGL_LIBS@ $(LDFLAGS)
 
-SkywaysGlut_LDFLAGS=-lglut -lboost_program_options
-SkywaysQt_LDFLAGS=-lQtOpenGL -lQtGui -lQtCore -lGLU -lGL -lpthread
-SkywaysQt_CPPFLAGS=-D_REENTRANT -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtOpenGL -I/usr/include/qt4
-SkywaysSdl_LDFLAGS=-lSDL -lboost_program_options
-SkywaysSdl_CPPFLAGS=-I/usr/include/SDL
+SkywaysGlut_LDFLAGS=@GLUT_LIBS@ -lboost_program_options
+SkywaysQt_LDFLAGS=@QT_LIBS@
+SkywaysQt_CPPFLAGS=-D_REENTRANT -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB @QT_CFLAGS@
+SkywaysSdl_LDFLAGS=@SDL_LIBS@ -lboost_program_options
+SkywaysSdl_CPPFLAGS=@SDL_CFLAGS@
 
 EXTRADIST=
 

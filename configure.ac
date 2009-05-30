@@ -16,7 +16,6 @@ PKG_PROG_PKG_CONFIG
 
 AC_CHECK_LIB([GL], [glGetString])
 AC_CHECK_LIB([GLEW], [glewInit])
-AC_CHECK_LIB([GLU], [gluGetString])
 PKG_CHECK_MODULES([FTGL],[ftgl >= 2.1])
 dnl FIXME: check for boost
 dnl AC_CHECK_LIB([boost_filesystem], [main])
@@ -34,12 +33,16 @@ AC_ARG_ENABLE([qt], AS_HELP_STRING([--enable-qt], [Enable Qt backend (default: t
 	[	qt_backend=test
 	])
 if test "x$qt_backend" == "xyes" ; then
-	PKG_CHECK_MODULES([Qt],[QtCore >= 4.5.0 QtGui >= 4.5.0 QtOpenGL >= 4.5.0])
-	AC_CHECK_LIB([pthread],[pthread_create])
+	PKG_CHECK_MODULES([QT],[QtCore >= 4.5.0 QtGui >= 4.5.0 QtOpenGL >= 4.5.0])
+	AC_CHECK_LIB([pthread],[pthread_create],[QT_LIBS="-lpthread $QT_LIBS"])
+	AC_CHECK_LIB([GLU], [gluGetString],[QT_LIBS="-lGLU $QT_LIBS"])
 elif test "x$qt_backend" == "xtest" ; then
-	PKG_CHECK_MODULES([Qt],[QtCore >= 4.5.0 QtGui >= 4.5.0 QtOpenGL >= 4.5.0],[qt_backend="yes"],[qt_backend="no"])
+	PKG_CHECK_MODULES([QT],[QtCore >= 4.5.0 QtGui >= 4.5.0 QtOpenGL >= 4.5.0],[qt_backend="yes"],[qt_backend="no"])
 	if test "x$qt_backend" = "xyes" ; then
-		AC_CHECK_LIB([pthread],[pthread_create],[qt_backend="yes"],[qt_backend="no"])
+		AC_CHECK_LIB([pthread],[pthread_create],[QT_LIBS="-lpthread $QT_LIBS"; qt_backend="yes"],[qt_backend="no"])
+	fi
+	if test "x$qt_backend" = "xyes" ; then
+		AC_CHECK_LIB([GLU], [gluGetString],[QT_LIBS="-lGLU $QT_LIBS"; qt_backend="yes"],[qt_backend="no"])
 	fi
 fi
 AC_SUBST(qt_backend)
@@ -76,11 +79,12 @@ AC_ARG_ENABLE([glut], AS_HELP_STRING([--enable-glut], [Enable GLUT backend (defa
 	[	glut_backend=test
 	])
 if test "x$glut_backend" == "xyes" ; then
-	AC_CHECK_LIB([glut],[glutMainLoop])
+	AC_CHECK_LIB([glut],[glutMainLoop],[GLUT_LIBS="-lglut"])
 elif test "x$glut_backend" == "xtest" ; then
-	AC_CHECK_LIB([glut],[glutMainLoop],[glut_backend="yes"],[glut_backend="no"])
+	AC_CHECK_LIB([glut],[glutMainLoop],[GLUT_LIBS="-lglut"; glut_backend="yes"],[glut_backend="no"])
 fi
 AC_SUBST(glut_backend)
+AC_SUBST(GLUT_LIBS)
 if test "x$glut_backend" = "xyes" ; then
 	programs="SkywaysGlut $programs"
 fi
