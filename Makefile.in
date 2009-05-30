@@ -1,4 +1,6 @@
 #!/usr/bin/make
+# @configure_input@
+
 ######################################
 # configuration: change things here. #
 ######################################
@@ -78,14 +80,17 @@ SkywaysSdl_CXXSOURCES= $(Common_CXXSOURCES) \
 	src/backends/sdlmain.cpp \
 	#
 
-CPPFLAGS:= @CFLAGS@ -Wall @FTGL_CFLAGS@ $(CPPFLAGS) -Isrc
-LDFLAGS:= @LIBS@ -lboost_filesystem @FTGL_LIBS@ $(LDFLAGS)
+CFLAGS:= @CFLAGS@ -Wall $(CFLAGS)
+CXXFLAGS:= @CXXFLAGS@ -Wall $(CXXFLAGS)
+CPPFLAGS:= @CPPFLAGS@ -Wall @FTGL_CFLAGS@ $(CPPFLAGS) -Isrc
+LDFLAGS:= @LDFLAGS@ $(LDFLAGS)
+LIBS:=@LIBS@ @FTGL_LIBS@ -lboost_filesystem $(LIBS)
 
-SkywaysGlut_LDFLAGS=@GLUT_LIBS@ -lboost_program_options
-SkywaysQt_LDFLAGS=@QT_LIBS@
+SkywaysGlut_LIBS=@GLUT_LIBS@ -lboost_program_options
 SkywaysQt_CPPFLAGS=-D_REENTRANT -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB @QT_CFLAGS@
-SkywaysSdl_LDFLAGS=@SDL_LIBS@ -lboost_program_options
+SkywaysQt_LIBS=@QT_LIBS@
 SkywaysSdl_CPPFLAGS=@SDL_CFLAGS@
+SkywaysSdl_LIBS=@SDL_LIBS@ -lboost_program_options
 
 EXTRADIST=
 
@@ -99,7 +104,7 @@ default: all
 
 $(foreach prog,$(PROGRAMS),$(eval $(prog)_SOURCES=$($(prog)_CSOURCES) $($(prog)_CXXSOURCES)))
 $(foreach prog,$(PROGRAMS),$(eval $(prog)_OBJECTS=$(patsubst %.c,%_$(prog).o,$($(prog)_CSOURCES)) $(patsubst %.cpp,%_$(prog).o,$($(prog)_CXXSOURCES))))
-$(foreach flag,CFLAGS CPPFLAGS CXXFLAGS LDFLAGS,$(foreach prog,$(PROGRAMS),$(eval $(prog)_ALL_$(flag)=$($(flag)) $($(prog)_$(flag)))))
+$(foreach flag,CFLAGS CPPFLAGS CXXFLAGS LDFLAGS LIBS,$(foreach prog,$(PROGRAMS),$(eval $(prog)_ALL_$(flag)=$($(flag)) $($(prog)_$(flag)))))
 
 OBJECTS=$(foreach prog,$(PROGRAMS),$($(prog)_OBJECTS))
 BINARIES=$(foreach prog,$(PROGRAMS),$($(prog)_BINARY))
@@ -109,14 +114,14 @@ define CDEP_template
   %_$(1).d: %.c $$($(1)_HEADERS)
 	@set -e; rm -f "$$@" || true; \
 		$$(CC) -MM -MQ "`echo "$$@" | sed 's/\.d$$$$/.o'`" $$($(1)_ALL_CPPFLAGS) $$($(1)_ALL_CFLAGS) "$$<" > $$@
-	@echo -n .
+	@echo @ECHO_N@ ".@ECHO_C@"
 endef
 
 define CXXDEP_template
   %_$(1).d: %.cpp $$($(1)_HEADERS)
 	@set -e; rm -f "$$@" || true; \
 		$$(CXX) -MM -MQ "`echo "$$<" | sed 's,\($$*\)\.cpp,\1_$(1).o,'`" $$($(1)_ALL_CPPFLAGS) $$($(1)_ALL_CXXFLAGS) "$$<" > $$@
-	@echo -n .
+	@echo @ECHO_N@ ".@ECHO_C@"
 endef
 
 define CSRC_template
@@ -131,7 +136,7 @@ endef
 
 define BINARY_template
   $$($(1)_BINARY): $$($(1)_OBJECTS)
-	$$(CC) $$($(1)_ALL_LDFLAGS) $$^ $$(LOADLIBS) $$(LDLIBS) -o $$@
+	$$(CC) $$($(1)_ALL_LDFLAGS) $$($(1)_ALL_LIBS) $$^ $$(LOADLIBS) $$(LDLIBS) -o $$@
 endef
 
 $(foreach template,CDEP CXXDEP CSRC CXXSRC BINARY,$(foreach prog,$(PROGRAMS),$(eval $(call $(template)_template,$(prog)))))
