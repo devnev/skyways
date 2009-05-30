@@ -8,7 +8,20 @@ similarly fun, and to explore possibilities along the way.
 Depends
 -------
 
-One of: SDL, Qt4, freeglut, OpenGlut (remove the unavailable parts from the
-	PROGRAMS line in the Makefile.)
+One or more of: SDL, Qt4, freeglut, OpenGlut.
 
 All of: Boost, OpenGL, FTGL
+
+To explicitly select the backends to be built, use::
+
+	./configure --enable-{qt,sdl,glut}={yes,no,test}
+
+Build
+-----
+
+::
+
+	autoreconf
+	./configure
+	make
+	# there is currently no install step
