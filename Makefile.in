@@ -3,7 +3,7 @@
 # configuration: change things here. #
 ######################################
 
-PROGRAMS=SkywaysGlut SkywaysQt SkywaysSdl
+PROGRAMS?=@programs@
 
 SkywaysGlut_BINARY=skyways.glut
 SkywaysQt_BINARY=skyways.qt
