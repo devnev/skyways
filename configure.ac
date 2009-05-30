@@ -17,9 +17,9 @@ PKG_PROG_PKG_CONFIG
 AC_CHECK_LIB([GL], [glGetString])
 AC_CHECK_LIB([GLEW], [glewInit])
 PKG_CHECK_MODULES([FTGL],[ftgl >= 2.1])
-dnl FIXME: check for boost
-dnl AC_CHECK_LIB([boost_filesystem], [main])
-dnl AC_CHECK_LIB([boost_program_options], [main])
+AX_BOOST_BASE([1.35.0])
+AX_BOOST_FILESYSTEM
+AX_BOOST_PROGRAM_OPTIONS
 
 programs=""
 
