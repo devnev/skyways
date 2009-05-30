@@ -170,6 +170,13 @@ DISTFILES=@PACKAGE_TARNAME@.tar.gz
 
 dist: $(DISTFILES)
 
+distcheck: dist
+	mkdir .dist-check
+	tar -C .dist-check -xzf @PACKAGE_TARNAME@.tar.gz
+	(cd .dist-check && ./configure && $(MAKE) && $(MAKE) dist)
+	cp .dist-check/@PACKAGE_TARNAME@.tar.gz .
+	rm -rf .dist-check
+
 #################################
 # extra stuff: change as needed #
 #################################
