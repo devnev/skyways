@@ -69,7 +69,6 @@ SkywaysGlut_CXXSOURCES= $(Common_CXXSOURCES) \
 	#
 
 SkywaysQt_CXXSOURCES= $(Common_CXXSOURCES) \
-	src/backends/moc_qtwindow.cpp \
 	src/backends/qtconfigparser.cpp \
 	src/backends/qtmain.cpp \
 	src/backends/qtwindow.cpp \
@@ -82,13 +81,14 @@ SkywaysSdl_CXXSOURCES= $(Common_CXXSOURCES) \
 
 CFLAGS:= @CFLAGS@ -Wall $(CFLAGS)
 CXXFLAGS:= @CXXFLAGS@ -Wall $(CXXFLAGS)
-CPPFLAGS:= @CPPFLAGS@ -Wall @FTGL_CFLAGS@ @BOOST_CPPFLAGS@ $(CPPFLAGS) -Isrc
+CPPFLAGS:= @CPPFLAGS@ -Wall @FTGL_CFLAGS@ @BOOST_CPPFLAGS@ $(CPPFLAGS) -I@top_srcdir@/src
 LDFLAGS:= @LDFLAGS@ @BOOST_LDFLAGS@ $(LDFLAGS)
 LIBS:=@LIBS@ @FTGL_LIBS@ @BOOST_FILESYSTEM_LIB@ $(LIBS)
 
 SkywaysGlut_LIBS=@GLUT_LIBS@ @BOOST_PROGRAM_OPTIONS_LIB@
 SkywaysQt_CPPFLAGS=-D_REENTRANT -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB @QT_CFLAGS@
 SkywaysQt_LIBS=@QT_LIBS@
+SkywaysQt_OBJECTS=src/backends/moc_qtwindow_SkywaysQt.o
 SkywaysSdl_CPPFLAGS=@SDL_CFLAGS@
 SkywaysSdl_LIBS=@SDL_LIBS@ @BOOST_PROGRAM_OPTIONS_LIB@
 
@@ -96,6 +96,8 @@ EXTRADIST=configure.ac Makefile.in configure config.h.in aclocal.m4 \
 		  shaders/shader.glslf shaders/shader.glslv DejaVuSans.ttf\
 		  blocks/cube blocks/flat blocks/tunnel world \
 		  COPYING README
+
+VPATH=@top_srcdir@
 
 ######################################
 # auto-configuration: do not change! #
@@ -105,25 +107,28 @@ CWD:=$(shell pwd)
 
 default: all
 
-$(foreach prog,$(PROGRAMS),$(eval $(prog)_SOURCES=$($(prog)_CSOURCES) $($(prog)_CXXSOURCES)))
-$(foreach prog,$(PROGRAMS),$(eval $(prog)_OBJECTS=$(patsubst %.c,%_$(prog).o,$($(prog)_CSOURCES)) $(patsubst %.cpp,%_$(prog).o,$($(prog)_CXXSOURCES))))
+$(foreach prog,$(PROGRAMS),$(eval $(prog)_ALL_SOURCES=$($(prog)_SOURCES) $($(prog)_CSOURCES) $($(prog)_CXXSOURCES)))
+$(foreach prog,$(PROGRAMS),$(eval $(prog)_ALL_OBJECTS=$($(prog)_OBJECTS) $(patsubst %.c,%_$(prog).o,$($(prog)_CSOURCES)) $(patsubst %.cpp,%_$(prog).o,$($(prog)_CXXSOURCES))))
+$(foreach prog,$(PROGRAMS),$(eval $(prog)_ALL_HEADERS=$($(prog)_HEADERS)))
 $(foreach flag,CFLAGS CPPFLAGS CXXFLAGS LDFLAGS LIBS,$(foreach prog,$(PROGRAMS),$(eval $(prog)_ALL_$(flag)=$($(flag)) $($(prog)_$(flag)))))
 
-SOURCES=$(foreach prog,$(PROGRAMS),$($(prog)_SOURCES))
-HEADERS=$(foreach prog,$(PROGRAMS),$($(prog)_HEADERS))
-OBJECTS=$(foreach prog,$(PROGRAMS),$($(prog)_OBJECTS))
+SOURCES=$(foreach prog,$(PROGRAMS),$($(prog)_ALL_SOURCES))
+HEADERS=$(foreach prog,$(PROGRAMS),$($(prog)_ALL_HEADERS))
+OBJECTS=$(foreach prog,$(PROGRAMS),$($(prog)_ALL_OBJECTS))
 BINARIES=$(foreach prog,$(PROGRAMS),$($(prog)_BINARY))
 DEPENDS=$(patsubst %.o,%.d,$(OBJECTS))
 
 define CDEP_template
-  %_$(1).d: %.c $$($(1)_HEADERS)
+  %_$(1).d: %.c $$($(1)_ALL_HEADERS)
+	@mkdir -p "`dirname $$@`"
 	@set -e; rm -f "$$@" || true; \
 		$$(CC) -MM -MQ "`echo "$$@" | sed 's/\.d$$$$/.o'`" $$($(1)_ALL_CPPFLAGS) $$($(1)_ALL_CFLAGS) "$$<" > $$@
 	@echo @ECHO_N@ ".@ECHO_C@"
 endef
 
 define CXXDEP_template
-  %_$(1).d: %.cpp $$($(1)_HEADERS)
+  %_$(1).d: %.cpp $$($(1)_ALL_HEADERS)
+	@mkdir -p "`dirname $$@`"
 	@set -e; rm -f "$$@" || true; \
 		$$(CXX) -MM -MQ "`echo "$$<" | sed 's,\($$*\)\.cpp,\1_$(1).o,'`" $$($(1)_ALL_CPPFLAGS) $$($(1)_ALL_CXXFLAGS) "$$<" > $$@
 	@echo @ECHO_N@ ".@ECHO_C@"
@@ -140,7 +145,7 @@ define CXXSRC_template
 endef
 
 define BINARY_template
-  $$($(1)_BINARY): $$($(1)_OBJECTS)
+  $$($(1)_BINARY): $$($(1)_ALL_OBJECTS)
 	$$(CC) $$($(1)_ALL_LDFLAGS) $$($(1)_ALL_LIBS) $$^ $$(LOADLIBS) $$(LDLIBS) -o $$@
 endef
 
@@ -154,7 +159,10 @@ Makefile: $(DEPENDS)
 	@touch $@
 
 %.tar.gz:
-	tar -czf "$@" $^
+	rm -f $@
+	echo $(patsubst @top_srcdir@/%,%,$(filter @top_srcdir@/%,$^)) | tr ' ' '\n' | tar -C @top_srcdir@ -cf $(patsubst %.gz,%,$@) --files-from=-
+	tar -rf $(patsubst %.gz,%,$@) $(filter-out @top_srcdir@/%,$^)
+	gzip $(patsubst %.gz,%,$@)
 
 @PACKAGE_TARNAME@.tar.gz: $(SOURCES) $(HEADERS) $(EXTRADIST)
 
