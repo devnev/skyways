@@ -104,3 +104,8 @@ AC_SUBST(programs)
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
+
+echo "Configuration complete. Backends to be built:"
+echo "        Qt backend...   $qt_backend"
+echo "        SDL backend...  $sdl_backend"
+echo "        GLUT backend... $glut_backend"
