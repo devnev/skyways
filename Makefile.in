@@ -92,7 +92,10 @@ SkywaysQt_LIBS=@QT_LIBS@
 SkywaysSdl_CPPFLAGS=@SDL_CFLAGS@
 SkywaysSdl_LIBS=@SDL_LIBS@ @BOOST_PROGRAM_OPTIONS_LIB@
 
-EXTRADIST=
+EXTRADIST=configure.ac Makefile.in configure config.h.in aclocal.m4 \
+		  shaders/shader.glslf shaders/shader.glslv DejaVuSans.ttf\
+		  blocks/cube blocks/flat blocks/tunnel world \
+		  COPYING README
 
 ######################################
 # auto-configuration: do not change! #
@@ -106,6 +109,8 @@ $(foreach prog,$(PROGRAMS),$(eval $(prog)_SOURCES=$($(prog)_CSOURCES) $($(prog)_
 $(foreach prog,$(PROGRAMS),$(eval $(prog)_OBJECTS=$(patsubst %.c,%_$(prog).o,$($(prog)_CSOURCES)) $(patsubst %.cpp,%_$(prog).o,$($(prog)_CXXSOURCES))))
 $(foreach flag,CFLAGS CPPFLAGS CXXFLAGS LDFLAGS LIBS,$(foreach prog,$(PROGRAMS),$(eval $(prog)_ALL_$(flag)=$($(flag)) $($(prog)_$(flag)))))
 
+SOURCES=$(foreach prog,$(PROGRAMS),$($(prog)_SOURCES))
+HEADERS=$(foreach prog,$(PROGRAMS),$($(prog)_HEADERS))
 OBJECTS=$(foreach prog,$(PROGRAMS),$($(prog)_OBJECTS))
 BINARIES=$(foreach prog,$(PROGRAMS),$($(prog)_BINARY))
 DEPENDS=$(patsubst %.o,%.d,$(OBJECTS))
@@ -148,6 +153,15 @@ Makefile: $(DEPENDS)
 	@echo
 	@touch $@
 
+%.tar.gz:
+	tar -czf "$@" $^
+
+@PACKAGE_TARNAME@.tar.gz: $(SOURCES) $(HEADERS) $(EXTRADIST)
+
+DISTFILES=@PACKAGE_TARNAME@.tar.gz
+
+dist: $(DISTFILES)
+
 #################################
 # extra stuff: change as needed #
 #################################
@@ -158,6 +172,6 @@ clean:
 moc_%.cpp: %.hpp
 	moc-qt4 $(SkywaysQt_CPPFLAGS) $(SkywaysQt_CXXFLAGS) $< -o $@
 
-.PHONY: default clean
+.PHONY: default dist clean
 
 -include $(DEPENDS)
