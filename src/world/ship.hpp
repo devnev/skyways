@@ -22,7 +22,7 @@
 
 #include <vector>
 #include <GL/gl.h>
-#include "vector.hpp"
+#include <vector.hpp>
 #include "model.hpp"
 
 class Ship
