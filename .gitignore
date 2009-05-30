@@ -4,3 +4,11 @@ skyways.glut
 skyways.qt
 skyways.sdl
 moc_*.cpp
+Makefile
+aclocal.m4
+autom4te.cache/
+config.h
+config.h.in
+config.log
+config.status
+configure
