@@ -166,12 +166,25 @@ dist: $(DISTFILES)
 # extra stuff: change as needed #
 #################################
 
+AC_OUTPUT=configure config.h.in aclocal.m4
+AC_OUTPUT_DIRS=autom4te.cache
+CONFIG_OUTPUT=config.h Makefile config.log config.status
+
 clean:
-	rm -f $(OBJECTS) $(BINARIES) $(DEPENDS) $(DISTFILES) || true
+	rm -f $(OBJECTS) $(BINARIES) $(DEPENDS) $(DISTFILES) src/backends/moc_qtwindow.cpp || true
+
+clean-config:
+	rm -f $(CONFIG_OUTPUT) || true
+
+clean-ac:
+	rm -f $(AC_OUTPUT) || true
+	rm -rf $(AC_OUTPUT_DIRS) || true
+
+clean-full: clean clean-config clean-ac
 
 moc_%.cpp: %.hpp
 	moc-qt4 $(SkywaysQt_CPPFLAGS) $(SkywaysQt_CXXFLAGS) $< -o $@
 
-.PHONY: default dist clean
+.PHONY: default dist clean clean-config clean-ac clean-full
 
 -include $(DEPENDS)
