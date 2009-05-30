@@ -89,6 +89,11 @@ if test "x$glut_backend" = "xyes" ; then
 	programs="SkywaysGlut $programs"
 fi
 
+if test -z "$programs" ; then
+	echo "Error: no backends will be built, aborting."
+	exit 1
+fi
+
 AC_SUBST(programs)
 
 # Checks for header files.
