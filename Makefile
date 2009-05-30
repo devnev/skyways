@@ -9,7 +9,7 @@ SkywaysGlut_BINARY=skyways.glut
 SkywaysQt_BINARY=skyways.qt
 SkywaysSdl_BINARY=skyways.sdl
 
-HEADERS= \
+Common_HEADERS= \
 	src/configuration.hpp \
 	src/controller.hpp \
 	src/display/shader.hpp \
@@ -31,20 +31,20 @@ HEADERS= \
 	src/world/ship.hpp \
 	#
 
-SkywasyGlut_HEADERS= $(HEADERS) \
+SkywaysGlut_HEADERS= $(Common_HEADERS) \
 	src/backends/configparser.hpp \
 	#
 
-SkywasyQt_HEADERS= $(HEADERS) \
+SkywaysQt_HEADERS= $(Common_HEADERS) \
 	src/backends/qtconfigparser.hpp \
 	src/backends/qtwindow.hpp \
 	#
 
-SkywaysSdl_HEADERS= $(HEADERS) \
+SkywaysSdl_HEADERS= $(Common_HEADERS) \
 	src/backends/configparser.hpp \
 	#
 
-CXXSOURCES= \
+Common_CXXSOURCES= \
 	src/configuration.cpp \
 	src/controller.cpp \
 	src/display/shader.cpp \
@@ -61,19 +61,19 @@ CXXSOURCES= \
 	src/world/ship.cpp \
 	#
 
-SkywaysGlut_CXXSOURCES= $(CXXSOURCES) \
+SkywaysGlut_CXXSOURCES= $(Common_CXXSOURCES) \
 	src/backends/configparser.cpp \
 	src/backends/glutmain.cpp \
 	#
 
-SkywaysQt_CXXSOURCES= $(CXXSOURCES) \
+SkywaysQt_CXXSOURCES= $(Common_CXXSOURCES) \
 	src/backends/moc_qtwindow.cpp \
 	src/backends/qtconfigparser.cpp \
 	src/backends/qtmain.cpp \
 	src/backends/qtwindow.cpp \
 	#
 
-SkywaysSdl_CXXSOURCES= $(CXXSOURCES) \
+SkywaysSdl_CXXSOURCES= $(Common_CXXSOURCES) \
 	src/backends/configparser.cpp \
 	src/backends/sdlmain.cpp \
 	#
@@ -101,26 +101,22 @@ $(foreach prog,$(PROGRAMS),$(eval $(prog)_SOURCES=$($(prog)_CSOURCES) $($(prog)_
 $(foreach prog,$(PROGRAMS),$(eval $(prog)_OBJECTS=$(patsubst %.c,%_$(prog).o,$($(prog)_CSOURCES)) $(patsubst %.cpp,%_$(prog).o,$($(prog)_CXXSOURCES))))
 $(foreach flag,CFLAGS CPPFLAGS CXXFLAGS LDFLAGS,$(foreach prog,$(PROGRAMS),$(eval $(prog)_ALL_$(flag)=$($(flag)) $($(prog)_$(flag)))))
 
-#CSOURCES=$(foreach prog,$(PROGRAMS),$($(prog)_CSOURCES))
-#CXXSOURCES=$(foreach prog,$(PROGRAMS),$($(prog)_CXXSOURCES))
-#SOURCES=$(CSOURCES) $(CXXSOURCES)
-#HEADERS=$(foreach prog,$(PROGRAMS),$($(prog)_HEADERS))
 OBJECTS=$(foreach prog,$(PROGRAMS),$($(prog)_OBJECTS))
 BINARIES=$(foreach prog,$(PROGRAMS),$($(prog)_BINARY))
 DEPENDS=$(patsubst %.o,%.d,$(OBJECTS))
 
 define CDEP_template
-  %_$(1).d: %.c
-	set -e; rm -f "$$@" || true; \
-		$$(CC) -MM -MQ "`echo "$$<" | sed 's,\($$*\)\.c,\1_$(1).o,'`" $$($(1)_ALL_CPPFLAGS) $$($(1)_ALL_CFLAGS) "$$<" | \
-		sed 's,\($$*_$(1)\).o *:,\1.o $$@:,' >$$@
+  %_$(1).d: %.c $$($(1)_HEADERS)
+	@set -e; rm -f "$$@" || true; \
+		$$(CC) -MM -MQ "`echo "$$@" | sed 's/\.d$$$$/.o'`" $$($(1)_ALL_CPPFLAGS) $$($(1)_ALL_CFLAGS) "$$<" > $$@
+	@echo -n .
 endef
 
 define CXXDEP_template
-  %_$(1).d: %.cpp
-	set -e; rm -f "$$@" || true; \
-		$$(CXX) -MM -MQ "`echo "$$<" | sed 's,\($$*\)\.cpp,\1_$(1).o,'`" $$($(1)_ALL_CPPFLAGS) $$($(1)_ALL_CXXFLAGS) "$$<" | \
-		sed 's,\($$*_$(1)\).o *:,\1.o $$@:,' >$$@
+  %_$(1).d: %.cpp $$($(1)_HEADERS)
+	@set -e; rm -f "$$@" || true; \
+		$$(CXX) -MM -MQ "`echo "$$<" | sed 's,\($$*\)\.cpp,\1_$(1).o,'`" $$($(1)_ALL_CPPFLAGS) $$($(1)_ALL_CXXFLAGS) "$$<" > $$@
+	@echo -n .
 endef
 
 define CSRC_template
@@ -142,12 +138,17 @@ $(foreach template,CDEP CXXDEP CSRC CXXSRC BINARY,$(foreach prog,$(PROGRAMS),$(e
 
 all: $(BINARIES)
 
+# this rule is just to add a newline after the dots from deps calculation
+Makefile: $(DEPENDS)
+	@echo
+	@touch $@
+
 #################################
 # extra stuff: change as needed #
 #################################
 
 clean:
-	rm $(OBJECTS) $(BINARIES) $(DEPENDS) $(DISTFILES) || true
+	rm -f $(OBJECTS) $(BINARIES) $(DEPENDS) $(DISTFILES) || true
 
 moc_%.cpp: %.hpp
 	moc-qt4 $(SkywaysQt_CPPFLAGS) $(SkywaysQt_CXXFLAGS) $< -o $@
