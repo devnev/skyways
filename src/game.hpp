@@ -33,12 +33,13 @@ public:
 	Game(
 	    double acceleration, double strafespeed, double speedlimit
 	  , double gravity, double jumpstrength
+	  , std::auto_ptr< Ship > ship
 	  , ShaderProgram * shader = 0
 	);
 
 	void addBlocks(boost::ptr_map< std::string, Block >& blocks) { _blocks.transfer( blocks ); }
 	void setMap(std::auto_ptr<Map> map) throw() { _map = map; _map->optimize(); }
-	void setPos(const Vector3& pos) throw() { _ship.pos() = pos; }
+	void setPos(const Vector3& pos) throw() { _ship->pos() = pos; }
 	void setShader(ShaderProgram& shader) throw() { _shader = &shader; }
 	const boost::ptr_map< std::string, Block >& getBlocks() { return _blocks; }
 
@@ -49,9 +50,9 @@ public:
 	void draw( double zminClip );
 	void update( int difference );
 
-	double distanceTraveled() const throw() { return _ship.pos().z; }
+	double distanceTraveled() const throw() { return _ship->pos().z; }
 	bool droppedOut() const throw() {
-		return _ship.pos().y < _map->lowestPoint() - 1;
+		return _ship->pos().y < _map->lowestPoint() - 1;
 	}
 
 	void kill( const std::string & cause );
@@ -63,7 +64,7 @@ public:
 private:
 
 	boost::ptr_map< std::string, Block > _blocks;
-	Ship _ship;
+	std::auto_ptr< Ship > _ship;
 	std::auto_ptr< Map > _map;
 	ShaderProgram * _shader;
 	double _currAcc, _maxAcc;

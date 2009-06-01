@@ -28,8 +28,10 @@ Configuration::Configuration()
 std::auto_ptr< Controller > Configuration::buildController( Controller::QuitCallback cbquit )
 {
 	std::auto_ptr< TextPrinter > printer( new TextPrinter( "DejaVuSans.ttf" ) );
+	std::auto_ptr< Ship > ship( new Ship() );
+	ship->initialize();
 	std::auto_ptr< Game > game( new Game(
-		10, 5, 100, 20, 1.5
+		10, 5, 100, 20, 1.5, ship
 	) );
 	std::auto_ptr< Controller > controller( new Controller (
 		game, 3.5, 6, 10, cbquit, printer
