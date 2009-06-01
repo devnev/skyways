@@ -128,7 +128,7 @@ void Controller::initialize()
 	if (!GLEW_VERSION_2_0)
 		throw std::runtime_error("Nead OpenGL >= 2.0 for shaders. Update your graphics drivers!");
 
-	_shaderProgram = createShaderProgram("shaders/shader.glslv", "shaders/shader.glslf");
+	_shaderProgram = createShaderProgram(DATADIR "/shaders/shader.glslv", DATADIR "/shaders/shader.glslf");
 	_game->setShader( *_shaderProgram );
 
 	glClearColor( 0.2, 0.2, 0.2, 0 );

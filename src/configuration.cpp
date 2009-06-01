@@ -26,7 +26,7 @@
 
 std::auto_ptr< Controller > Configuration::buildController( Controller::QuitCallback cbquit )
 {
-	std::auto_ptr< TextPrinter > printer( new TextPrinter( "DejaVuSans.ttf" ) );
+	std::auto_ptr< TextPrinter > printer( new TextPrinter( DATADIR "/DejaVuSans.ttf" ) );
 	std::auto_ptr< Model > shipModel;
 	if ( ship.length() > 0 )
 	{

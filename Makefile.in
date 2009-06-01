@@ -5,6 +5,17 @@
 # configuration: change things here. #
 ######################################
 
+prefix=@prefix@
+datarootdir=@datarootdir@
+datadir=@datadir@
+appdatadir=${datadir}/@PACKAGE_TARNAME@
+srcdir=@srcdir@
+vpath %.c @srcdir@
+vpath %.cpp @srcdir@
+vpath %.hpp @srcdir@
+vpath %.o @builddir@
+vpath %.d @builddir@
+
 PROGRAMS?=@programs@
 
 SkywaysGlut_BINARY=skyways.glut
@@ -81,7 +92,7 @@ SkywaysSdl_CXXSOURCES= $(Common_CXXSOURCES) \
 
 CFLAGS:= @CFLAGS@ -Wall $(CFLAGS)
 CXXFLAGS:= @CXXFLAGS@ -Wall $(CXXFLAGS)
-CPPFLAGS:= @CPPFLAGS@ -Wall @FTGL_CFLAGS@ @BOOST_CPPFLAGS@ $(CPPFLAGS) -I@top_srcdir@/src
+CPPFLAGS:= @CPPFLAGS@ -Wall @FTGL_CFLAGS@ @BOOST_CPPFLAGS@ $(CPPFLAGS) -I@top_srcdir@/src -DDATADIR='"${appdatadir}"'
 LDFLAGS:= @LDFLAGS@ @BOOST_LDFLAGS@ $(LDFLAGS)
 LIBS:=@LIBS@ @FTGL_LIBS@ @BOOST_FILESYSTEM_LIB@ $(LIBS)
 
@@ -96,10 +107,6 @@ EXTRADIST=configure.ac Makefile.in configure config.h.in aclocal.m4 \
 		  shaders/shader.glslf shaders/shader.glslv DejaVuSans.ttf\
 		  blocks/cube blocks/flat blocks/tunnel world \
 		  COPYING README
-
-vpath %.c @srcdir@
-vpath %.cpp @srcdir@
-vpath %.hpp @srcdir@
 
 ######################################
 # auto-configuration: do not change! #
