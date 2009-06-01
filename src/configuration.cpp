@@ -24,30 +24,14 @@
 #include "controller.hpp"
 #include "configuration.hpp"
 
-Configuration::Configuration()
-{
-}
-
 std::auto_ptr< Controller > Configuration::buildController( Controller::QuitCallback cbquit )
 {
 	std::auto_ptr< TextPrinter > printer( new TextPrinter( "DejaVuSans.ttf" ) );
-	std::auto_ptr< Model > shipModel( new Model() );
-	try
+	std::auto_ptr< Model > shipModel;
+	if ( ship.length() > 0 )
 	{
-		loadObjModel("ship.obj", *shipModel, true, 0, "mtl\0");
-		std::cout << "loaded "
-			<< shipModel->vertices.size() << " vertices and "
-			<< shipModel->trifaces.size() + shipModel->quadfaces.size()
-			<< " faces for ship." << std::endl;
-	}
-	catch (std::runtime_error& e)
-	{
-		shipModel.reset();
-		std::cerr <<
-			"Warning: failed to load ship model, "
-			"falling back to box ship.\n"
-			"Exception caught was: "
-			<< e.what() << '\n';
+		shipModel.reset( new Model() );
+		loadObjModel( ship.c_str(), *shipModel, true, 0, "mtl\0" );
 	}
 	std::auto_ptr< Ship > ship( new Ship( shipModel ) );
 	std::auto_ptr< Game > game( new Game(
@@ -56,8 +40,8 @@ std::auto_ptr< Controller > Configuration::buildController( Controller::QuitCall
 	std::auto_ptr< Controller > controller( new Controller (
 		game, 3.5, 6, 10, cbquit, printer
 	) );
-	if ( _map.length() )
-		controller->loadMap( _map );
+	if ( map.length() )
+		controller->loadMap( map );
 	else
 		controller->generateMap();
 	return controller;

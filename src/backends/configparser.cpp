@@ -29,6 +29,9 @@ ConfigParser::ConfigParser( Configuration& config )
 		("map,w",
 		 po::value<std::string>()->default_value(std::string()),
 		 "set map to load")
+		("ship,s",
+		 po::value<std::string>()->default_value(std::string()),
+		 "set ship model to use")
 	;
 }
 
@@ -42,6 +45,7 @@ bool ConfigParser::args(int argc, char * argv[])
 		std::cout << options << '\n';
 		return false;
 	}
-	_config.setMap(vm["map"].as<std::string>());
+	_config.map = vm["map"].as<std::string>();
+	_config.ship = vm["ship"].as<std::string>();
 	return true;
 }

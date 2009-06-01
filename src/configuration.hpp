@@ -23,20 +23,13 @@
 #include <memory>
 #include "controller.hpp"
 
-class Configuration
+struct Configuration
 {
-
-public:
-
-	Configuration();
-
-	void setMap( const std::string& map ) { _map = map; }
 
 	std::auto_ptr< Controller > buildController( Controller::QuitCallback cbquit );
 
-private:
-
-	std::string _map;
+	std::string map;
+	std::string ship;
 
 };
 
