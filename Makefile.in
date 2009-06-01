@@ -97,7 +97,9 @@ EXTRADIST=configure.ac Makefile.in configure config.h.in aclocal.m4 \
 		  blocks/cube blocks/flat blocks/tunnel world \
 		  COPYING README
 
-VPATH=@top_srcdir@
+vpath %.c @srcdir@
+vpath %.cpp @srcdir@
+vpath %.hpp @srcdir@
 
 ######################################
 # auto-configuration: do not change! #
