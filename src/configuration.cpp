@@ -18,6 +18,9 @@
 //
 
 #include <display/textprinter.hpp>
+#include <loading/objmodel.hpp>
+#include <iostream>
+#include <stdexcept>
 #include "controller.hpp"
 #include "configuration.hpp"
 
@@ -28,8 +31,25 @@ Configuration::Configuration()
 std::auto_ptr< Controller > Configuration::buildController( Controller::QuitCallback cbquit )
 {
 	std::auto_ptr< TextPrinter > printer( new TextPrinter( "DejaVuSans.ttf" ) );
-	std::auto_ptr< Ship > ship( new Ship() );
-	ship->initialize();
+	std::auto_ptr< Model > shipModel( new Model() );
+	try
+	{
+		loadObjModel("ship.obj", *shipModel, true, 0, "mtl\0");
+		std::cout << "loaded "
+			<< shipModel->vertices.size() << " vertices and "
+			<< shipModel->trifaces.size() + shipModel->quadfaces.size()
+			<< " faces for ship." << std::endl;
+	}
+	catch (std::runtime_error& e)
+	{
+		shipModel.reset();
+		std::cerr <<
+			"Warning: failed to load ship model, "
+			"falling back to box ship.\n"
+			"Exception caught was: "
+			<< e.what() << '\n';
+	}
+	std::auto_ptr< Ship > ship( new Ship( shipModel ) );
 	std::auto_ptr< Game > game( new Game(
 		10, 5, 100, 20, 1.5, ship
 	) );

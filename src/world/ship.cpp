@@ -19,14 +19,13 @@
 
 #include <GL/gl.h>
 #include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <loading/objmodel.hpp>
+#include "model.hpp"
 #include "ship.hpp"
 
-Ship::Ship()
+Ship::Ship( std::auto_ptr< Model > model )
 	: _pos(Vector3(0, 0, 0))
 	, _size(Vector3(0.8, 0.5, 1.0))
+	, _model(model)
 	, _shipDl(0)
 {
 }
@@ -35,33 +34,13 @@ Ship::~Ship()
 {
 }
 
-void Ship::initialize()
-{
-	try
-	{
-		loadObjModel("ship.obj", _model, true, 0, "mtl\0");
-		std::cout << "loaded "
-			<< _model.vertices.size() << " vertices and "
-			<< _model.trifaces.size() + _model.quadfaces.size()
-			<< " faces for ship." << std::endl;
-	}
-	catch (std::runtime_error& e)
-	{
-		std::cerr <<
-			"Warning: failed to load ship model, "
-			"falling back to box ship.\n"
-			"Exception caught was: "
-			<< e.what() << '\n';
-	}
-}
-
 void Ship::draw()
 {
 	glTranslated( 0, _size.y / 2, -_size.z / 2 );
-	if ( _model.vertices.size() && _model.trifaces.size() )
+	if ( _model.get() )
 	{
 		glScaled( _size.x, _size.y, -_size.z );
-		_model.draw();
+		_model->draw();
 	}
 	else
 	{

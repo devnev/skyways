@@ -21,18 +21,18 @@
 #define _SHIP_HPP_
 
 #include <vector>
+#include <memory>
 #include <GL/gl.h>
 #include <vector.hpp>
-#include "model.hpp"
+
+class Model;
 
 class Ship
 {
 public:
 
-	Ship();
+	Ship( std::auto_ptr< Model > model );
 	~Ship();
-
-	void initialize();
 
 	double xpos() const throw() { return _pos.x; }
 	double ypos() const throw() { return _pos.y; }
@@ -51,7 +51,7 @@ private:
 	Vector3 _pos;
 	Vector3 _size;
 
-	Model _model;
+	std::auto_ptr< Model > _model;
 
 	GLuint _shipDl;
 

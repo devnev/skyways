@@ -57,8 +57,10 @@ struct Face
 
 };
 
-typedef struct
+class Model
 {
+
+public:
 
 	std::vector< Vector3 > vertices;
 	std::vector< Vector3 > normals;
@@ -100,6 +102,6 @@ private:
 		}
 	}
 
-} Model;
+};
 
 #endif // _MODEL_HPP_
