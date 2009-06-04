@@ -21,7 +21,7 @@ AX_BOOST_BASE([1.34.0])
 AX_BOOST_FILESYSTEM
 AX_BOOST_PROGRAM_OPTIONS
 
-programs=""
+modules=""
 
 AC_ARG_ENABLE([qt], AS_HELP_STRING([--enable-qt], [Enable Qt backend (default: test)]),
 	[	if test "x$enableval" = "xyes" ; then qt_backend=yes
@@ -45,10 +45,14 @@ elif test "x$qt_backend" == "xtest" ; then
 		AC_CHECK_LIB([GLU], [gluGetString],[QT_LIBS="-lGLU $QT_LIBS"; qt_backend="yes"],[qt_backend="no"])
 	fi
 fi
-AC_SUBST(qt_backend)
 if test "x$qt_backend" = "xyes" ; then
-	programs="SkywaysQt $programs"
+	modules="SkywaysQt $modules"
+	qt_backend_stmt=""
+else
+	qt_backend_stmt="#"
 fi
+AC_SUBST(qt_backend)
+AC_SUBST(qt_backend_stmt)
 
 AC_ARG_ENABLE([sdl], AS_HELP_STRING([--enable-sdl], [Enable SDL backend (default: test)]),
 	[	if test "x$enableval" = "xyes" ; then sdl_backend=yes
@@ -64,10 +68,14 @@ if test "x$sdl_backend" == "xyes" ; then
 elif test "x$sdl_backend" == "xtest" ; then
 	PKG_CHECK_MODULES([SDL],[sdl >= 1.2.13],[sdl_backend="yes"],[sdl_backend="no"])
 fi
-AC_SUBST(sdl_backend)
 if test "x$sdl_backend" = "xyes" ; then
-	programs="SkywaysSdl $programs"
+	modules="SkywaysSdl $modules"
+	sdl_backend_stmt=""
+else
+	sdl_backend_stmt="#"
 fi
+AC_SUBST(sdl_backend)
+AC_SUBST(sdl_backend_stmt)
 
 AC_ARG_ENABLE([glut], AS_HELP_STRING([--enable-glut], [Enable GLUT backend (default: test)]),
 	[	if test "x$enableval" = "xyes" ; then glut_backend=yes
@@ -83,18 +91,22 @@ if test "x$glut_backend" == "xyes" ; then
 elif test "x$glut_backend" == "xtest" ; then
 	AC_CHECK_LIB([glut],[glutMainLoop],[GLUT_LIBS="-lglut"; glut_backend="yes"],[glut_backend="no"])
 fi
+if test "x$glut_backend" = "xyes" ; then
+	modules="SkywaysGlut $modules"
+	glut_backend_stmt=""
+else
+	glut_backend_stmt="#"
+fi
 AC_SUBST(glut_backend)
 AC_SUBST(GLUT_LIBS)
-if test "x$glut_backend" = "xyes" ; then
-	programs="SkywaysGlut $programs"
-fi
+AC_SUBST(glut_backend_stmt)
 
-if test -z "$programs" ; then
+if test -z "$modules" ; then
 	echo "Error: no backends will be built, aborting."
 	exit 1
 fi
 
-AC_SUBST(programs)
+AC_SUBST(modules)
 
 # Checks for header files.
 
@@ -102,7 +114,7 @@ AC_SUBST(programs)
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile Config.mk])
 AC_OUTPUT
 
 echo "Configuration complete. Backends to be built:"
