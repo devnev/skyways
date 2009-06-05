@@ -6,6 +6,7 @@ ifndef CCPP_MK_INCLUDED
 CCPP_MK_INCLUDED := 1
 
 include $(ADDONDIR)/Dirs.mk
+DEPDIR?=.deps
 
 #{{{ per-directory-and-module source listing hooks
 
@@ -58,6 +59,7 @@ define targets_postmod_tpl
   BINARIES:=$$(foreach mod,$(MODULES),$$($$(mod)_BINARY))
   #DEPENDS:=$$(foreach obj,$$(OBJECTS),$$(dir $$(obj))$$(DEPDIR)/$$(basename $$(obj)).d)
   DEPENDS:=$$(join $$(dir $$(OBJECTS)),$$(addprefix $$(DEPDIR)/,$$(addsuffix .d,$$(basename $$(notdir $$(OBJECTS))))))
+  CLEAN:=$$(CLEAN) $$(OBJECTS) $$(BINARIES) $$(DEPENDS)
 endef
 POSTMOD_TEMPLATES := $(POSTMOD_TEMPLATES) targets
 

@@ -5,7 +5,6 @@ default: all
 MK_INCLUDE:=1
 SRCDIR:=.
 BUILDDIR:=.
-DEPDIR:=.deps
 ADDONDIR:=$(SRCDIR)/mk
 
 include $(BUILDDIR)/Config.mk
@@ -29,9 +28,7 @@ endef
 TOP_TEMPLATES := config post_config modules post_modules rules
 $(foreach tpl,$(TOP_TEMPLATES),$(eval $(call $(tpl)_top_tpl)))
 
-CLEAN:=$(CLEAN) $(OBJECTS) $(BINARIES) $(DEPENDS)
-
 .PHONY: default all clean
 clean:
-	rm -f $(CLEAN) || true
+	$(if $(CLEAN),rm -f $(CLEAN) || true,@:)
 
