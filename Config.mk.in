@@ -32,3 +32,5 @@ LIBS := @LIBS@ @FTGL_LIBS@ @BOOST_FILESYSTEM_LIB@ $(LIBS)
 @qt_backend_stmt@SkywaysQt_OBJECTS=src/backends/moc_qtwindow_SkywaysQt.o
 @sdl_backend_stmt@SkywaysSdl_CPPFLAGS=@SDL_CFLAGS@
 @sdl_backend_stmt@SkywaysSdl_LIBS=@SDL_LIBS@ @BOOST_PROGRAM_OPTIONS_LIB@
+
+ADDON_MK := Dirs C_Cpp

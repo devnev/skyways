@@ -7,4 +7,4 @@ default: all
 .PHONY: default
 
 %::
-	$(MAKE) -r --no-print-directory -f @top_srcdir@/Rules.mk BUILDDIR=@builddir@ SRCDIR=@top_srcdir@ $@
+	$(MAKE) -r --no-print-directory -f @top_srcdir@/mk/Build.mk BUILDDIR=@builddir@ SRCDIR=@top_srcdir@ $@
