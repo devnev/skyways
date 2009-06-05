@@ -31,12 +31,7 @@ $(foreach tpl,$(TOP_TEMPLATES),$(eval $(call $(tpl)_top_tpl)))
 
 CLEAN:=$(CLEAN) $(OBJECTS) $(BINARIES) $(DEPENDS)
 
-.PHONY: default all clean force
+.PHONY: default all clean
 clean:
 	rm -f $(CLEAN) || true
 
-force:
-	@/bin/true
-
-$(SRCDIR)/mk/Build.mk: force
-	@mkdir -p $(patsubst %,$(BUILDDIR)/%,$(DIRECTORIES)) $(patsubst %,$(BUILDDIR)/%/$(DEPDIR),$(DIRECTORIES))

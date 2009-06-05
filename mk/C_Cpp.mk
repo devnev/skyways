@@ -58,7 +58,6 @@ define targets_postmod_tpl
   BINARIES:=$$(foreach mod,$(MODULES),$$($$(mod)_BINARY))
   #DEPENDS:=$$(foreach obj,$$(OBJECTS),$$(dir $$(obj))$$(DEPDIR)/$$(basename $$(obj)).d)
   DEPENDS:=$$(join $$(dir $$(OBJECTS)),$$(addprefix $$(DEPDIR)/,$$(addsuffix .d,$$(basename $$(notdir $$(OBJECTS))))))
-  -include $$(DEPENDS)
 endef
 POSTMOD_TEMPLATES := $(POSTMOD_TEMPLATES) targets
 
@@ -68,6 +67,12 @@ POSTMOD_TEMPLATES := $(POSTMOD_TEMPLATES) targets
 define depends_rules_tpl
   -include $$(DEPENDS)
   all: $$(BINARIES)
+  $(OBJECTS): build-dirs deps-dirs
+  .PHONY: build-dirs deps-dirs
+  build-dirs:
+	mkdir -p $(patsubst %,$(BUILDDIR)/%,$(DIRECTORIES))
+  deps-dirs:
+	mkdir -p $(patsubst %,$(BUILDDIR)/%/$(DEPDIR),$(DIRECTORIES))
 endef
 RULES_TEMPLATES := $(RULES_TEMPATE) depends
 
