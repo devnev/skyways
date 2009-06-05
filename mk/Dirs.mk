@@ -22,9 +22,8 @@ endef
 define subdirs_enter_tpl
   SUBDIRS :=
 endef
-ENTER_TEMPLATES := checkdir enter subdirs $(ENTER_TEMPLATES)
 define enter_directory
-  $(foreach tpl,$(ENTER_TEMPLATES),$$(eval $$(call $(tpl)_enter_tpl)))
+  $(foreach tpl,checkdir enter subdirs $(ENTER_TEMPLATES),$$(eval $$(call $(tpl)_enter_tpl)))
 endef
 
 #}}}
@@ -50,9 +49,8 @@ define leave_leave_tpl
   d := $$(dirstack_$$(sp))
   sp := $$(supsp)
 endef
-LEAVE_TEMPLATES := $(LEAVE_TEMPLATES) addextras subdirs leave
 define leave_directory
-  $(foreach tpl,$(LEAVE_TEMPLATES),$$(eval $$(call $(tpl)_leave_tpl)))
+  $(foreach tpl,$(LEAVE_TEMPLATES) subdirs leave,$$(eval $$(call $(tpl)_leave_tpl)))
 endef
 
 #}}}
