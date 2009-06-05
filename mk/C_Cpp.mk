@@ -36,12 +36,12 @@ define FLAGS_module_tpl
 endef
 define C_module_tpl
   %_$(1).o: %.c
-	$$(CC) $$(CFLAGS_$(1)) $$(CPPFLAGS_$(1)) -MT $$@ -MD -MP -MF $$(dir $$*)$$(DEPDIR)/$$(notdir $$*)_$(1).Td -c -o $$@ $$<
+	$$(CC) $$(CFLAGS_$(1)) $$(CPPFLAGS_$(1)) -MT $$@ -MMD -MP -MF $$(dir $$*)$$(DEPDIR)/$$(notdir $$*)_$(1).Td -c -o $$@ $$<
 	mv -f $$(dir $$*)$$(DEPDIR)/$$(notdir $$*)_$(1).Td $$(dir $$*)$$(DEPDIR)/$$(notdir $$*)_$(1).d
 endef
 define CXX_module_tpl
   %_$(1).o: %.cpp
-	$$(CXX) $$(CXXFLAGS_$(1)) $$(CPPFLAGS_$(1)) -MT $$@ -MD -MP -MF $$(dir $$*)$$(DEPDIR)/$$(notdir $$*)_$(1).Td -c -o $$@ $$<
+	$$(CXX) $$(CXXFLAGS_$(1)) $$(CPPFLAGS_$(1)) -MT $$@ -MMD -MP -MF $$(dir $$*)$$(DEPDIR)/$$(notdir $$*)_$(1).Td -c -o $$@ $$<
 	mv -f $$(dir $$*)$$(DEPDIR)/$$(notdir $$*)_$(1).Td $$(dir $$*)$$(DEPDIR)/$$(notdir $$*)_$(1).d
 endef
 define LD_module_tpl
