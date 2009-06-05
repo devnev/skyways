@@ -2,4 +2,5 @@
 mkdir -p build && \
 	cd build && \
 	../configure --prefix=`pwd` && \
-	make appdatadir=.
+	make $MAKEOPTS pkgdatadir=`pwd` && \
+	make $MAKEOPTS install pkgdatadir=`pwd`

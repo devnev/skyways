@@ -29,10 +29,6 @@ endef
 #}}}
 #{{{ directory leave hooks
 
-define addextras_leave_tpl
-  DATA := $(DATA) $(DATA_$(sp))
-  DOC := $(DOC) $(DOC_$(sp))
-endef
 define include_subdir
   directory := $$(d)/$(1)
   include $$(SRCDIR)/$$(directory)/Dir.mk
