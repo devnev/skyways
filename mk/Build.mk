@@ -1,13 +1,9 @@
 #!/usr/bin/make -f
 
-default: all
+$(if $(MK_INCLUDE),,$(error This makefile is meant for inclusion by other makefiles))
 
-MK_INCLUDE:=1
-SRCDIR:=.
-BUILDDIR:=.
-ADDONDIR:=$(SRCDIR)/mk
+ADDONDIR:=$(srcdir)/mk
 
-include $(BUILDDIR)/Config.mk
 $(foreach MK,$(ADDON_MK),$(eval include $(ADDONDIR)/$(MK).mk))
 
 define config_top_tpl

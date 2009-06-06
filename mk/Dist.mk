@@ -2,11 +2,6 @@
 
 $(if $(MK_INCLUDE),,$(error This makefile is meant for inclusion by other makefiles))
 
-ifndef DIST_MK_INCLUDED
-DIST_MK_INCLUDED := 1
-
-include $(ADDONDIR)/Dirs.mk
-
 install = install
 install_dir = $(install) -d
 install_data = $(install) -c -m 644
@@ -53,5 +48,3 @@ define install_rules_tpl
   install: install-progs install-data install-docs
 endef
 RULES_TEMPLATES := $(RULES_TEMPLATES) install
-
-endif

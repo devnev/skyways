@@ -114,7 +114,7 @@ AC_SUBST(modules)
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile Config.mk])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
 
 echo "Configuration complete. Backends to be built:"

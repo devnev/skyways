@@ -2,9 +2,6 @@
 
 $(if $(MK_INCLUDE),,$(error This makefile is meant for inclusion by other makefiles))
 
-ifndef DIRS_MK_INCLUDED
-DIRS_MK_INCLUDED := 1
-
 #{{{ directory enter hooks
 
 define checkdir_enter_tpl
@@ -31,7 +28,7 @@ endef
 
 define include_subdir
   directory := $$(d)/$(1)
-  include $$(SRCDIR)/$$(directory)/Dir.mk
+  include $$(srcdir)/$$(directory)/Dir.mk
 endef
 define include_subdir_list
   $$(foreach subdir,$(1),$$(eval $$(call include_subdir,$$(subdir))))
@@ -54,7 +51,7 @@ endef
 
 define dirs_config_tpl
   directory := .
-  include $(SRCDIR)/Dir.mk
+  include $(srcdir)/Dir.mk
 endef
 CONFIG_TEMPLATES := dirs $(CONFIG_TEMPLATES)
 
@@ -70,5 +67,3 @@ endef
 MOD_TEMPLATES := dirs $(MOD_TEMPLATES)
 
 #}}}
-
-endif

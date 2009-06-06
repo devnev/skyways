@@ -2,10 +2,6 @@
 
 $(if $(MK_INCLUDE),,$(error This makefile is meant for inclusion by other makefiles))
 
-ifndef CCPP_MK_INCLUDED
-CCPP_MK_INCLUDED := 1
-
-include $(ADDONDIR)/Dirs.mk
 DEPDIR?=.deps
 
 #{{{ per-directory-and-module source listing hooks
@@ -72,12 +68,10 @@ define depends_rules_tpl
   $(OBJECTS): build-dirs deps-dirs
   .PHONY: build-dirs deps-dirs
   build-dirs:
-	mkdir -p $(patsubst %,$(BUILDDIR)/%,$(DIRECTORIES))
+	mkdir -p $(patsubst %,$(builddir)/%,$(DIRECTORIES))
   deps-dirs:
-	mkdir -p $(patsubst %,$(BUILDDIR)/%/$(DEPDIR),$(DIRECTORIES))
+	mkdir -p $(patsubst %,$(builddir)/%/$(DEPDIR),$(DIRECTORIES))
 endef
 RULES_TEMPLATES := $(RULES_TEMPATE) depends
 
 #}}}
-
-endif
