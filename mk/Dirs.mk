@@ -67,3 +67,16 @@ endef
 MOD_TEMPLATES := dirs $(MOD_TEMPLATES)
 
 #}}}
+#{{{ rule hook to create build directories
+
+define builddirs_rules_tpl
+  $$(builddir)/.build-dirs-stamp:
+	mkdir -p $$(patsubst %,$$(builddir)/%,$$(DIRECTORIES))
+	touch $$@
+  .PHONY: build-dirs
+  build-dirs: $$(builddir)/.build-dirs-stamp
+  $$(BUILD_MAKEFILE): build-dirs
+endef
+RULES_TEMPLATES := $(RULES_TEMPLATES) builddirs
+
+#}}}

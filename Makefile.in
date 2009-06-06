@@ -21,6 +21,8 @@ vpath %.o $(builddir)
 vpath %.d $(builddir)
 VPATH = $(srcdir)
 
+BUILD_MAKEFILE=$(builddir)/Makefile
+
 MODULES := @modules@
 
 @glut_backend_stmt@SkywaysGlut_BINARY := skyways.glut

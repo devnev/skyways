@@ -65,12 +65,12 @@ POSTMOD_TEMPLATES := $(POSTMOD_TEMPLATES) targets
 define depends_rules_tpl
   -include $$(DEPENDS)
   all: $$(BINARIES)
-  $(OBJECTS): build-dirs deps-dirs
-  .PHONY: build-dirs deps-dirs
-  build-dirs:
-	mkdir -p $(patsubst %,$(builddir)/%,$(DIRECTORIES))
-  deps-dirs:
-	mkdir -p $(patsubst %,$(builddir)/%/$(DEPDIR),$(DIRECTORIES))
+  .PHONY: deps-dirs
+  $$(builddir)/.deps-dirs-stamp: $$(builddir)/.build-dirs-stamp
+	mkdir -p $$(patsubst %,$$(builddir)/%/$$(DEPDIR),$$(DIRECTORIES))
+	touch $$@
+  deps-dirs: $$(builddir)/.deps-dirs-stamp
+  $$(OBJECTS): $$(builddir)/.deps-dirs-stamp
 endef
 RULES_TEMPLATES := $(RULES_TEMPATE) depends
 
